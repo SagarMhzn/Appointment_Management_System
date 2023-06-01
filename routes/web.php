@@ -32,17 +32,17 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 // Route::get('/doctor/home', [DoctorController::class, 'index'])->name('doctor.home');
 
 
-Route::name('client.')->group(function () {
+Route::name('client.')->middleware('clientrole')->group(function () {
     Route::get('/client/home', [ClientController::class,'index'])->name('home');
     Route::resource('client', ClientController::class);
 });
 
-Route::name('doctor.')->group(function () {
+Route::name('doctor.')->middleware('doctorrole')->group(function () {
     Route::get('/doctor/home', [DoctorController::class,'index'])->name('home');
     Route::resource('doctor', DoctorController::class);
 });
 
-Route::name('superadmin.')->group(function () {
+Route::name('superadmin.')->middleware('adminrole')->group(function () {
     Route::get('/admin/home', [SuperAdminController::class,'index'])->name('home');
     Route::resource('superadmin', SuperAdminController::class);
 });
