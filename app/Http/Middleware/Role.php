@@ -18,9 +18,9 @@ class Role
      */
     public function handle(Request $request, Closure $next)
     {
-        dd($request);
+        // dd($request);
         if(Auth::user()->role == User::CLIENT){
-            return redirect()->route('home');
+            return redirect()->route('client.home');
         }
         elseif(Auth::user()->role == User::DOCTOR){
             return redirect()->route('doctor.home');
@@ -29,7 +29,7 @@ class Role
             return redirect()->route('superadmin.home');
         }
         else {
-            return redirect('/home');
+            return route('home');
         }
 
         return $next($request);

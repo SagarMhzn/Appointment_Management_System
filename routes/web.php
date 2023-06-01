@@ -28,17 +28,17 @@ Route::get('/checkrole')->middleware('role')->name('checkrole');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Route::get('/admin/home', [SuperAdminController::class, 'index'])->name('superadmin.home');
-Route::get('/client/home', [ClientController::class, 'index'])->name('client.home');
-Route::get('/doctor/home', [DoctorController::class, 'index'])->name('doctor.home');
+// Route::get('/client/home', [ClientController::class, 'index'])->name('client.home');
+// Route::get('/doctor/home', [DoctorController::class, 'index'])->name('doctor.home');
 
 
 Route::name('client.')->group(function () {
-    Route::get('/client/home', [SuperAdminController::class,'index'])->name('home');
+    Route::get('/client/home', [ClientController::class,'index'])->name('home');
     Route::resource('client', ClientController::class);
 });
 
 Route::name('doctor.')->group(function () {
-    Route::get('/doctor/home', [SuperAdminController::class,'index'])->name('home');
+    Route::get('/doctor/home', [DoctorController::class,'index'])->name('home');
     Route::resource('doctor', DoctorController::class);
 });
 
