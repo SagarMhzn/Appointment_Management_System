@@ -68,13 +68,36 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
+        // $data['isverified'] = true;
+        // dd($data);
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'role' => 1,
-            'isverified' => 1,
+            'isverified' => "1",
+
         ]);
+
+        // $user = new User();
+
+        // $user->name = $data['name'];
+        // $user->email = $data['email'];
+        // $user->password = Hash::make($data['password']);
+        // $user->role = 1;
+        // $user->isverified = true;
+        // $user->save();
+        
+
+        //  Auth::login($user);
+
+        // return redirect()->route('home')->with('success', 'User registered successfully!');
+
+        // dd($user);
+
+        // $data->isverified = true;
+        // $data->save();
     }
 
     public function index()
@@ -91,7 +114,7 @@ class RegisterController extends Controller
         $user->email = $data['email'];
         $user->password = Hash::make($data['password']);
         $user->role = 2;
-        $user->isverified = false;
+        $user->isverified = 0;
 
         $user->save();
 
