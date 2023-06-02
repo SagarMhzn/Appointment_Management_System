@@ -18,18 +18,19 @@ class Role
      */
     public function handle(Request $request, Closure $next)
     {
-        // dd($request);
-        if(Auth::user()->role == User::CLIENT){
-            return redirect()->route('client.home');
-        }
-        elseif(Auth::user()->role == User::DOCTOR){
-            return redirect()->route('doctor.home');
-        }
-        elseif(Auth::user()->role == User::SUPERADMIN){
-            return redirect()->route('superadmin.home');
+        if(AUTH::user()->isverified){
+            if(Auth::user()->role == User::CLIENT){
+                return redirect()->route('client.home');
+            }
+            elseif(Auth::user()->role == User::DOCTOR){
+                return redirect()->route('doctor.home');
+            }
+            elseif(Auth::user()->role == User::SUPERADMIN){
+                return redirect()->route('superadmin.home');
+            }
         }
         else {
-            return route('home');
+            return redirect()->route('home');
         }
 
         return $next($request);

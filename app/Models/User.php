@@ -17,6 +17,9 @@ class User extends Authenticatable
     const DOCTOR = 2;
     const SUPERADMIN = 3;
 
+    const IS_VERIFIED = 1;
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -27,6 +30,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'isverified',
     ];
 
     /**
