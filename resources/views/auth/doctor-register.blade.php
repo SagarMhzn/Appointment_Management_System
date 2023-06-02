@@ -5,10 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Client Register') }}</div>
+                <div class="card-header">{{ __('Doctor Registeration') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ route('auth.doc.register') }}">
                         @csrf
 
                         <div class="row mb-3">
@@ -66,17 +66,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Register') }}
                                 </button>
-
-                                {{-- <a class="btn btn-link" href="{{ route('doctor.register') }}"> --}}
-                                <a class="btn btn-link" href="{{ route('auth.doc.register') }}">
-                                    {{ __('Are you a Doctor?') }}
-                                </a>
                             </div>
-                            {{-- <div class="login-to-register">
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    {{ __('Dont have an account?') }}
-                                </a>
-                            </div> --}}
                         </div>
                     </form>
                 </div>

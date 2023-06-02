@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -53,6 +55,8 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'role' => ['numeric', 'nullable'],
+            'isverified' => ['boolean', 'nullable'],
         ]);
     }
 
@@ -68,6 +72,43 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'role' => 1,
+            'isverified' => 1,
         ]);
+    }
+
+    public function index()
+    {
+        return view('auth.doctor-register');
+    }
+
+    protected function doctorRegister(Request $data)
+    {
+        // dd($data);
+        $user = new User();
+
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->password = Hash::make($data['password']);
+        $user->role = 2;
+        $user->isverified = false;
+
+        $user->save();
+
+        Auth::login($user);
+
+        return redirect()->route('home')->with('success', 'User registered successfully!');
+
+        // return redirect()->route('register')->with('success', 'User registered successfully!');
+        // return view('auth.login');
+        // return $user;
+
+        // return User::create([
+        //     'name' => $data['name'],
+        //     'email' => $data['email'],
+        //     'password' => Hash::make($data['password']),
+        //     'role'=> 2,
+        //     'isverified'=> 1,
+        // ]);
     }
 }

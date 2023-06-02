@@ -27,7 +27,7 @@ class HomeController extends Controller
         $user = Auth::user();
         $roleValues = [1,2,3];
 
-        if (in_array($user->role, $roleValues)) {
+        if ($user->isverified == 1 && in_array($user->role, $roleValues)  ) {
             return redirect('/checkrole');
         } else {
             return view('home');
