@@ -61,6 +61,46 @@
                             </div>
                         </div>
 
+                        <div class="row mb-3">
+                            <label for="phone" class="col-md-4 col-form-label text-md-end">{{ __('Phone No.') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="phone" type="text" class="form-control" name="phone" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="address" class="col-md-4 col-form-label text-md-end">{{ __('Address') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="address" type="text" class="form-control" name="address" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="dateAD" class="col-md-4 col-form-label text-md-end">{{ __('DoB (AD)') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="dob-ad" type="date" class="form-control" name="dateAD" required>
+                            </div>
+                        </div>
+                        {{-- <div class="row mb-3">
+                            <label for="date-of-birth_AD" class="col-md-4 col-form-label text-md-end">{{ __('DoB (AD)') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="dob-ad" type="date" class="form-control" name="date-of-birth_AD" required>
+                            </div>
+                        </div> --}}
+                        {{-- <div class="row mb-3">
+                            <label for="choose_file" class="col-md-4 col-form-label text-md-end">{{ __('Photo') }}</label>
+
+                            <div class="col-md-6">
+                                <div>
+                                    <div id="img-preview" ></div>
+                                    <input type="file" class="form-control" id="choose-file" name="image"
+                                         accept="image/*" />
+                                </div>
+                            </div>
+                        </div> --}}
+
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
@@ -84,4 +124,27 @@
         </div>
     </div>
 </div>
+
+<script>
+    const chooseFile = document.getElementById("choose-file");
+                            const imgPreview = document.getElementById("img-preview");
+
+                            chooseFile.addEventListener("change", function() {
+                                getImgData();
+                            });
+
+                            function getImgData() {
+                                const files = chooseFile.files[0];
+                                if (files) {
+                                    const fileReader = new FileReader();
+                                    fileReader.readAsDataURL(files);
+                                    fileReader.addEventListener("load", function() {
+                                        imgPreview.style.display = "block";
+                                        // imgPreview.style.width = "20%";
+                                        imgPreview.style.objectFit ='cover';
+                                        imgPreview.innerHTML = '<div><img src="' + this.result + '" style="object-fit: cover; width: 50%;margin-bottom: 1rem;"/>';
+                                    });
+                                }
+                            }
+</script>
 @endsection

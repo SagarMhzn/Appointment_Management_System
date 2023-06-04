@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Client;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
@@ -53,7 +54,8 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            //  'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role' => ['numeric', 'nullable'],
             'isverified' => ['boolean', 'nullable'],
@@ -71,14 +73,61 @@ class RegisterController extends Controller
 
         // $data['isverified'] = true;
         // dd($data);
-        return User::create([
+        $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'role' => 1,
             'isverified' => "1",
-
         ]);
+
+        // if ($data['image']->file('image')) {
+        //     $file = $data['image']->file('image');
+        //     $filename = date('YmdHi') . $file->getClientOriginalName();
+        //     $file->move(public_path('public/Image'), $filename);
+        //     $imagePath = 'public/Image/' . $filename;
+        // }
+
+        Client::create([
+            'client_id' => $user->id,
+            'phone' => $data['phone'],
+            'dob' => $data['dateAD'],
+            'address' => $data['address'],
+        ]);
+
+        // if ($_FILES['image']) {
+        //     $file = $_FILES['image'];
+        //     $filename = date('YmdHi') . $file['name'];
+        //     $tempPath = $file['tmp_name'];
+        //     $destinationPath = public_path('public/Image/') . $filename;
+
+        //     // Check if the uploaded file is an image
+        //     $isImage = getimagesize($tempPath) !== false;
+
+        //     if ($isImage) {
+        //         // Move the uploaded file to the destination folder
+        //         move_uploaded_file($tempPath, $destinationPath);
+
+        //         // Save the image path in the database
+        //         $imagePath = 'public/Image/' . $filename;
+
+
+        //         Client::create([
+        //             'client_id' => $user->id,
+        //             'phone' => $data['phone'],
+        //             'dob' => $data['dateAD'],
+        //             'address' => $data['address'],
+        //             'image' => $imagePath,
+        //         ]);
+        //     }
+        // }
+
+
+
+        // $patient->save();
+
+        return $user;
+
 
         // $user = new User();
 
@@ -88,7 +137,7 @@ class RegisterController extends Controller
         // $user->role = 1;
         // $user->isverified = true;
         // $user->save();
-        
+
 
         //  Auth::login($user);
 
