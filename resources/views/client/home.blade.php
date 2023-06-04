@@ -49,14 +49,14 @@
                 <h1>Client DashBoard</h1>
             </div>
         </div>
-        <div class="doc-info"
+        <div class="client-info"
             style="display:flex; flex-direction:row;background-color:rgb(216, 196, 182); width:80%; margin:auto; justify-content:initial">
 
-            <div class="doc-image" style="margin: 0rem 0.8rem;">
+            <div class="client-image" style="margin: 0rem 0.8rem;">
                 <img src="/defaults/no-image.jpg" alt="image" style="object-fit:cover; ">
             </div>
 
-            <div class="doc-details" style="margin-top:1rem;">
+            <div class="client-details" style="margin-top:1rem;">
                 Name:
                 <br />
                 Address:
