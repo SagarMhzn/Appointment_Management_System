@@ -37,9 +37,9 @@ Route::middleware('auth')->group(function(){
 
     Route::name('client.')->middleware('clientrole')->group(function () {
         Route::get('/client/home', [ClientController::class,'index'])->name('home');
-        Route::get('/client/home', [ClientController::class,'showClient'])->name('home');
+        Route::get('/client/home', [ClientController::class,'show'])->name('home');
         Route::get('/client/doctors-list', [ClientController::class, 'showDoctors'])->name('client-doctors-list');
-        
+        Route::get('/client/make-appointment',[ClientController::class, 'makeAppointment'])->name('make-appointment');
         Route::resource('client', ClientController::class);
     });
     

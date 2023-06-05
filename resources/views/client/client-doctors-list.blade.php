@@ -11,7 +11,7 @@
         <h1> Menu</h1>
         <a href="{{ url('/client/home') }}" class="w3-bar-item w3-button  w3-border-bottom ">Dashboard</a>
         <a href="{{ url('/client/doctors-list') }}" class="w3-bar-item w3-button  w3-border-bottom" style="background-color:rgb(235, 242, 250); color:black; ">Doctors List</a>
-        <a href="#" class="w3-bar-item w3-button  w3-border-bottom">Appointments</a>
+        <a href="{{ url('/client/make-appointment') }}" class="w3-bar-item w3-button  w3-border-bottom">Appointments</a>
         <a href="#" class="w3-bar-item w3-button w3-border-bottom">Appointment Requests</a>
 
     </div>
@@ -66,11 +66,6 @@
             </table>
 
         </div>
-
-
-
-
-
 
     </div>
 

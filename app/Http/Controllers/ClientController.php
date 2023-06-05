@@ -14,7 +14,7 @@ class ClientController extends Controller
         return view('client.home');
     }
 
-    public function showClient()
+    public function show()
     {
         $user = Auth::user();
 
@@ -31,5 +31,10 @@ class ClientController extends Controller
         $doctor_details = User::with('doctors')->where('role', 2)->where('isverified',1)->get();
 
         return view('client.client-doctors-list')->with('doctor_details', $doctor_details);
+    }
+
+    public function makeAppointment()
+    {
+        return view('client.make-appointment');
     }
 }
