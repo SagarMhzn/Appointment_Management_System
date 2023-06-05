@@ -3,10 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Http\Controllers\SuperAdminController;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -52,4 +55,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+
+    public function doctors(): HasOne
+    {
+        return $this->hasOne(Doctor::class, 'doctor_id','id');
+    }
+
+    public function clients(): HasOne
+    {
+        return $this->hasOne(Client::class, 'client_id','id');
+    }
+
+    public function admin(): HasOne
+    {
+        return $this->hasOne(SuperAdminController::class, 'admin_id','id');
+    }
 }

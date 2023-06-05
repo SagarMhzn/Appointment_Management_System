@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
+use App\Models\Doctor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
@@ -157,6 +158,9 @@ class RegisterController extends Controller
     protected function doctorRegister(Request $data)
     {
         // dd($data);
+
+
+        //save to user table
         $user = new User();
 
         $user->name = $data['name'];
@@ -164,8 +168,36 @@ class RegisterController extends Controller
         $user->password = Hash::make($data['password']);
         $user->role = 2;
         $user->isverified = 0;
-
         $user->save();
+        
+        $user_id = $user->id;
+
+
+        //save to doctor table
+
+        $doc = new Doctor();
+
+        // dd($data->file('image'));
+
+        $doc->doctor_id = $user_id;
+        $doc->phone = $data->phone;
+
+        if ($data->file('image')) {
+            $file = $data->file('image');
+            $filename = date('YmdHi') . $file->getClientOriginalName();
+            $file->move(public_path('public/Image'), $filename);
+            $doc->image = $filename;
+        }
+
+        $doc->address = $data->address;
+        $doc->dob = $data->dateAD;
+
+
+        // dd($doc);
+
+        $doc->save();
+
+
 
         Auth::login($user);
 

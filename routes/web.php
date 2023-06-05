@@ -7,6 +7,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,18 +34,28 @@ Route::get('/register-doctor', [RegisterController::class, 'index'])->name('auth
 
 
 Route::middleware('auth')->group(function(){
+
     Route::name('client.')->middleware('clientrole')->group(function () {
         Route::get('/client/home', [ClientController::class,'index'])->name('home');
+        Route::get('/client/home', [ClientController::class,'showClient'])->name('home');
+        Route::get('/client/doctors-list', [ClientController::class, 'showDoctors'])->name('client-doctors-list');
+        
         Route::resource('client', ClientController::class);
     });
     
     Route::name('doctor.')->middleware('doctorrole')->group(function () {
         Route::get('/doctor/home', [DoctorController::class,'index'])->name('home');
+        Route::get('/doctor/home', [DoctorController::class,'showDoctor'])->name('home');
+        Route::get('/doctor/list', [DoctorController::class, 'show'])->name('list');
+        // Route::get('/doctor/home',[DoctorController::class,'showUser'])->name('logged_user');
+        
         Route::resource('doctor', DoctorController::class);
     });
     
     Route::name('superadmin.')->middleware('adminrole')->group(function () {
         Route::get('/admin/home', [SuperAdminController::class,'index'])->name('home');
+        Route::get('/admin/doctors-list', [SuperAdminController::class, 'showDoctors'])->name('admin-doctors-list');
+
         Route::resource('superadmin', SuperAdminController::class);
     });
 });

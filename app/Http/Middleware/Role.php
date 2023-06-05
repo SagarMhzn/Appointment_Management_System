@@ -19,6 +19,8 @@ class Role
     public function handle(Request $request, Closure $next)
     {
         if(AUTH::user()->isverified){
+
+            // dd(AUTH::user()->isverified,AUTH::user()->role);
             if(Auth::user()->role == User::CLIENT){
                 return redirect()->route('client.home');
             }

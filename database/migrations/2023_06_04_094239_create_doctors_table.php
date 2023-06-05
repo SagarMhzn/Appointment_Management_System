@@ -15,12 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('doctor_id')->constrained('users')->onDelete('cascade');
             $table->string('phone')->nullable();
-            $table->string('photo')->nullable();
+            $table->string('image')->nullable();
             $table->string('address');
-            $table->string('license_no');
-            $table->string('qualifications');
-            $table->string('experience');
-            $table->string('fieldofexpertize');
+            $table->string('dob');
+            $table->string('license_no')->nullable();
+            $table->string('qualifications')->nullable();
+            $table->string('experience')->nullable();
+            $table->string('fieldofexpertize')->nullable();
             $table->timestamps();
         });
     }

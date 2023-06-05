@@ -28,15 +28,21 @@
 
 
     <div class="w3-sidebar w3-bar-block w3-card w3-animate-left"
-        style="display:block;margin-left:0%;width:10%; background-color:#1e96fc; text-align:center;color:white;" id="mySidebar">
+        style="display:block;margin-left:0%;width:10%; background-color:#000000;; text-align:center;color:white;" id="mySidebar">
         <h1 class="dash-menu"> Menu</h1>
-        <a href="#" class="w3-bar-item w3-button  w3-border-bottom">Dashboard</a>
-        <a href="#" class="w3-bar-item w3-button  w3-border-bottom">Doctors List</a>
-        <a href="#" class="w3-bar-item w3-button  w3-border-bottom">Client List</a>
-        {{-- <a href="#" class="w3-bar-item w3-button  w3-border-bottom">Make Appointments</a> --}}
+        <a href="{{ route('home') }}" class="w3-bar-item w3-button  w3-border-bottom" style="background-color:rgb(235, 242, 250); color:black; ">Dashboard</a>
+        <a href="{{ route('superadmin.admin-doctors-list') }}" class="w3-bar-item w3-button  w3-border-bottom">Doctors List</a>
+        {{-- <a href="#" class="w3-bar-item w3-button  w3-border-bottom">Client List</a> --}}
         <a href="#" class="w3-bar-item w3-button w3-border-bottom">Appointment List</a>
         <a href="#" class="w3-bar-item w3-button w3-border-bottom">Review Feedback</a>
-        <a href="#" class="w3-bar-item w3-button w3-border-bottom">Doctor Verification Requests</a>
+        <a href="#" class="w3-bar-item w3-button w3-border-bottom"> Verification Requests</a>
+
+
+
+
+
+
+        {{-- <a href="#" class="w3-bar-item w3-button  w3-border-bottom">Make Appointments</a> --}}
         {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Link 3</a> --}}
         {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Link 3</a>  --}}
     </div>

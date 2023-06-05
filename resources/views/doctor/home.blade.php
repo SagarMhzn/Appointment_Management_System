@@ -1,25 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    {{-- <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{ __('DOCTOR home page') }}
-                </div>
-            </div>
-        </div>
-    </div>
-</div> --}}
 
 
 
@@ -28,17 +9,14 @@
 
 
     <div class="w3-sidebar w3-bar-block w3-card w3-animate-left"
-        style="display:block;margin-left:0%;width:10%; background-color:#1e96fc; text-align:center;color:white;" id="mySidebar">
+        style="display:block;margin-left:0%;width:10%; background-color:#000000; text-align:center;color:white;" id="mySidebar">
         <h1> Menu</h1>
-        <a href="#" class="w3-bar-item w3-button  w3-border-bottom">Dashboard</a>
-        <a href="#" class="w3-bar-item w3-button  w3-border-bottom">Doctors List</a>
+        <a href="{{ url('/doctor/home') }}" class="w3-bar-item w3-button  w3-border-bottom " style="background-color:rgb(235, 242, 250); color:black; ">Dashboard</a>
+        <a href="{{ url('/doctor/list') }}" class="w3-bar-item w3-button  w3-border-bottom">Doctors List</a>
         <a href="#" class="w3-bar-item w3-button  w3-border-bottom">Appointments</a>
         <a href="#" class="w3-bar-item w3-button w3-border-bottom">Appointment Requests</a>
         <a href="#" class="w3-bar-item w3-button w3-border-bottom">Patients</a>
-        {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Link 3</a>
-        <a href="#" class="w3-bar-item w3-button w3-border-bottom">Link 3</a>
-        <a href="#" class="w3-bar-item w3-button w3-border-bottom">Link 3</a>
-        <a href="#" class="w3-bar-item w3-button w3-border-bottom">Link 3</a> --}}
+
     </div>
 
     <div id="main" style="margin-left:10%;">
@@ -51,23 +29,90 @@
         </div>
         <div class="doc-info"
             style="display:flex; flex-direction:row;background-color:rgb(216, 196, 182); width:80%; margin:auto; justify-content:initial">
+            <div class="doc-image" style="margin: 0rem 0.8rem;border-radius:50%">
+                @if($doctor->image)
+                
+                <img src="{{ url('public/Image/' . $doctor->image) }}"
+                    width="500px" height="300px" style="object-fit: cover" alt="Student Image" />
+                
+                @else
+                <img src="{{ url('defaults/no-image.jpg') }}"
+                    width="500px" height="300px" style="object-fit: cover" alt="Student Image" />
+                    
+                @endif
 
-            <div class="doc-image" style="margin: 0rem 0.8rem;">
-                <img src="/defaults/no-image.jpg" alt="image" style="object-fit:cover; ">
             </div>
 
             <div class="doc-details" style="margin-top:1rem;">
-                Name:
-                <br />
+                Name:<div class="doc-name" style="font-size: 20px">
+                    {{ $logged_user->name }}
+                </div>
+                Email:<div class="doc-email" style="font-size: 20px">
+                    {{ $logged_user->email }}
+                </div>
+                
                 Address:
-                <br />
+                <div class="doc-addres" style="font-size: 20px">
+
+                    @if($doctor->address)
+                        {{ $doctor->address }}
+                    @else
+                        N/A
+                    @endif
+                </div>
+                
                 Phone no.:
-                <br />
+                <div class="doc-phone" style="font-size: 20px">
+
+
+                    @if($doctor->phone)
+                        {{ $doctor->phone }}
+                    @else
+                        N/A
+                    @endif
+                </div>
+                
                 License No.:
-                <br />
+                <div class="doc-license" style="font-size: 20px">
+
+
+                    @if($doctor->license_no)
+                        {{ $doctor->license_no }}
+                    @else
+                        N/A
+                    @endif
+                </div>
+                
                 DoB:
-                <br />
-                Department:
+                <div class="doc-dob" style="font-size: 20px">
+                    {{ $doctor->dob }}
+                </div>
+                
+                Qualification:
+                <div class="doc-qual" style="font-size: 20px">
+                    @if($logged_user->qualification)
+                        {{ $logged_user->qualification }}
+                    @else
+                        N/A
+                    @endif
+                </div>
+                Field of Expertize:
+                <div class="doc-foe" style="font-size: 20px">
+
+                    @if($logged_user->fieldofexpertize)
+                        {{ $logged_user->experience }}
+                    @else
+                        N/A
+                    @endif
+                </div>
+                Exprience:
+                <div class="doc-exp" style="font-size: 20px">
+                    @if($logged_user->experience)
+                        {{ $logged_user->experience }}
+                    @else
+                        N/A
+                    @endif
+                </div>
 
 
             </div>
@@ -90,10 +135,8 @@
             clickCount++;
 
             if (clickCount % 2 === 0) {
-                // Even number
                 w3_open();
             } else {
-                // Odd number
                 w3_close();
             }
         }
@@ -102,14 +145,14 @@
 
             document.getElementById("main").style.marginLeft = "10%";
             document.getElementById("mySidebar").style.display = "block";
-            // document.getElementById("openNav").style.display = 'block';
+
         }
 
         function w3_close() {
             document.getElementById("main").style.marginLeft = "0%";
             document.getElementById("mySidebar").style.width = "10%";
             document.getElementById("mySidebar").style.display = "none";
-            // document.getElementById("openNav").style.display = "inline-block";
+
         }
     </script>
 @endsection
