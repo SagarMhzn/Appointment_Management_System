@@ -100,7 +100,7 @@
                                     {{ __('Register') }}
                                 </button>
 
-                                <a class="btn btn-link" href="{{ route('register') }}">
+                                <a class="btn btn-link" href="{{ url('/') }}">
                                     {{ __('Not a Doctor?') }}
                                 </a>
 

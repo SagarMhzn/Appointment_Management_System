@@ -1,145 +1,1283 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-@section('content')
-    {{-- <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+    <title>{{ config('app.name') }}</title>
 
-                    {{ __('DOCTOR home page') }}
-                </div>
-            </div>
-        </div>
-    </div>
-</div> --}}
+    <!-- Fonts -->
+    {{-- <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url(mix('css/app.css')) }}">
 
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="plugins/cubeportfolio/css/cubeportfolio.min.css">
+    <link href="css/nivo-lightbox.css" rel="stylesheet" />
+    <link href="css/nivo-lightbox-theme/default/default.css" rel="stylesheet" type="text/css" />
+    <link href="css/owl.carousel.css" rel="stylesheet" media="screen" />
+    <link href="css/owl.theme.css" rel="stylesheet" media="screen" />
+    <link href="css/animate.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet">
 
+    <!-- boxed bg -->
+    <link id="bodybg" href="bodybg/bg1.css" rel="stylesheet" type="text/css" />
+    <!-- template skin -->
+    <link id="t-colors" href="color/default.css" rel="stylesheet"> --}}
 
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/cubeportfolio/css/cubeportfolio.min.css') }}">
+    <link href="{{ asset('css/nivo-lightbox.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/nivo-lightbox-theme/default/default.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/owl.carousel.css') }}" rel="stylesheet" media="screen" />
+    <link href="{{ asset('css/owl.theme.css') }}" rel="stylesheet" media="screen" />
+    <link href="{{ asset('css/animate.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
-
-    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left"
-        style="display:block;margin-left:0%;width:10%; background-color:#000000; text-align:center;color:white;" id="mySidebar">
-        <h1 class="dash-menu"> Menu</h1>
-        <a href="{{ url('/client/home') }}" class="w3-bar-item w3-button  w3-border-bottom" style="background-color:rgb(235, 242, 250); color:black; ">Dashboard</a>
-        <a href="{{ url('/client/doctors-list') }}" class="w3-bar-item w3-button  w3-border-bottom">Doctors List</a>
-        <a href="{{ url('/client/make-appointment') }}" class="w3-bar-item w3-button  w3-border-bottom">Make Appointments</a>
-        <a href="#" class="w3-bar-item w3-button w3-border-bottom">Appointment List</a>
-        {{--<a href="#" class="w3-bar-item w3-button w3-border-bottom">Patients</a>
-        <a href="#" class="w3-bar-item w3-button w3-border-bottom">Link 3</a>
-        <a href="#" class="w3-bar-item w3-button w3-border-bottom">Link 3</a>
-        <a href="#" class="w3-bar-item w3-button w3-border-bottom">Link 3</a>
-        <a href="#" class="w3-bar-item w3-button w3-border-bottom">Link 3</a> --}}
-    </div>
-
-    <div id="main" style="margin-left:10%;">
-
-        <div class="w3-black" style="display:flex; flex-direction:row;">
-            <button id="openNav" class="w3-button w3-black w3-xlarge " onclick="handleClick()">&#9776;</button>
-            <div class="w3-container">
-                <h1>Client DashBoard</h1>
-            </div>
-        </div>
-        <div class="client-info"
-            style="display:flex; flex-direction:row;background-color:rgb(216, 196, 182); width:80%; margin:auto; justify-content:initial">
-
-            <div class="client-image" style="margin: 0rem 0.8rem;border-radius:50%">
-                @if($client->image)
-                
-                <img src="{{ url('public/Image/' . $client->image) }}"
-                    width="500px" height="300px" style="object-fit: cover" alt="Student Image" />
-                
-                @else
-                <img src="{{ url('defaults/no-image.jpg') }}"
-                    width="500px" height="300px" style="object-fit: cover" alt="Student Image" />
-                    
-                @endif
-
-            </div>
-
-            <div class="client-details" style="margin-top:1rem;">
-                Name:<div class="client-name" style="font-size: 20px">
-                    {{ $logged_user->name }}
-                </div>
-                Email:<div class="client-email" style="font-size: 20px">
-                    {{ $logged_user->email }}
-                </div>
-                
-                Address:
-                <div class="client-addres" style="font-size: 20px">
-                    {{-- {{ $client->address }} --}}
-
-                    @if($client->address)
-                        {{ $client->address }}
-                    @else
-                        N/A
-                    @endif
-                </div>
-                
-                Phone no.:
-                <div class="client-phone" style="font-size: 20px">
-                    {{-- {{ $client->phone }} --}}
-
-                    @if($client->phone)
-                        {{ $client->phone }}
-                    @else
-                        N/A
-                    @endif
-                </div>
-                
-                DoB:
-                <div class="doc-dob" style="font-size: 20px">
-                    {{ $client->dob }}
-                </div>
-
-
-            </div>
-        </div>
-
-        <div class="dash-body">
-            this section shows the information about the doctors appointment and patient infos
-
-        </div>
+    <!-- boxed bg -->
+    <link id="bodybg" href="{{ asset('bodybg/bg1.css') }}" rel="stylesheet" type="text/css" />
+    <!-- template skin -->
+    <link id="t-colors" href="{{ asset('color/default.css') }}" rel="stylesheet">
 
 
 
 
-    </div>
+    <!-- Styles -->
+    <style>
+        /* ! tailwindcss v3.2.4 | MIT License | https://tailwindcss.com */
+        *,
+        ::after,
+        ::before {
+            box-sizing: border-box;
+            border-width: 0;
+            border-style: solid;
+            border-color: #e5e7eb
+        }
 
-    <script>
-        var clickCount = 0;
+        ::after,
+        ::before {
+            --tw-content: ''
+        }
 
-        function handleClick() {
-            clickCount++;
+        html {
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+            -moz-tab-size: 4;
+            tab-size: 4;
+            font-family: Figtree, sans-serif;
+            font-feature-settings: normal
+        }
 
-            if (clickCount % 2 === 0) {
-                w3_open();
-            } else {
-                w3_close();
+        body {
+            margin: 0;
+            line-height: inherit
+        }
+
+        hr {
+            height: 0;
+            color: inherit;
+            border-top-width: 1px
+        }
+
+        abbr:where([title]) {
+            -webkit-text-decoration: underline dotted;
+            text-decoration: underline dotted
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-size: inherit;
+            font-weight: inherit
+        }
+
+        a {
+            color: inherit;
+            text-decoration: inherit
+        }
+
+        b,
+        strong {
+            font-weight: bolder
+        }
+
+        code,
+        kbd,
+        pre,
+        samp {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 1em
+        }
+
+        small {
+            font-size: 80%
+        }
+
+        sub,
+        sup {
+            font-size: 75%;
+            line-height: 0;
+            position: relative;
+            vertical-align: baseline
+        }
+
+        sub {
+            bottom: -.25em
+        }
+
+        sup {
+            top: -.5em
+        }
+
+        table {
+            text-indent: 0;
+            border-color: inherit;
+            border-collapse: collapse
+        }
+
+        button,
+        input,
+        optgroup,
+        select,
+        textarea {
+            font-family: inherit;
+            font-size: 100%;
+            font-weight: inherit;
+            line-height: inherit;
+            color: inherit;
+            margin: 0;
+            padding: 0
+        }
+
+        button,
+        select {
+            text-transform: none
+        }
+
+        [type=button],
+        [type=reset],
+        [type=submit],
+        button {
+            -webkit-appearance: button;
+            background-color: transparent;
+            background-image: none
+        }
+
+        :-moz-focusring {
+            outline: auto
+        }
+
+        :-moz-ui-invalid {
+            box-shadow: none
+        }
+
+        progress {
+            vertical-align: baseline
+        }
+
+        ::-webkit-inner-spin-button,
+        ::-webkit-outer-spin-button {
+            height: auto
+        }
+
+        [type=search] {
+            -webkit-appearance: textfield;
+            outline-offset: -2px
+        }
+
+        ::-webkit-search-decoration {
+            -webkit-appearance: none
+        }
+
+        ::-webkit-file-upload-button {
+            -webkit-appearance: button;
+            font: inherit
+        }
+
+        summary {
+            display: list-item
+        }
+
+        blockquote,
+        dd,
+        dl,
+        figure,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        hr,
+        p,
+        pre {
+            margin: 0
+        }
+
+        fieldset {
+            margin: 0;
+            padding: 0
+        }
+
+        legend {
+            padding: 0
+        }
+
+        menu,
+        ol,
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0
+        }
+
+        textarea {
+            resize: vertical
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            opacity: 1;
+            color: #9ca3af
+        }
+
+        [role=button],
+        button {
+            cursor: pointer
+        }
+
+        :disabled {
+            cursor: default
+        }
+
+        audio,
+        canvas,
+        embed,
+        iframe,
+        img,
+        object,
+        svg,
+        video {
+            display: block;
+            vertical-align: middle
+        }
+
+        img,
+        video {
+            max-width: 100%;
+            height: auto
+        }
+
+        [hidden] {
+            display: none
+        }
+
+        *,
+        ::before,
+        ::after {
+            --tw-border-spacing-x: 0;
+            --tw-border-spacing-y: 0;
+            --tw-translate-x: 0;
+            --tw-translate-y: 0;
+            --tw-rotate: 0;
+            --tw-skew-x: 0;
+            --tw-skew-y: 0;
+            --tw-scale-x: 1;
+            --tw-scale-y: 1;
+            --tw-pan-x: ;
+            --tw-pan-y: ;
+            --tw-pinch-zoom: ;
+            --tw-scroll-snap-strictness: proximity;
+            --tw-ordinal: ;
+            --tw-slashed-zero: ;
+            --tw-numeric-figure: ;
+            --tw-numeric-spacing: ;
+            --tw-numeric-fraction: ;
+            --tw-ring-inset: ;
+            --tw-ring-offset-width: 0px;
+            --tw-ring-offset-color: #fff;
+            --tw-ring-color: rgb(59 130 246 / 0.5);
+            --tw-ring-offset-shadow: 0 0 #0000;
+            --tw-ring-shadow: 0 0 #0000;
+            --tw-shadow: 0 0 #0000;
+            --tw-shadow-colored: 0 0 #0000;
+            --tw-blur: ;
+            --tw-brightness: ;
+            --tw-contrast: ;
+            --tw-grayscale: ;
+            --tw-hue-rotate: ;
+            --tw-invert: ;
+            --tw-saturate: ;
+            --tw-sepia: ;
+            --tw-drop-shadow: ;
+            --tw-backdrop-blur: ;
+            --tw-backdrop-brightness: ;
+            --tw-backdrop-contrast: ;
+            --tw-backdrop-grayscale: ;
+            --tw-backdrop-hue-rotate: ;
+            --tw-backdrop-invert: ;
+            --tw-backdrop-opacity: ;
+            --tw-backdrop-saturate: ;
+            --tw-backdrop-sepia:
+        }
+
+        ::-webkit-backdrop {
+            --tw-border-spacing-x: 0;
+            --tw-border-spacing-y: 0;
+            --tw-translate-x: 0;
+            --tw-translate-y: 0;
+            --tw-rotate: 0;
+            --tw-skew-x: 0;
+            --tw-skew-y: 0;
+            --tw-scale-x: 1;
+            --tw-scale-y: 1;
+            --tw-pan-x: ;
+            --tw-pan-y: ;
+            --tw-pinch-zoom: ;
+            --tw-scroll-snap-strictness: proximity;
+            --tw-ordinal: ;
+            --tw-slashed-zero: ;
+            --tw-numeric-figure: ;
+            --tw-numeric-spacing: ;
+            --tw-numeric-fraction: ;
+            --tw-ring-inset: ;
+            --tw-ring-offset-width: 0px;
+            --tw-ring-offset-color: #fff;
+            --tw-ring-color: rgb(59 130 246 / 0.5);
+            --tw-ring-offset-shadow: 0 0 #0000;
+            --tw-ring-shadow: 0 0 #0000;
+            --tw-shadow: 0 0 #0000;
+            --tw-shadow-colored: 0 0 #0000;
+            --tw-blur: ;
+            --tw-brightness: ;
+            --tw-contrast: ;
+            --tw-grayscale: ;
+            --tw-hue-rotate: ;
+            --tw-invert: ;
+            --tw-saturate: ;
+            --tw-sepia: ;
+            --tw-drop-shadow: ;
+            --tw-backdrop-blur: ;
+            --tw-backdrop-brightness: ;
+            --tw-backdrop-contrast: ;
+            --tw-backdrop-grayscale: ;
+            --tw-backdrop-hue-rotate: ;
+            --tw-backdrop-invert: ;
+            --tw-backdrop-opacity: ;
+            --tw-backdrop-saturate: ;
+            --tw-backdrop-sepia:
+        }
+
+        ::backdrop {
+            --tw-border-spacing-x: 0;
+            --tw-border-spacing-y: 0;
+            --tw-translate-x: 0;
+            --tw-translate-y: 0;
+            --tw-rotate: 0;
+            --tw-skew-x: 0;
+            --tw-skew-y: 0;
+            --tw-scale-x: 1;
+            --tw-scale-y: 1;
+            --tw-pan-x: ;
+            --tw-pan-y: ;
+            --tw-pinch-zoom: ;
+            --tw-scroll-snap-strictness: proximity;
+            --tw-ordinal: ;
+            --tw-slashed-zero: ;
+            --tw-numeric-figure: ;
+            --tw-numeric-spacing: ;
+            --tw-numeric-fraction: ;
+            --tw-ring-inset: ;
+            --tw-ring-offset-width: 0px;
+            --tw-ring-offset-color: #fff;
+            --tw-ring-color: rgb(59 130 246 / 0.5);
+            --tw-ring-offset-shadow: 0 0 #0000;
+            --tw-ring-shadow: 0 0 #0000;
+            --tw-shadow: 0 0 #0000;
+            --tw-shadow-colored: 0 0 #0000;
+            --tw-blur: ;
+            --tw-brightness: ;
+            --tw-contrast: ;
+            --tw-grayscale: ;
+            --tw-hue-rotate: ;
+            --tw-invert: ;
+            --tw-saturate: ;
+            --tw-sepia: ;
+            --tw-drop-shadow: ;
+            --tw-backdrop-blur: ;
+            --tw-backdrop-brightness: ;
+            --tw-backdrop-contrast: ;
+            --tw-backdrop-grayscale: ;
+            --tw-backdrop-hue-rotate: ;
+            --tw-backdrop-invert: ;
+            --tw-backdrop-opacity: ;
+            --tw-backdrop-saturate: ;
+            --tw-backdrop-sepia:
+        }
+
+        .relative {
+            position: relative
+        }
+
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto
+        }
+
+        .mx-6 {
+            margin-left: 1.5rem;
+            margin-right: 1.5rem
+        }
+
+        .ml-4 {
+            margin-left: 1rem
+        }
+
+        .mt-16 {
+            margin-top: 4rem
+        }
+
+        .mt-6 {
+            margin-top: 1.5rem
+        }
+
+        .mt-4 {
+            margin-top: 1rem
+        }
+
+        .-mt-px {
+            margin-top: -1px
+        }
+
+        .mr-1 {
+            margin-right: 0.25rem
+        }
+
+        .flex {
+            display: flex
+        }
+
+        .inline-flex {
+            display: inline-flex
+        }
+
+        .grid {
+            display: grid
+        }
+
+        .h-16 {
+            height: 4rem
+        }
+
+        .h-7 {
+            height: 1.75rem
+        }
+
+        .h-6 {
+            height: 1.5rem
+        }
+
+        .h-5 {
+            height: 1.25rem
+        }
+
+        .min-h-screen {
+            min-height: 100vh
+        }
+
+        .w-auto {
+            width: auto
+        }
+
+        .w-16 {
+            width: 4rem
+        }
+
+        .w-7 {
+            width: 1.75rem
+        }
+
+        .w-6 {
+            width: 1.5rem
+        }
+
+        .w-5 {
+            width: 1.25rem
+        }
+
+        .max-w-7xl {
+            max-width: 80rem
+        }
+
+        .shrink-0 {
+            flex-shrink: 0
+        }
+
+        .scale-100 {
+            --tw-scale-x: 1;
+            --tw-scale-y: 1;
+            transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: repeat(1, minmax(0, 1fr))
+        }
+
+        .items-center {
+            align-items: center
+        }
+
+        .justify-center {
+            justify-content: center
+        }
+
+        .gap-6 {
+            gap: 1.5rem
+        }
+
+        .gap-4 {
+            gap: 1rem
+        }
+
+        .self-center {
+            align-self: center
+        }
+
+        .rounded-lg {
+            border-radius: 0.5rem
+        }
+
+        .rounded-full {
+            border-radius: 9999px
+        }
+
+        .bg-gray-100 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(243 244 246 / var(--tw-bg-opacity))
+        }
+
+        .bg-white {
+            --tw-bg-opacity: 1;
+            background-color: rgb(255 255 255 / var(--tw-bg-opacity))
+        }
+
+        .bg-red-50 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(254 242 242 / var(--tw-bg-opacity))
+        }
+
+        .bg-dots-darker {
+            background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z' fill='rgba(0,0,0,0.07)'/%3E%3C/svg%3E")
+        }
+
+        .from-gray-700\/50 {
+            --tw-gradient-from: rgb(55 65 81 / 0.5);
+            --tw-gradient-to: rgb(55 65 81 / 0);
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
+        }
+
+        .via-transparent {
+            --tw-gradient-to: rgb(0 0 0 / 0);
+            --tw-gradient-stops: var(--tw-gradient-from), transparent, var(--tw-gradient-to)
+        }
+
+        .bg-center {
+            background-position: center
+        }
+
+        .stroke-red-500 {
+            stroke: #ef4444
+        }
+
+        .stroke-gray-400 {
+            stroke: #9ca3af
+        }
+
+        .p-6 {
+            padding: 1.5rem
+        }
+
+        .px-6 {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem
+        }
+
+        .text-center {
+            text-align: center
+        }
+
+        .text-right {
+            text-align: right
+        }
+
+        .text-xl {
+            font-size: 1.25rem;
+            line-height: 1.75rem
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+            line-height: 1.25rem
+        }
+
+        .font-semibold {
+            font-weight: 600
+        }
+
+        .leading-relaxed {
+            line-height: 1.625
+        }
+
+        .text-gray-600 {
+            --tw-text-opacity: 1;
+            color: rgb(75 85 99 / var(--tw-text-opacity))
+        }
+
+        .text-gray-900 {
+            --tw-text-opacity: 1;
+            color: rgb(17 24 39 / var(--tw-text-opacity))
+        }
+
+        .text-gray-500 {
+            --tw-text-opacity: 1;
+            color: rgb(107 114 128 / var(--tw-text-opacity))
+        }
+
+        .underline {
+            -webkit-text-decoration-line: underline;
+            text-decoration-line: underline
+        }
+
+        .antialiased {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale
+        }
+
+        .shadow-2xl {
+            --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+            box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+        }
+
+        .shadow-gray-500\/20 {
+            --tw-shadow-color: rgb(107 114 128 / 0.2);
+            --tw-shadow: var(--tw-shadow-colored)
+        }
+
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms
+        }
+
+        .selection\:bg-red-500 *::selection {
+            --tw-bg-opacity: 1;
+            background-color: rgb(239 68 68 / var(--tw-bg-opacity))
+        }
+
+        .selection\:text-white *::selection {
+            --tw-text-opacity: 1;
+            color: rgb(255 255 255 / var(--tw-text-opacity))
+        }
+
+        .selection\:bg-red-500::selection {
+            --tw-bg-opacity: 1;
+            background-color: rgb(239 68 68 / var(--tw-bg-opacity))
+        }
+
+        .selection\:text-white::selection {
+            --tw-text-opacity: 1;
+            color: rgb(255 255 255 / var(--tw-text-opacity))
+        }
+
+        .hover\:text-gray-900:hover {
+            --tw-text-opacity: 1;
+            color: rgb(17 24 39 / var(--tw-text-opacity))
+        }
+
+        .hover\:text-gray-700:hover {
+            --tw-text-opacity: 1;
+            color: rgb(55 65 81 / var(--tw-text-opacity))
+        }
+
+        .focus\:rounded-sm:focus {
+            border-radius: 0.125rem
+        }
+
+        .focus\:outline:focus {
+            outline-style: solid
+        }
+
+        .focus\:outline-2:focus {
+            outline-width: 2px
+        }
+
+        .focus\:outline-red-500:focus {
+            outline-color: #ef4444
+        }
+
+        .group:hover .group-hover\:stroke-gray-600 {
+            stroke: #4b5563
+        }
+
+        .z-10 {
+            z-index: 10
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            .motion-safe\:hover\:scale-\[1\.01\]:hover {
+                --tw-scale-x: 1.01;
+                --tw-scale-y: 1.01;
+                transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
             }
         }
 
-        function w3_open() {
+        @media (prefers-color-scheme: dark) {
+            .dark\:bg-gray-900 {
+                --tw-bg-opacity: 1;
+                background-color: rgb(17 24 39 / var(--tw-bg-opacity))
+            }
 
-            document.getElementById("main").style.marginLeft = "10%";
-            document.getElementById("mySidebar").style.display = "block";
-            // document.getElementById("openNav").style.display = 'block';
+            .dark\:bg-gray-800\/50 {
+                background-color: rgb(31 41 55 / 0.5)
+            }
+
+            .dark\:bg-red-800\/20 {
+                background-color: rgb(153 27 27 / 0.2)
+            }
+
+            .dark\:bg-dots-lighter {
+                background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z' fill='rgba(255,255,255,0.07)'/%3E%3C/svg%3E")
+            }
+
+            .dark\:bg-gradient-to-bl {
+                background-image: linear-gradient(to bottom left, var(--tw-gradient-stops))
+            }
+
+            .dark\:stroke-gray-600 {
+                stroke: #4b5563
+            }
+
+            .dark\:text-gray-400 {
+                --tw-text-opacity: 1;
+                color: rgb(156 163 175 / var(--tw-text-opacity))
+            }
+
+            .dark\:text-white {
+                --tw-text-opacity: 1;
+                color: rgb(255 255 255 / var(--tw-text-opacity))
+            }
+
+            .dark\:shadow-none {
+                --tw-shadow: 0 0 #0000;
+                --tw-shadow-colored: 0 0 #0000;
+                box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+            }
+
+            .dark\:ring-1 {
+                --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+                --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+                box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)
+            }
+
+            .dark\:ring-inset {
+                --tw-ring-inset: inset
+            }
+
+            .dark\:ring-white\/5 {
+                --tw-ring-color: rgb(255 255 255 / 0.05)
+            }
+
+            .dark\:hover\:text-white:hover {
+                --tw-text-opacity: 1;
+                color: rgb(255 255 255 / var(--tw-text-opacity))
+            }
+
+            .group:hover .dark\:group-hover\:stroke-gray-400 {
+                stroke: #9ca3af
+            }
         }
 
-        function w3_close() {
-            document.getElementById("main").style.marginLeft = "0%";
-            document.getElementById("mySidebar").style.width = "10%";
-            document.getElementById("mySidebar").style.display = "none";
-            // document.getElementById("openNav").style.display = "inline-block";
+        @media (min-width: 640px) {
+            .sm\:fixed {
+                position: fixed
+            }
+
+            .sm\:top-0 {
+                top: 0px
+            }
+
+            .sm\:right-0 {
+                right: 0px
+            }
+
+            .sm\:ml-0 {
+                margin-left: 0px
+            }
+
+            .sm\:flex {
+                display: flex
+            }
+
+            .sm\:items-center {
+                align-items: center
+            }
+
+            .sm\:justify-center {
+                justify-content: center
+            }
+
+            .sm\:justify-between {
+                justify-content: space-between
+            }
+
+            .sm\:text-left {
+                text-align: left
+            }
+
+            .sm\:text-right {
+                text-align: right
+            }
         }
-    </script>
-@endsection
+
+        @media (min-width: 768px) {
+            .md\:grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .lg\:gap-8 {
+                gap: 2rem
+            }
+
+            .lg\:p-8 {
+                padding: 2rem
+            }
+        }
+    </style>
+</head>
+
+
+
+<body class="antialiased" id="page-top" data-spy="scroll" data-target=".navbar-custom">
+
+
+    <div id="wrapper">
+
+        <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+            <div class="top-area">
+                <div class="container">
+                    <div class="row">
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="container navigation">
+
+                <div class="navbar-header page-scroll">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target=".navbar-main-collapse">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <a class="navbar-brand" href="{{ url('/') }}">
+                        <img src="{{ asset('img/logo.png') }}" alt="" width="150" height="40" />
+                    </a>
+                </div>
+
+                <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#intro">Home</a></li>
+                        <li><a href="#doctor">Doctors</a></li>
+                        <li><a href="#appointment">Appointments</a></li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ $logged_user->name }}
+                                <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+
+                                <div>
+                                    @if (Route::has('login'))
+                                        <div>
+                                            @auth
+                                                <li><a href="{{ url('/home') }}">Home</a>
+                                                </li>
+
+                                                <li>
+                                                    {{-- <a href="{{ url('/logout') }}">Log out</a> --}}
+
+                                                    <div><a href="{{ route('logout') }}"
+                                                            onclick="event.preventDefault();
+                                                                         document.getElementById('logout-form').submit();">
+                                                            Logout
+                                                        </a>
+                                                        <form id="logout-form" action="{{ route('logout') }}"
+                                                            method="POST" class="d-none">
+                                                            @csrf
+                                                        </form>
+                                                    </div>
+                                                </li>
+                                            @else
+                                                <li> <a href="{{ route('login') }}">Log
+                                                        in</a></li>
+
+                                                @if (Route::has('register'))
+                                                    <li><a href="{{ route('auth.doc.register') }}">Register</a>
+                                                    </li>
+                                                @endif
+                                            @endauth
+                                        </div>
+                                    @endif
+                                </div>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+        <!-- Section: intro -->
+        <section id="intro" class="intro">
+            <div class="intro-content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div>
+                                <h2 class="h-ultra">Welcome to Medicio, {{ $logged_user->name }}</h2>
+                            </div>
+                            <div>
+                                <h4 class="h-light">We are happy to have you here!
+                                    <br />
+
+                                    {{-- <span class="color">best quality healthcare</span> for
+                                    you</h4> --}}
+                            </div>
+
+
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-wrapper">
+                                <div>
+
+                                    <div class="panel panel-skin">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><span class="fa fa-pencil-square-o"></span>
+                                                Dashboard</h3>
+                                        </div>
+                                        <a href="#doctor">
+                                            <div class="panel-body">
+                                                Total no. of verified Doctors : {{ $countDoctors }}
+                                            </div>
+                                        </a>
+                                        <a href="#appointment">
+                                            <div class="panel-body">
+                                                Total no. of Appointments : {{ $countVerAppointments }}
+                                            </div>
+                                        </a>
+                                        {{-- <div class="panel-body">
+                                            Total no. of Pending Appointments : {{ $countAppointments }}
+                                        </div> --}}
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- /Section: intro -->
+
+        <!-- Section: boxes -->
+        <section id="boxes" class="home-section paddingtop-80">
+
+           
+
+        </section>
+        <!-- /Section: boxes -->
+
+
+        <section id="callaction" class="home-section paddingtop-40">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="callaction bg-gray">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div>
+                                        <div class="cta-text">
+                                            <h3>In an emergency? Need help now?</h3>
+                                            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit uisque interdum
+                                                ante eget faucibus. </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div>
+                                        <div class="cta-btn">
+                                            <a href="#appointment" class="btn btn-skin btn-lg">Book an appoinment</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+
+
+        <!-- Section: team -->
+        <section id="doctor" class="home-section bg-gray paddingbot-60">
+            <div class="container marginbot-50">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div>
+                            <div class="section-heading text-center">
+                                <h2 class="h-bold">Doctors</h2>
+                                <p>Ea melius ceteros oportere quo, pri habeo viderer facilisi ei</p>
+                            </div>
+                        </div>
+                        <div class="divider-short"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div id="filters-container" class="cbp-l-filters-alignLeft">
+                            <div data-filter="*" class="cbp-filter-item-active cbp-filter-item">All (<div
+                                    class="cbp-filter-counter"></div>)</div>
+                            <div data-filter=".cardiologist" class="cbp-filter-item">Cardiologist (<div
+                                    class="cbp-filter-counter"></div>)</div>
+                            <div data-filter=".psychiatrist" class="cbp-filter-item">Psychiatrist (<div
+                                    class="cbp-filter-counter"></div>)</div>
+                            <div data-filter=".neurologist" class="cbp-filter-item">Neurologist (<div
+                                    class="cbp-filter-counter"></div>)</div>
+                        </div>
+
+                        <div id="grid-container" class="cbp-l-grid-team">
+                            <ul>
+                                <li class="cbp-item psychiatrist">
+                                    <a href="doctors/member1.html" class="cbp-caption cbp-singlePage">
+                                        <div class="cbp-caption-defaultWrap">
+                                            <img src="{{ asset('img/team/1.jpg') }}" alt="" width="100%">
+                                        </div>
+                                        <div class="cbp-caption-activeWrap">
+                                            <div class="cbp-l-caption-alignCenter">
+                                                <div class="cbp-l-caption-body">
+                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a href="doctors/member1.html" class="cbp-singlePage cbp-l-grid-team-name">Alice
+                                        Grue</a>
+                                    <div class="cbp-l-grid-team-position">Psychiatrist</div>
+                                </li>
+                                <li class="cbp-item cardiologist">
+                                    <a href="doctors/member2.html" class="cbp-caption cbp-singlePage">
+                                        <div class="cbp-caption-defaultWrap">
+                                            <img src="{{ asset('img/team/2.jpg') }}" alt="" width="100%">
+                                        </div>
+                                        <div class="cbp-caption-activeWrap">
+                                            <div class="cbp-l-caption-alignCenter">
+                                                <div class="cbp-l-caption-body">
+                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a href="doctors/member2.html" class="cbp-singlePage cbp-l-grid-team-name">Joseph
+                                        Murphy</a>
+                                    <div class="cbp-l-grid-team-position">Cardiologist</div>
+                                </li>
+                                <li class="cbp-item cardiologist">
+                                    <a href="doctors/member3.html" class="cbp-caption cbp-singlePage">
+                                        <div class="cbp-caption-defaultWrap">
+                                            <img src="{{ asset('img/team/3.jpg') }}" alt="" width="100%">
+                                        </div>
+                                        <div class="cbp-caption-activeWrap">
+                                            <div class="cbp-l-caption-alignCenter">
+                                                <div class="cbp-l-caption-body">
+                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="cbp-singlePage cbp-l-grid-team-name">Alison
+                                        Davis</a>
+                                    <div class="cbp-l-grid-team-position">Cardiologist</div>
+                                </li>
+                                <li class="cbp-item neurologist">
+                                    <a href="#" class="cbp-caption cbp-singlePage">
+                                        <div class="cbp-caption-defaultWrap">
+                                            <img src="{{ asset('img/team/4.jpg') }} alt="" width="100%">
+                                        </div>
+                                        <div class="cbp-caption-activeWrap">
+                                            <div class="cbp-l-caption-alignCenter">
+                                                <div class="cbp-l-caption-body">
+                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a href="doctors/member4.html" class="cbp-singlePage cbp-l-grid-team-name">Adam
+                                        Taylor</a>
+                                    <div class="cbp-l-grid-team-position">Neurologist</div>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <footer>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                        <div>
+                            <div class="widget">
+                                <h5>About Medicio</h5>
+                                <p>
+                                    Lorem ipsum dolor sit amet, ne nam purto nihil impetus, an facilisi accommodare sea
+                                </p>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="widget">
+                                <h5>Information</h5>
+                                <ul>
+                                    <li><a href="#">Home</a></li>
+                                    <li><a href="#">Medical treatment</a></li>
+                                    <li><a href="#">Terms & conditions</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div>
+                            <div class="widget">
+                                <h5>Medicio center</h5>
+                                <p>
+                                    Nam leo lorem, tincidunt id risus ut, ornare tincidunt naqunc sit amet.
+                                </p>
+                                <ul>
+                                    <li>
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-calendar-o fa-stack-1x fa-inverse"></i>
+                                        </span> Monday - Saturday, 8am to 10pm
+                                    </li>
+                                    <li>
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-phone fa-stack-1x fa-inverse"></i>
+                                        </span> +62 0888 904 711
+                                    </li>
+                                    <li>
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-envelope-o fa-stack-1x fa-inverse"></i>
+                                        </span> hello@medicio.com
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div>
+                            <div class="widget">
+                                <h5>Our location</h5>
+                                <p>The Suithouse V303, Kuningan City, Jakarta Indonesia 12940</p>
+
+                            </div>
+                        </div>
+                        <div>
+                            <div class="widget">
+                                <h5>Follow us</h5>
+                                <ul class="company-social">
+                                    <li class="social-facebook"><a href="#"><i class="fa fa-facebook"></i></a>
+                                    </li>
+                                    <li class="social-twitter"><a href="#"><i class="fa fa-twitter"></i></a>
+                                    </li>
+                                    <li class="social-google"><a href="#"><i class="fa fa-google-plus"></i></a>
+                                    </li>
+                                    <li class="social-vimeo"><a href="#"><i class="fa fa-vimeo-square"></i></a>
+                                    </li>
+                                    <li class="social-dribble"><a href="#"><i class="fa fa-dribbble"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sub-footer">
+                <div class="container">
+                    <div class="row">
+
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+
+    <!-- Core JavaScript Files -->
+    {{-- <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/jquery.scrollTo.js"></script>
+    <script src="js/jquery.appear.js"></script>
+    <script src="js/stellar.js"></script>
+    <script src="plugins/cubeportfolio/js/jquery.cubeportfolio.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/nivo-lightbox.min.js"></script>
+    <script src="js/custom.js"></script> --}}
+
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.easing.min.js') }}"></script>
+    <script src="{{ asset('js/wow.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.scrollTo.js') }}"></script>
+    <script src="{{ asset('js/jquery.appear.js') }}"></script>
+    <script src="{{ asset('js/stellar.js') }}"></script>
+    <script src="{{ asset('plugins/cubeportfolio/js/jquery.cubeportfolio.min.js') }}"></script>
+    <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('js/nivo-lightbox.min.js') }}"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
+
+
+
+
+
+</body>
+
+</html>

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
 use App\Models\User;
 use App\Models\Client;
+use App\Models\Doctor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,6 +15,19 @@ class ClientController extends Controller
     {
         return view('client.home');
     }
+    
+    // public function showDash()
+    // {
+    //     $countDoctors = Doctor::count();
+    //     $countVerAppointments = Appointment::where('verified',1)->count();
+    //     $countPenAppointments = Appointment::where('verified',0)->count();
+
+    //     return view('client.home',compact('countDoctors','countVerAppointments','countPenAppointments'));
+
+    
+
+
+    // }
 
     public function show()
     {
@@ -22,7 +37,13 @@ class ClientController extends Controller
 
         $logged_user = User::where('id', $user->id)->first();
 
-        return view('client.home', compact('client', 'logged_user'));
+        $countDoctors = Doctor::count();
+        $countVerAppointments = Appointment::where('verified',1)->count();
+        $countPenAppointments = Appointment::where('verified',0)->count();
+
+        return view('client.home',compact('client', 'logged_user', 'countDoctors','countVerAppointments','countPenAppointments'));
+
+        // return view('client.home', compact('client', 'logged_user',));
     }
 
     public function showDoctors()

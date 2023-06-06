@@ -871,19 +871,15 @@
                         data-target=".navbar-main-collapse">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <a class="navbar-brand" href="index.html">
+                    <a class="navbar-brand" href="{{ url('/') }}">
                         <img src="img/logo.png" alt="" width="150" height="40" />
                     </a>
                 </div>
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="#intro">Home</a></li>
-                        <!-- <li><a href="#service">Service</a></li> -->
                         <li><a href="#doctor">Doctors</a></li>
-                        <!-- <li><a href="#facilities">Facilities</a></li> -->
-                        <!-- <li><a href="#pricing">Pricing</a></li> -->
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b
                                     class="caret"></b></a>
@@ -902,8 +898,7 @@
                                                         in</a></li>
 
                                                 @if (Route::has('register'))
-                                                    <li><a href="{{ route('register') }}"
-                                                            >Register</a>
+                                                    <li><a href="{{ route('auth.doc.register') }}">Register</a>
                                                     </li>
                                                 @endif
                                             @endauth
@@ -960,24 +955,26 @@
 
                                     <div class="panel panel-skin">
                                         <div class="panel-heading">
-                                            <h3 class="panel-title"><span class="fa fa-pencil-square-o"></span> Make
-                                                an appoinment <small>(It's free!)</small></h3>
+                                            <h3 class="panel-title"><span class="fa fa-pencil-square-o"></span> Sign Up Now! <small>(It's free!)</small></h3>
                                         </div>
                                         <div class="panel-body">
-                                            <form role="form" class="lead">
+                                            <form role="form" class="lead" method="POST" action="{{ route('register') }}">
+                                                @csrf
                                                 <div class="row">
                                                     <div class="col-xs-6 col-sm-6 col-md-6">
                                                         <div class="form-group">
-                                                            <label>First Name</label>
-                                                            <input type="text" name="first_name" id="first_name"
-                                                                class="form-control input-md">
+                                                            <label>Name</label>
+                                                            <input type="text" name="name" id="name" value="{{ old('name') }}"
+                                                            required autocomplete="name" autofocus class="form-control input-md">
                                                         </div>
                                                     </div>
                                                     <div class="col-xs-6 col-sm-6 col-md-6">
                                                         <div class="form-group">
-                                                            <label>Last Name</label>
-                                                            <input type="text" name="last_name" id="last_name"
-                                                                class="form-control input-md">
+                                                            <label>Email</label>
+                                                            {{-- <input type="text" name="last_name" id="last_name" --}}
+                                                                {{-- class="form-control input-md"> --}}
+                                                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" 
+                                                                name="email" value="{{ old('email') }}" required autocomplete="email">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -985,24 +982,44 @@
                                                 <div class="row">
                                                     <div class="col-xs-6 col-sm-6 col-md-6">
                                                         <div class="form-group">
-                                                            <label>Email</label>
-                                                            <input type="email" name="email" id="email"
-                                                                class="form-control input-md">
+                                                            <label>Password</label>
+                                                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" 
+                                                            name="password" required autocomplete="new-password">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                                        <div class="form-group">
+                                                            <label> Confirm Password</label>
+                                                            <input id="password-confirm" type="password" class="form-control" 
+                                                            name="password_confirmation" required autocomplete="new-password">
                                                         </div>
                                                     </div>
                                                     <div class="col-xs-6 col-sm-6 col-md-6">
                                                         <div class="form-group">
                                                             <label>Phone number</label>
                                                             <input type="text" name="phone" id="phone"
-                                                                class="form-control input-md">
+                                                                class="form-control input-md" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Address</label>
+                                                            <input type="text" name="address" id="address"
+                                                                class="form-control input-md" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Date of Birth</label>
+                                                            <input id="dob-ad" type="date" class="form-control" name="dateAD" required>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <input type="submit" value="Submit"
+                                                <input type="submit" value="Register"
                                                     class="btn btn-skin btn-block btn-lg">
 
-                                                <p class="lead-footer">* We'll contact you by phone & email later</p>
+                                                <p class="lead-footer">* Register to Access additional features</p>
 
                                             </form>
                                         </div>
