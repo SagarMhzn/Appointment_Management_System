@@ -6,17 +6,14 @@
 
 
     <div class="w3-sidebar w3-bar-block w3-card w3-animate-left"
-        style="display:block;margin-left:0%;width:10%; background-color:#000000; text-align:center;color:white;"
-        id="mySidebar">
-        <h1> Menu</h1>
-        <a href="{{ url('/doctor/home') }}" class="w3-bar-item w3-button  w3-border-bottom "
-            >Dashboard</a>
-        <a href="{{ url('/doctor/list') }}" class="w3-bar-item w3-button  w3-border-bottom" style="background-color:rgb(235, 242, 250); color:black; ">Doctors List</a>
-        <a href="
-        {{ route('doctor.appointments-list') }}
-        " class="w3-bar-item w3-button  w3-border-bottom">Appointments</a>
-        {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Appointment Requests</a> --}}
-        <a href="#" class="w3-bar-item w3-button w3-border-bottom">Patients</a>
+        style="display:block;margin-left:0%;width:10%; background-color:#000000;; text-align:center;color:white;" id="mySidebar">
+        <h1 class="dash-menu"> Menu</h1>
+        <a href="{{ route('home') }}" class="w3-bar-item w3-button  w3-border-bottom" >Dashboard</a>
+        <a href="{{ route('superadmin.admin-doctors-list') }}" class="w3-bar-item w3-button  w3-border-bottom" >Doctors List</a>
+        <a href="{{ route('superadmin.admin-clients-list') }}" class="w3-bar-item w3-button  w3-border-bottom" style="background-color:rgb(235, 242, 250); color:black; ">Client List</a>
+        {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Appointment List</a> --}}
+        {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Review Feedback</a>
+        <a href="#" class="w3-bar-item w3-button w3-border-bottom"> Verification Requests</a> --}}
 
     </div>
 
@@ -25,7 +22,7 @@
         <div class="w3-black" style="display:flex; flex-direction:row;">
             <button id="openNav" class="w3-button w3-black w3-xlarge " onclick="handleClick()">&#9776;</button>
             <div class="w3-container">
-                <h1>Doctor List</h1>
+                <h1>Clients List</h1>
             </div>
         </div>
         <div class="doc-table"
@@ -40,29 +37,27 @@
                         <th scope="col">Address</th>
                         <th scope="col">Phone</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Action</th>
+                        {{-- <th scope="col">Action</th> --}}
                         
                     </tr>
                 </thead>
                 <tbody>
 
-                    @foreach ($doctor_details as $key => $data)
+                    @foreach ($client_details as $key => $data)
+                    {{-- {{ dd($data); }} --}}
                         <tr>
                             <th scope="row">{{ $key + 1 }}</th>
                             <td>{{ $data->name }}</td>
-                            <td>{{ $data->doctors->address }}</td>
-                            <td>{{ $data->doctors->phone }}</td>
+                            <td>{{ $data->clients->address }}</td>
+                            <td>{{ $data->clients->phone }}</td>
                             <td>{{ $data->email }}</td>
-                            <td>
+                            {{-- <td>
                                 <div class="doc_actions " style="display: inline-flex">
                                 <div class="doc_view">
                                     <button class="button">view</button>
                                 </div>
-                                {{-- <div class="doc_book">
-                                    <button>book</button>
-                                </div> --}}
                             </div>
-                            </td>
+                            </td> --}}
                         </tr>
                         @endforeach
 

@@ -10,10 +10,10 @@
         <h1 class="dash-menu"> Menu</h1>
         <a href="{{ route('home') }}" class="w3-bar-item w3-button  w3-border-bottom" >Dashboard</a>
         <a href="{{ route('superadmin.admin-doctors-list') }}" class="w3-bar-item w3-button  w3-border-bottom" style="background-color:rgb(235, 242, 250); color:black; ">Doctors List</a>
-        {{-- <a href="#" class="w3-bar-item w3-button  w3-border-bottom">Client List</a> --}}
-        <a href="#" class="w3-bar-item w3-button w3-border-bottom">Appointment List</a>
-        <a href="#" class="w3-bar-item w3-button w3-border-bottom">Review Feedback</a>
-        <a href="#" class="w3-bar-item w3-button w3-border-bottom"> Verification Requests</a>
+        <a href="{{ route('superadmin.admin-clients-list') }}" class="w3-bar-item w3-button  w3-border-bottom">Client List</a>
+        {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Appointment List</a> --}}
+        {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Review Feedback</a>
+        <a href="#" class="w3-bar-item w3-button w3-border-bottom"> Verification Requests</a> --}}
 
     </div>
 
@@ -37,7 +37,7 @@
                         <th scope="col">Address</th>
                         <th scope="col">Phone</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">Verify</th>
                         
                     </tr>
                 </thead>
@@ -51,11 +51,11 @@
                             <td>{{ $data->doctors->phone }}</td>
                             <td>{{ $data->email }}</td>
                             <td>
-                                <div class="doc_actions " style="display: inline-flex">
-                                <div class="doc_view">
-                                    <button class="button">view</button>
-                                </div>
-                            </div>
+                                
+                                    <a href="{{ route('superadmin.toggleVerified', ['id' => $data->id]) }}" class="badge {{ $data->isverified == 0 ? 'text-danger' : 'text-success' }}">
+                                        {{ $data->isverified == 0 ? 'Not Verified!' : 'Verified!' }}
+                                    </a>
+                                
                             </td>
                         </tr>
                         @endforeach

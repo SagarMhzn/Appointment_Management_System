@@ -72,4 +72,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(SuperAdminController::class, 'admin_id','id');
     }
+
+    public function userAppt()
+    {
+        return $this->hasMany(Appointment::class, 'doctor_id', 'id');
+    }
 }

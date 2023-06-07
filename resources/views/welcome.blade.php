@@ -871,15 +871,15 @@
                         data-target=".navbar-main-collapse">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand" href="{{Auth::check() ? url('/checkrole') : url('/')  }}">
                         <img src="img/logo.png" alt="" width="150" height="40" />
                     </a>
                 </div>
 
                 <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#intro">Home</a></li>
-                        <li><a href="#doctor">Doctors</a></li>
+                        <li class="active"><a href="{{ route('home') }}">Home</a></li>
+                        <li><a href="{{ route('client.client-doctors-list') }}">Doctors</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b
                                     class="caret"></b></a>
@@ -1107,7 +1107,7 @@
 
 
 
-        <!-- Section: team -->
+        {{-- <!-- Section: team -->
         <section id="doctor" class="home-section bg-gray paddingbot-60">
             <div class="container marginbot-50">
                 <div class="row">
@@ -1215,7 +1215,7 @@
                 </div>
             </div>
 
-        </section>
+        </section> --}}
 
         <footer>
 

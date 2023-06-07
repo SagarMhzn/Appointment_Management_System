@@ -29,6 +29,7 @@
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+    
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
@@ -898,12 +899,12 @@
 
                 <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="{{ route('client.home') }}">Home</a></li>
+                        <li ><a href="{{ route('client.home') }}">Home</a></li>
                         <li><a href="{{ route('client.client-doctors-list') }}">Doctors</a></li>
-                        <li><a href="{{ route('client.appointments') }}">Appointments</a></li>
+                        <li class="active"><a href="{{ route('client.appointments') }}">Appointments</a></li>
 
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ $logged_user->name }}
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ auth()->user()->name }}
                                 <b class="caret"></b></a>
                             <ul class="dropdown-menu">
 
@@ -954,42 +955,89 @@
             <div class="intro-content">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <div>
-                                <h2 class="h-ultra">Welcome to Medicio, {{ $logged_user->name }}</h2>
-                            </div>
-                            <div>
-                                <h4 class="h-light">We are happy to have you here!
-                                    <br />
-
-                                    {{-- <span class="color">best quality healthcare</span> for
-                                    you</h4> --}}
-                            </div>
-
-
-                        </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-20">
                             <div class="form-wrapper">
                                 <div>
 
                                     <div class="panel panel-skin">
                                         <div class="panel-heading">
                                             <h3 class="panel-title"><span class="fa fa-pencil-square-o"></span>
-                                                Dashboard</h3>
+                                                Your appointments:</h3>
                                         </div>
+
+                                        <table class="table">
+                                            <thead>
+                                              <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Doctor's Name</th>
+                                                <th scope="col">Doctor's Department</th>
+                                                <th scope="col">Appointment Time</th>
+                                                <th scope="col">Appointment Date</th>
+                                                <th scope="col">Description</th>
+                                                <th scope="col">Verified</th>
+                                                <th scope="col">Status</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                                			
+
+                                                @foreach ($appointments as $keys => $appts)
+                                                <tr>
+                                                  <th scope="row">{{ $keys + 1 }}</th>
+                                                  <td>{{ $appts->userAppointmentsDoctor->name }}</td>
+                                                  <td>
+                                                    {{-- {{ $appts->userAppointmentsDoctor->field_of_expertize }} --}}
+
+                                                    @if($appts->userAppointmentsDoctor->field_of_expertize == '')
+                                                        N/A
+                                                    @else
+                                                    {{ $appts->userAppointmentsDoctor->field_of_expertize }}
+                                                    @endif
+                                                </td>
+
+                                                  <td>{{ $appts->appointment_start_time }} - {{ $appts->appointment_end_time }}</td>
+                                                  <td>{{ $appts->appointment_date }}</td>
+                                                  <td>{{ $appts->description }}</td>
+                                                  <td>
+                                                    {{-- {{ $appts->verified }} --}}
+
+                                                    @if($appts->verified ==0)
+                                                    <span class="badge " style="background-color: red">Not Verified!</span>
+                                                    @else
+                                                    <span class="badge " style="background-color: green">Verified!</span> 
+                                                    @endif
+                                                </td>
+                                                  <td>
+                                                    {{-- {{ $appts->status }} --}}
+                                                    @if($appts->status == 0)
+                                                    <span class="badge " style="background-color: red">Pending!</span> 
+                                                    @else
+                                                    <span class="badge " style="background-color: green">Completed!</span> 
+                                                    @endif
+                                                </td>
+                                                </tr>
+                                                @endforeach
+                                              
+                                            </tbody>
+                                          </table>
+
+
+
+
+
                                         <a href="#doctor">
                                             <div class="panel-body">
-                                                Total no. of verified Doctors : {{ $countDoctors }}
+                                                {{-- Total no. of verified Doctors : {{ $countDoctors }} --}}
                                             </div>
                                         </a>
-                                        
+                                        <a href="#appointment">
                                             <div class="panel-body">
-                                                Total no. of Appointments : {{ $countVerAppointments }}
+                                                {{-- Total no. of Appointments : {{ $countVerAppointments }} --}}
                                             </div>
-                                        
-                                        <div class="panel-body">
-                                            Total no. of Pending Appointments : {{ $countPenAppointments }}
-                                        </div>
+                                        </a>
+                                        {{-- <div class="panel-body">
+                                            Total no. of Pending Appointments : {{ $countAppointments }}
+                                        </div> --}}
                                     </div>
 
                                 </div>
@@ -1020,7 +1068,7 @@
                                 <div class="col-md-8">
                                     <div>
                                         <div class="cta-text">
-                                            <h3>Book an Appointment now!</h3>
+                                            <h3>Book another Appointment?</h3>
                                             <p>Lorem ipsum dolor sit amet consectetur adipiscing elit uisque interdum
                                                 ante eget faucibus. </p>
                                         </div>

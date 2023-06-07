@@ -13,8 +13,10 @@
         <h1> Menu</h1>
         <a href="{{ url('/doctor/home') }}" class="w3-bar-item w3-button  w3-border-bottom " style="background-color:rgb(235, 242, 250); color:black; ">Dashboard</a>
         <a href="{{ url('/doctor/list') }}" class="w3-bar-item w3-button  w3-border-bottom">Doctors List</a>
-        <a href="#" class="w3-bar-item w3-button  w3-border-bottom">Appointments</a>
-        <a href="#" class="w3-bar-item w3-button w3-border-bottom">Appointment Requests</a>
+        <a href="
+        {{ route('doctor.appointments-list') }}
+        " class="w3-bar-item w3-button  w3-border-bottom">Appointments</a>
+        {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Appointment Requests</a> --}}
         <a href="#" class="w3-bar-item w3-button w3-border-bottom">Patients</a>
 
     </div>

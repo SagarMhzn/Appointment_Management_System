@@ -39,1239 +39,1239 @@
         return !img.complete;
     };
 
-    var popup = {
+    // var popup = {
 
-        /**
-         * init function for popup
-         * @param cubeportfolio = cubeportfolio instance
-         * @param type =  'lightbox' or 'singlePage'
-         */
-        init: function(cubeportfolio, type) {
+    //     /**
+    //      * init function for popup
+    //      * @param cubeportfolio = cubeportfolio instance
+    //      * @param type =  'lightbox' or 'singlePage'
+    //      */
+    //     init: function(cubeportfolio, type) {
 
-            var t = this,
-                currentBlock;
+    //         var t = this,
+    //             currentBlock;
 
-            // remember cubeportfolio instance
-            t.cubeportfolio = cubeportfolio;
+    //         // remember cubeportfolio instance
+    //         t.cubeportfolio = cubeportfolio;
 
-            // remember if this instance is for lightbox or for singlePage
-            t.type = type;
+    //         // remember if this instance is for lightbox or for singlePage
+    //         t.type = type;
 
-            // remember if the popup is open or not
-            t.isOpen = false;
+    //         // remember if the popup is open or not
+    //         t.isOpen = false;
 
-            t.options = t.cubeportfolio.options;
+    //         t.options = t.cubeportfolio.options;
 
-            if (type === 'singlePageInline') {
+    //         if (type === 'singlePageInline') {
 
-                t.matrice = [-1, -1];
+    //             t.matrice = [-1, -1];
 
-                t.height = 0;
+    //             t.height = 0;
 
-                // create markup, css and add events for SinglePageInline
-                t._createMarkupSinglePageInline();
-                return;
-            }
+    //             // create markup, css and add events for SinglePageInline
+    //             t._createMarkupSinglePageInline();
+    //             return;
+    //         }
 
-            // create markup, css and add events for lightbox and singlePage
-            t._createMarkup();
+    //         // create markup, css and add events for lightbox and singlePage
+    //         t._createMarkup();
 
-            if (t.options.singlePageDeeplinking && type === 'singlePage') {
-                t.url = location.href;
+    //         if (t.options.singlePageDeeplinking && type === 'singlePage') {
+    //             t.url = location.href;
 
-                if (t.url.slice(-1) == '#') {
-                    t.url = t.url.slice(0, -1);
-                }
+    //             if (t.url.slice(-1) == '#') {
+    //                 t.url = t.url.slice(0, -1);
+    //             }
 
-                currentBlock = t.cubeportfolio.blocksAvailable.find(t.options.singlePageDelegate).filter(function(index) {
-                    // we split the url in half and store the second entry. If this entry is equal with current element return true
-                    return (t.url.split('#cbp=')[1] === this.getAttribute('href'));
-                })[0];
+    //             currentBlock = t.cubeportfolio.blocksAvailable.find(t.options.singlePageDelegate).filter(function(index) {
+    //                 // we split the url in half and store the second entry. If this entry is equal with current element return true
+    //                 return (t.url.split('#cbp=')[1] === this.getAttribute('href'));
+    //             })[0];
 
 
-                if (currentBlock) {
+    //             if (currentBlock) {
 
-                    t.url = t.url.replace(/#cbp=(.+)/ig, '');
-
-                    t.openSinglePage(t.cubeportfolio.blocksAvailable, currentBlock);
-                }
+    //                 t.url = t.url.replace(/#cbp=(.+)/ig, '');
+
+    //                 t.openSinglePage(t.cubeportfolio.blocksAvailable, currentBlock);
+    //             }
 
-            }
-
-        },
+    //         }
+
+    //     },
 
-        /**
-         * Create markup, css and add events
-         */
-        _createMarkup: function() {
+    //     /**
+    //      * Create markup, css and add events
+    //      */
+    //     _createMarkup: function() {
 
-            var t = this;
+    //         var t = this;
 
-            // wrap element
-            t.wrap = $('<div/>', {
-                'class': 'cbp-popup-wrap cbp-popup-' + t.type,
-                'data-action': (t.type === 'lightbox') ? 'close' : ''
-            }).on('click' + eventNamespace, function(e) {
-                if (t.stopEvents) {
-                    return;
-                }
+    //         // wrap element
+    //         t.wrap = $('<div/>', {
+    //             'class': 'cbp-popup-wrap cbp-popup-' + t.type,
+    //             'data-action': (t.type === 'lightbox') ? 'close' : ''
+    //         }).on('click' + eventNamespace, function(e) {
+    //             if (t.stopEvents) {
+    //                 return;
+    //             }
 
-                var action = $(e.target).attr('data-action');
+    //             var action = $(e.target).attr('data-action');
 
-                if (t[action]) {
-                    t[action]();
-                    e.preventDefault();
-                }
-            });
+    //             if (t[action]) {
+    //                 t[action]();
+    //                 e.preventDefault();
+    //             }
+    //         });
 
-            // content element
-            t.content = $('<div/>', {
-                'class': 'cbp-popup-content',
-            }).appendTo(t.wrap);
+    //         // content element
+    //         t.content = $('<div/>', {
+    //             'class': 'cbp-popup-content',
+    //         }).appendTo(t.wrap);
 
-            // append loading div
-            $('<div/>', {
-                'class': 'cbp-popup-loadingBox',
-            }).appendTo(t.wrap);
+    //         // append loading div
+    //         $('<div/>', {
+    //             'class': 'cbp-popup-loadingBox',
+    //         }).appendTo(t.wrap);
 
-            // add background only for ie8
-            if (t.cubeportfolio.browser === 'ie8') {
-                t.bg = $('<div/>', {
-                    'class': 'cbp-popup-ie8bg',
-                    'data-action': (t.type === 'lightbox') ? 'close' : ''
-                }).appendTo(t.wrap);
-            }
-
-            // create navigation wrap
-            t.navigationWrap = $('<div/>', {
-                'class': 'cbp-popup-navigation-wrap'
-            }).appendTo(t.wrap);
-
-            // create navigation block
-            t.navigation = $('<div/>', {
-                'class': 'cbp-popup-navigation'
-            }).appendTo(t.navigationWrap);
-
-            // close button
-            t.closeButton = $('<button/>', {
-                'class': 'cbp-popup-close',
-                'title': 'Close (Esc arrow key)',
-                'type': 'button',
-                'data-action': 'close',
-            }).appendTo(t.navigation);
-
-            // next button
-            t.nextButton = $('<button/>', {
-                'class': 'cbp-popup-next',
-                'title': 'Next (Right arrow key)',
-                'type': 'button',
-                'data-action': 'next'
-            }).appendTo(t.navigation);
-
-
-            // prev button
-            t.prevButton = $('<button/>', {
-                'class': 'cbp-popup-prev',
-                'title': 'Previous (Left arrow key)',
-                'type': 'button',
-                'data-action': 'prev',
-            }).appendTo(t.navigation);
-
-
-            if (t.type === 'singlePage') {
-
-                if (t.options.singlePageShowCounter) {
-                    // counter for singlePage
-                    t.counter = $('<div/>', {
-                        'class': 'cbp-popup-singlePage-counter'
-                    }).appendTo(t.navigation);
-                }
+    //         // add background only for ie8
+    //         if (t.cubeportfolio.browser === 'ie8') {
+    //             t.bg = $('<div/>', {
+    //                 'class': 'cbp-popup-ie8bg',
+    //                 'data-action': (t.type === 'lightbox') ? 'close' : ''
+    //             }).appendTo(t.wrap);
+    //         }
+
+    //         // create navigation wrap
+    //         t.navigationWrap = $('<div/>', {
+    //             'class': 'cbp-popup-navigation-wrap'
+    //         }).appendTo(t.wrap);
+
+    //         // create navigation block
+    //         t.navigation = $('<div/>', {
+    //             'class': 'cbp-popup-navigation'
+    //         }).appendTo(t.navigationWrap);
+
+    //         // close button
+    //         t.closeButton = $('<button/>', {
+    //             'class': 'cbp-popup-close',
+    //             'title': 'Close (Esc arrow key)',
+    //             'type': 'button',
+    //             'data-action': 'close',
+    //         }).appendTo(t.navigation);
+
+    //         // next button
+    //         t.nextButton = $('<button/>', {
+    //             'class': 'cbp-popup-next',
+    //             'title': 'Next (Right arrow key)',
+    //             'type': 'button',
+    //             'data-action': 'next'
+    //         }).appendTo(t.navigation);
+
+
+    //         // prev button
+    //         t.prevButton = $('<button/>', {
+    //             'class': 'cbp-popup-prev',
+    //             'title': 'Previous (Left arrow key)',
+    //             'type': 'button',
+    //             'data-action': 'prev',
+    //         }).appendTo(t.navigation);
+
+
+    //         if (t.type === 'singlePage') {
+
+    //             if (t.options.singlePageShowCounter) {
+    //                 // counter for singlePage
+    //                 t.counter = $('<div/>', {
+    //                     'class': 'cbp-popup-singlePage-counter'
+    //                 }).appendTo(t.navigation);
+    //             }
 
-                t.content.on('click' + eventNamespace, t.options.singlePageDelegate, function(e) {
-                    e.preventDefault();
-                    var i,
-                        len = t.dataArray.length,
-                        href = this.getAttribute('href');
+    //             t.content.on('click' + eventNamespace, t.options.singlePageDelegate, function(e) {
+    //                 e.preventDefault();
+    //                 var i,
+    //                     len = t.dataArray.length,
+    //                     href = this.getAttribute('href');
 
-                    for (i = 0; i < len; i++) {
-                        if (t.dataArray[i].url == href) {
-                            break;
-                        }
-                    }
+    //                 for (i = 0; i < len; i++) {
+    //                     if (t.dataArray[i].url == href) {
+    //                         break;
+    //                     }
+    //                 }
 
-                    t.singlePageJumpTo(i - t.current);
+    //                 t.singlePageJumpTo(i - t.current);
 
-                });
+    //             });
 
-            }
+    //         }
 
-            $(document).on('keydown' + eventNamespace, function(e) {
+    //         $(document).on('keydown' + eventNamespace, function(e) {
 
-                // if is not open => return
-                if (!t.isOpen) return;
+    //             // if is not open => return
+    //             if (!t.isOpen) return;
 
-                // if all events are stopped => return
-                if (t.stopEvents) return;
+    //             // if all events are stopped => return
+    //             if (t.stopEvents) return;
 
-                if (e.keyCode === 37) { // prev key
-                    t.prev();
-                } else if (e.keyCode === 39) { // next key
-                    t.next();
-                } else if (e.keyCode === 27) { //esc key
-                    t.close();
-                }
-            });
+    //             if (e.keyCode === 37) { // prev key
+    //                 t.prev();
+    //             } else if (e.keyCode === 39) { // next key
+    //                 t.next();
+    //             } else if (e.keyCode === 27) { //esc key
+    //                 t.close();
+    //             }
+    //         });
 
-        },
+    //     },
 
-        _createMarkupSinglePageInline: function() {
-            var t = this;
+    //     _createMarkupSinglePageInline: function() {
+    //         var t = this;
 
-            // wrap element
-            t.wrap = $('<div/>', {
-                'class': 'cbp-popup-singlePageInline'
-            }).on('click' + eventNamespace, function(e) {
-                if (t.stopEvents) {
-                    return;
-                }
+    //         // wrap element
+    //         t.wrap = $('<div/>', {
+    //             'class': 'cbp-popup-singlePageInline'
+    //         }).on('click' + eventNamespace, function(e) {
+    //             if (t.stopEvents) {
+    //                 return;
+    //             }
 
-                var action = $(e.target).attr('data-action');
+    //             var action = $(e.target).attr('data-action');
 
-                if (action) {
-                    t[action]();
-                    e.preventDefault();
-                }
-            });
+    //             if (action) {
+    //                 t[action]();
+    //                 e.preventDefault();
+    //             }
+    //         });
 
-            // content element
-            t.content = $('<div/>', {
-                'class': 'cbp-popup-content',
-            }).appendTo(t.wrap);
+    //         // content element
+    //         t.content = $('<div/>', {
+    //             'class': 'cbp-popup-content',
+    //         }).appendTo(t.wrap);
 
-            // append loading div
-            $('<div/>', {
-                'class': 'cbp-popup-loadingBox',
-            }).appendTo(t.wrap);
+    //         // append loading div
+    //         $('<div/>', {
+    //             'class': 'cbp-popup-loadingBox',
+    //         }).appendTo(t.wrap);
 
-            // create navigation block
-            t.navigation = $('<div/>', {
-                'class': 'cbp-popup-navigation'
-            }).appendTo(t.wrap);
+    //         // create navigation block
+    //         t.navigation = $('<div/>', {
+    //             'class': 'cbp-popup-navigation'
+    //         }).appendTo(t.wrap);
 
-            // close button
-            t.closeButton = $('<button/>', {
-                'class': 'cbp-popup-close',
-                'title': 'Close (Esc arrow key)',
-                'type': 'button',
-                'data-action': 'close',
-            }).appendTo(t.navigation);
+    //         // close button
+    //         t.closeButton = $('<button/>', {
+    //             'class': 'cbp-popup-close',
+    //             'title': 'Close (Esc arrow key)',
+    //             'type': 'button',
+    //             'data-action': 'close',
+    //         }).appendTo(t.navigation);
 
-        },
+    //     },
 
-        destroy: function() {
+    //     destroy: function() {
 
-            var t = this;
+    //         var t = this;
 
-            // remove off key down
-            $(document).off('keydown' + eventNamespace);
+    //         // remove off key down
+    //         $(document).off('keydown' + eventNamespace);
 
-            t.cubeportfolio.$obj.off('click' + eventNamespace, t.options.lightboxDelegate);
+    //         t.cubeportfolio.$obj.off('click' + eventNamespace, t.options.lightboxDelegate);
 
-            t.cubeportfolio.$obj.off('click' + eventNamespace, t.options.singlePageDelegate);
-            t.content.off('click' + eventNamespace, t.options.singlePageDelegate);
+    //         t.cubeportfolio.$obj.off('click' + eventNamespace, t.options.singlePageDelegate);
+    //         t.content.off('click' + eventNamespace, t.options.singlePageDelegate);
 
-            t.cubeportfolio.$obj.off('click' + eventNamespace, t.options.singlePageInlineDelegate);
+    //         t.cubeportfolio.$obj.off('click' + eventNamespace, t.options.singlePageInlineDelegate);
 
-            t.cubeportfolio.$obj.removeClass('cbp-popup-isOpening');
+    //         t.cubeportfolio.$obj.removeClass('cbp-popup-isOpening');
 
-            t.cubeportfolio.blocks.removeClass('cbp-singlePageInline-active');
+    //         t.cubeportfolio.blocks.removeClass('cbp-singlePageInline-active');
 
-            t.wrap.remove();
-        },
+    //         t.wrap.remove();
+    //     },
 
-        openLightbox: function(blocks, currentBlock) {
+    //     openLightbox: function(blocks, currentBlock) {
 
-            var t = this,
-                i = 0,
-                currentBlockHref, tempHref = [],
-                element;
+    //         var t = this,
+    //             i = 0,
+    //             currentBlockHref, tempHref = [],
+    //             element;
 
-            if (t.isOpen) return;
+    //         if (t.isOpen) return;
 
-            // check singlePageInline and close it
-            if (t.cubeportfolio.singlePageInline && t.cubeportfolio.singlePageInline.isOpen) {
-                t.cubeportfolio.singlePageInline.close();
-            }
+    //         // check singlePageInline and close it
+    //         if (t.cubeportfolio.singlePageInline && t.cubeportfolio.singlePageInline.isOpen) {
+    //             t.cubeportfolio.singlePageInline.close();
+    //         }
 
-            // remember that the lightbox is open now
-            t.isOpen = true;
+    //         // remember that the lightbox is open now
+    //         t.isOpen = true;
 
-            // remember to stop all events after the lightbox has been shown
-            t.stopEvents = false;
+    //         // remember to stop all events after the lightbox has been shown
+    //         t.stopEvents = false;
 
-            // array with elements
-            t.dataArray = [];
+    //         // array with elements
+    //         t.dataArray = [];
 
-            // reset current
-            t.current = null;
+    //         // reset current
+    //         t.current = null;
 
-            currentBlockHref = currentBlock.getAttribute('href');
-            if (currentBlockHref === null) {
-                throw new Error('HEI! Your clicked element doesn\'t have a href attribute.');
-            }
+    //         currentBlockHref = currentBlock.getAttribute('href');
+    //         if (currentBlockHref === null) {
+    //             throw new Error('HEI! Your clicked element doesn\'t have a href attribute.');
+    //         }
 
-            $.each(blocks.find(t.options.lightboxDelegate), function(index, item) {
-                var href = item.getAttribute('href'),
-                    src = href, // default if element is image
-                    type = 'isImage'; // default if element is image
+    //         $.each(blocks.find(t.options.lightboxDelegate), function(index, item) {
+    //             var href = item.getAttribute('href'),
+    //                 src = href, // default if element is image
+    //                 type = 'isImage'; // default if element is image
 
-                if ($.inArray(href, tempHref) === -1) {
+    //             if ($.inArray(href, tempHref) === -1) {
 
-                    if (currentBlockHref == href) {
-                        t.current = i;
-                    } else if (!t.options.lightboxGallery) {
-                        return;
-                    }
+    //                 if (currentBlockHref == href) {
+    //                     t.current = i;
+    //                 } else if (!t.options.lightboxGallery) {
+    //                     return;
+    //                 }
 
-                    if (/youtube/i.test(href)) {
+    //                 if (/youtube/i.test(href)) {
 
-                        // create new href
-                        src = '//www.youtube.com/embed/' + href.substring(href.lastIndexOf('v=') + 2) + '?autoplay=1';
+    //                     // create new href
+    //                     src = '//www.youtube.com/embed/' + href.substring(href.lastIndexOf('v=') + 2) + '?autoplay=1';
 
-                        type = 'isYoutube';
+    //                     type = 'isYoutube';
 
-                    } else if (/vimeo/i.test(href)) {
+    //                 } else if (/vimeo/i.test(href)) {
 
-                        // create new href
-                        src = '//player.vimeo.com/video/' + href.substring(href.lastIndexOf('/') + 1) + '?autoplay=1';
+    //                     // create new href
+    //                     src = '//player.vimeo.com/video/' + href.substring(href.lastIndexOf('/') + 1) + '?autoplay=1';
 
-                        type = 'isVimeo';
+    //                     type = 'isVimeo';
 
-                    } else if (/ted\.com/i.test(href)) {
+    //                 } else if (/ted\.com/i.test(href)) {
 
-                        // create new href
-                        src = 'http://embed.ted.com/talks/' + href.substring(href.lastIndexOf('/') + 1) + '.html';
+    //                     // create new href
+    //                     src = 'http://embed.ted.com/talks/' + href.substring(href.lastIndexOf('/') + 1) + '.html';
 
-                        type = 'isTed';
+    //                     type = 'isTed';
 
-                    } else if (/(\.mp4)|(\.ogg)|(\.ogv)|(\.webm)/i.test(href)) {
+    //                 } else if (/(\.mp4)|(\.ogg)|(\.ogv)|(\.webm)/i.test(href)) {
 
-                        if ( href.indexOf('|') !== -1 ) {
-                            // create new href
-                            src = href.split('|');
-                        } else {
-                            // create new href
-                            src = href.split('%7C');
-                        }
+    //                     if ( href.indexOf('|') !== -1 ) {
+    //                         // create new href
+    //                         src = href.split('|');
+    //                     } else {
+    //                         // create new href
+    //                         src = href.split('%7C');
+    //                     }
 
-                        type = 'isSelfHosted';
+    //                     type = 'isSelfHosted';
 
-                    }
+    //                 }
 
-                    t.dataArray.push({
-                        src: src,
-                        title: item.getAttribute(t.options.lightboxTitleSrc),
-                        type: type
-                    });
+    //                 t.dataArray.push({
+    //                     src: src,
+    //                     title: item.getAttribute(t.options.lightboxTitleSrc),
+    //                     type: type
+    //                 });
 
-                    i++;
-                }
+    //                 i++;
+    //             }
 
-                tempHref.push(href);
-            });
+    //             tempHref.push(href);
+    //         });
 
 
-            // total numbers of elements
-            t.counterTotal = t.dataArray.length;
+    //         // total numbers of elements
+    //         t.counterTotal = t.dataArray.length;
 
-            if (t.counterTotal === 1) {
-                t.nextButton.hide();
-                t.prevButton.hide();
-                t.dataActionImg = '';
-            } else {
-                t.nextButton.show();
-                t.prevButton.show();
-                t.dataActionImg = 'data-action="next"';
-            }
+    //         if (t.counterTotal === 1) {
+    //             t.nextButton.hide();
+    //             t.prevButton.hide();
+    //             t.dataActionImg = '';
+    //         } else {
+    //             t.nextButton.show();
+    //             t.prevButton.show();
+    //             t.dataActionImg = 'data-action="next"';
+    //         }
 
-            // append to body
-            t.wrap.appendTo(document.body);
+    //         // append to body
+    //         t.wrap.appendTo(document.body);
 
-            t.scrollTop = $(window).scrollTop();
+    //         t.scrollTop = $(window).scrollTop();
 
-            $('html').css({
-                overflow: 'hidden',
-                paddingRight: window.innerWidth - $(document).width()
-            });
+    //         $('html').css({
+    //             overflow: 'hidden',
+    //             paddingRight: window.innerWidth - $(document).width()
+    //         });
 
-            // show the wrapper (lightbox box)
-            t.wrap.show();
+    //         // show the wrapper (lightbox box)
+    //         t.wrap.show();
 
-            // get the current element
-            element = t.dataArray[t.current];
+    //         // get the current element
+    //         element = t.dataArray[t.current];
 
-            // call function if current element is image or video (iframe)
-            t[element.type](element);
+    //         // call function if current element is image or video (iframe)
+    //         t[element.type](element);
 
-        },
+    //     },
 
-        openSinglePage: function(blocks, currentBlock) {
+    //     openSinglePage: function(blocks, currentBlock) {
 
-            var t = this,
-                i = 0,
-                currentBlockHref, tempHref = [];
+    //         var t = this,
+    //             i = 0,
+    //             currentBlockHref, tempHref = [];
 
-            if (t.isOpen) return;
+    //         if (t.isOpen) return;
 
-            // check singlePageInline and close it
-            if (t.cubeportfolio.singlePageInline && t.cubeportfolio.singlePageInline.isOpen) {
-                t.cubeportfolio.singlePageInline.close();
-            }
+    //         // check singlePageInline and close it
+    //         if (t.cubeportfolio.singlePageInline && t.cubeportfolio.singlePageInline.isOpen) {
+    //             t.cubeportfolio.singlePageInline.close();
+    //         }
 
-            // remember that the lightbox is open now
-            t.isOpen = true;
+    //         // remember that the lightbox is open now
+    //         t.isOpen = true;
 
-            // remember to stop all events after the popup has been showing
-            t.stopEvents = false;
+    //         // remember to stop all events after the popup has been showing
+    //         t.stopEvents = false;
 
-            // array with elements
-            t.dataArray = [];
+    //         // array with elements
+    //         t.dataArray = [];
 
-            // reset current
-            t.current = null;
+    //         // reset current
+    //         t.current = null;
 
-            currentBlockHref = currentBlock.getAttribute('href');
-            if (currentBlockHref === null) {
-                throw new Error('HEI! Your clicked element doesn\'t have a href attribute.');
-            }
+    //         currentBlockHref = currentBlock.getAttribute('href');
+    //         if (currentBlockHref === null) {
+    //             throw new Error('HEI! Your clicked element doesn\'t have a href attribute.');
+    //         }
 
 
-            $.each(blocks.find(t.options.singlePageDelegate), function(index, item) {
-                var href = item.getAttribute('href');
+    //         $.each(blocks.find(t.options.singlePageDelegate), function(index, item) {
+    //             var href = item.getAttribute('href');
 
-                if ($.inArray(href, tempHref) === -1) {
+    //             if ($.inArray(href, tempHref) === -1) {
 
-                    if (currentBlockHref == href) {
-                        t.current = i;
-                    }
+    //                 if (currentBlockHref == href) {
+    //                     t.current = i;
+    //                 }
 
-                    t.dataArray.push({
-                        url: href,
-                        element: item
-                    });
+    //                 t.dataArray.push({
+    //                     url: href,
+    //                     element: item
+    //                 });
 
-                    i++;
-                }
+    //                 i++;
+    //             }
 
-                tempHref.push(href);
-            });
+    //             tempHref.push(href);
+    //         });
 
-            // total numbers of elements
-            t.counterTotal = t.dataArray.length;
+    //         // total numbers of elements
+    //         t.counterTotal = t.dataArray.length;
 
-            // append to body
-            t.wrap.appendTo(document.body);
+    //         // append to body
+    //         t.wrap.appendTo(document.body);
 
-            t.scrollTop = $(window).scrollTop();
+    //         t.scrollTop = $(window).scrollTop();
 
-            $('html').css({
-                overflow: 'hidden',
-                paddingRight: window.innerWidth - $(document).width()
-            });
+    //         $('html').css({
+    //             overflow: 'hidden',
+    //             paddingRight: window.innerWidth - $(document).width()
+    //         });
 
-            // go to top of the page (reset scroll)
-            t.wrap.scrollTop(0);
+    //         // go to top of the page (reset scroll)
+    //         t.wrap.scrollTop(0);
 
-            // register callback function
-            if ($.isFunction(t.options.singlePageCallback)) {
-                t.options.singlePageCallback.call(t, t.dataArray[t.current].url, t.dataArray[t.current].element);
-            }
+    //         // register callback function
+    //         if ($.isFunction(t.options.singlePageCallback)) {
+    //             t.options.singlePageCallback.call(t, t.dataArray[t.current].url, t.dataArray[t.current].element);
+    //         }
 
-            // show the wrapper
-            t.wrap.show();
+    //         // show the wrapper
+    //         t.wrap.show();
 
-            t.wrap.one(t.cubeportfolio.transitionEnd, function() {
-                var width;
+    //         t.wrap.one(t.cubeportfolio.transitionEnd, function() {
+    //             var width;
 
 
 
-                // make the navigation sticky
-                if (t.options.singlePageStickyNavigation) {
+    //             // make the navigation sticky
+    //             if (t.options.singlePageStickyNavigation) {
 
-                    t.wrap.addClass('cbp-popup-singlePage-sticky');
+    //                 t.wrap.addClass('cbp-popup-singlePage-sticky');
 
-                    width = t.wrap[0].clientWidth;
-                    t.navigationWrap.width(width);
-                    t.navigation.width(width);
-                }
+    //                 width = t.wrap[0].clientWidth;
+    //                 t.navigationWrap.width(width);
+    //                 t.navigation.width(width);
+    //             }
 
-            });
+    //         });
 
-            if (t.cubeportfolio.browser === 'ie8' || t.cubeportfolio.browser === 'ie9') {
+    //         if (t.cubeportfolio.browser === 'ie8' || t.cubeportfolio.browser === 'ie9') {
 
-                setTimeout(function() {
-                    t.wrap.addClass('cbp-popup-singlePage-sticky');
-                }, 1000);
+    //             setTimeout(function() {
+    //                 t.wrap.addClass('cbp-popup-singlePage-sticky');
+    //             }, 1000);
 
-                // make the navigation sticky
-                if (t.options.singlePageStickyNavigation) {
-                    var width = t.wrap[0].clientWidth;
+    //             // make the navigation sticky
+    //             if (t.options.singlePageStickyNavigation) {
+    //                 var width = t.wrap[0].clientWidth;
 
-                    t.navigationWrap.width(width);
-                    t.navigation.width(width);
+    //                 t.navigationWrap.width(width);
+    //                 t.navigation.width(width);
 
-                }
-            }
+    //             }
+    //         }
 
-            setTimeout(function() {
-                t.wrap.addClass('cbp-popup-singlePage-open');
-            }, 20);
+    //         setTimeout(function() {
+    //             t.wrap.addClass('cbp-popup-singlePage-open');
+    //         }, 20);
 
-            // change link
-            if (t.options.singlePageDeeplinking) {
-                location.href = t.url + '#cbp=' + t.dataArray[t.current].url;
-            }
+    //         // change link
+    //         if (t.options.singlePageDeeplinking) {
+    //             location.href = t.url + '#cbp=' + t.dataArray[t.current].url;
+    //         }
 
-        },
+    //     },
 
 
-        openSinglePageInline: function(blocks, currentBlock, fromOpen) {
+    //     openSinglePageInline: function(blocks, currentBlock, fromOpen) {
 
-            var t = this,
-                i = 0,
-                start = 0,
-                end = 0,
-                currentBlockHref, tempHref = [],
-                currentRow, rows;
+    //         var t = this,
+    //             i = 0,
+    //             start = 0,
+    //             end = 0,
+    //             currentBlockHref, tempHref = [],
+    //             currentRow, rows;
 
-            fromOpen = fromOpen || false;
+    //         fromOpen = fromOpen || false;
 
-            t.storeBlocks = blocks;
-            t.storeCurrentBlock = currentBlock;
+    //         t.storeBlocks = blocks;
+    //         t.storeCurrentBlock = currentBlock;
 
-            // check singlePageInline and close it
-            if (t.isOpen) {
+    //         // check singlePageInline and close it
+    //         if (t.isOpen) {
 
-                if (t.dataArray[t.current].url != currentBlock.getAttribute('href')) {
-                    t.cubeportfolio.singlePageInline.close('open', {
-                        blocks: blocks,
-                        currentBlock: currentBlock,
-                        fromOpen: true
-                    });
+    //             if (t.dataArray[t.current].url != currentBlock.getAttribute('href')) {
+    //                 t.cubeportfolio.singlePageInline.close('open', {
+    //                     blocks: blocks,
+    //                     currentBlock: currentBlock,
+    //                     fromOpen: true
+    //                 });
 
-                } else {
-                    t.close();
-                }
+    //             } else {
+    //                 t.close();
+    //             }
 
-                return;
-            }
+    //             return;
+    //         }
 
-            t.wrap.addClass('cbp-popup-loading');
+    //         t.wrap.addClass('cbp-popup-loading');
 
-            // remember that the lightbox is open now
-            t.isOpen = true;
+    //         // remember that the lightbox is open now
+    //         t.isOpen = true;
 
-            // remember to stop all events after the popup has been showing
-            t.stopEvents = false;
+    //         // remember to stop all events after the popup has been showing
+    //         t.stopEvents = false;
 
-            // array with elements
-            t.dataArray = [];
+    //         // array with elements
+    //         t.dataArray = [];
 
-            // reset current
-            t.current = null;
+    //         // reset current
+    //         t.current = null;
 
-            currentBlockHref = currentBlock.getAttribute('href');
-            if (currentBlockHref === null) {
-                throw new Error('HEI! Your clicked element doesn\'t have a href attribute.');
-            }
+    //         currentBlockHref = currentBlock.getAttribute('href');
+    //         if (currentBlockHref === null) {
+    //             throw new Error('HEI! Your clicked element doesn\'t have a href attribute.');
+    //         }
 
-            $.each(blocks.find(t.options.singlePageInlineDelegate), function(index, item) {
-                var href = item.getAttribute('href');
+    //         $.each(blocks.find(t.options.singlePageInlineDelegate), function(index, item) {
+    //             var href = item.getAttribute('href');
 
-                if ($.inArray(href, tempHref) === -1) {
+    //             if ($.inArray(href, tempHref) === -1) {
 
-                    if (currentBlockHref == href) {
-                        t.current = i;
-                    }
+    //                 if (currentBlockHref == href) {
+    //                     t.current = i;
+    //                 }
 
-                    t.dataArray.push({
-                        url: href,
-                        element: item
-                    });
+    //                 t.dataArray.push({
+    //                     url: href,
+    //                     element: item
+    //                 });
 
-                    i++;
-                }
+    //                 i++;
+    //             }
 
-                tempHref.push(href);
-            });
+    //             tempHref.push(href);
+    //         });
 
-            $(t.dataArray[t.current].element).parents('.cbp-item').addClass('cbp-singlePageInline-active');
+    //         $(t.dataArray[t.current].element).parents('.cbp-item').addClass('cbp-singlePageInline-active');
 
-            // total numbers of elements
-            t.counterTotal = t.dataArray.length;
+    //         // total numbers of elements
+    //         t.counterTotal = t.dataArray.length;
 
-            if (t.cubeportfolio.blocksClone) {
+    //         if (t.cubeportfolio.blocksClone) {
 
-                if (t.cubeportfolio.ulHidden === 'clone') {
-                    t.wrap.prependTo(t.cubeportfolio.$ul);
-                } else {
-                    t.wrap.prependTo(t.cubeportfolio.$ulClone);
-                }
+    //             if (t.cubeportfolio.ulHidden === 'clone') {
+    //                 t.wrap.prependTo(t.cubeportfolio.$ul);
+    //             } else {
+    //                 t.wrap.prependTo(t.cubeportfolio.$ulClone);
+    //             }
 
-            } else {
-                // append
-                t.wrap.prependTo(t.cubeportfolio.$ul);
-            }
+    //         } else {
+    //             // append
+    //             t.wrap.prependTo(t.cubeportfolio.$ul);
+    //         }
 
-            if (t.options.singlePageInlinePosition === 'top') {
+    //         if (t.options.singlePageInlinePosition === 'top') {
 
-                start = 0;
-                end = t.cubeportfolio.cols - 1;
+    //             start = 0;
+    //             end = t.cubeportfolio.cols - 1;
 
-            } else if (t.options.singlePageInlinePosition === 'above') {
+    //         } else if (t.options.singlePageInlinePosition === 'above') {
 
-                i = Math.floor(t.current / t.cubeportfolio.cols);
+    //             i = Math.floor(t.current / t.cubeportfolio.cols);
 
-                start = t.cubeportfolio.cols * i;
-                end = t.cubeportfolio.cols * (i + 1) - 1;
+    //             start = t.cubeportfolio.cols * i;
+    //             end = t.cubeportfolio.cols * (i + 1) - 1;
 
-            } else { //below
+    //         } else { //below
 
-                i = Math.floor(t.current / t.cubeportfolio.cols);
+    //             i = Math.floor(t.current / t.cubeportfolio.cols);
 
-                start = Math.min(t.cubeportfolio.cols * (i + 1), t.counterTotal);
-                end = Math.min(t.cubeportfolio.cols * (i + 2) - 1, t.counterTotal);
+    //             start = Math.min(t.cubeportfolio.cols * (i + 1), t.counterTotal);
+    //             end = Math.min(t.cubeportfolio.cols * (i + 2) - 1, t.counterTotal);
 
-                currentRow = Math.ceil((t.current + 1) / t.cubeportfolio.cols);
-                rows = Math.ceil(t.counterTotal / t.cubeportfolio.cols);
+    //             currentRow = Math.ceil((t.current + 1) / t.cubeportfolio.cols);
+    //             rows = Math.ceil(t.counterTotal / t.cubeportfolio.cols);
 
-                if (currentRow == rows) {
-                    t.lastColumn = true;
-                } else {
-                    t.lastColumn = false;
-                }
+    //             if (currentRow == rows) {
+    //                 t.lastColumn = true;
+    //             } else {
+    //                 t.lastColumn = false;
+    //             }
 
-                if (fromOpen) {
-                    if (t.lastColumn) {
-                        t.top = t.lastColumnHeight;
-                    }
-                } else {
-                    t.lastColumnHeight = t.cubeportfolio.height;
-                    t.top = t.lastColumnHeight;
-                }
+    //             if (fromOpen) {
+    //                 if (t.lastColumn) {
+    //                     t.top = t.lastColumnHeight;
+    //                 }
+    //             } else {
+    //                 t.lastColumnHeight = t.cubeportfolio.height;
+    //                 t.top = t.lastColumnHeight;
+    //             }
 
-            }
+    //         }
 
-            t.matrice = [start, end];
+    //         t.matrice = [start, end];
 
-            t._resizeSinglePageInline();
+    //         t._resizeSinglePageInline();
 
-            // register callback function
-            if ($.isFunction(t.options.singlePageInlineCallback)) {
-                t.options.singlePageInlineCallback.call(t, t.dataArray[t.current].url, t.dataArray[t.current].element);
-            }
+    //         // register callback function
+    //         if ($.isFunction(t.options.singlePageInlineCallback)) {
+    //             t.options.singlePageInlineCallback.call(t, t.dataArray[t.current].url, t.dataArray[t.current].element);
+    //         }
 
 
 
-            if (t.options.singlePageInlineInFocus) {
-                t.scrollTop = $(window).scrollTop();
+    //         if (t.options.singlePageInlineInFocus) {
+    //             t.scrollTop = $(window).scrollTop();
 
-                // scroll
-                $('body, html').animate({
-                    scrollTop: t.wrap.offset().top - 150
-                });
-            }
+    //             // scroll
+    //             $('body, html').animate({
+    //                 scrollTop: t.wrap.offset().top - 150
+    //             });
+    //         }
 
-        },
+    //     },
 
-        _resizeSinglePageInline: function(removeLoadingMask) {
+    //     _resizeSinglePageInline: function(removeLoadingMask) {
 
-            var t = this,
-                customHeight;
+    //         var t = this,
+    //             customHeight;
 
-            removeLoadingMask = removeLoadingMask || false;
+    //         removeLoadingMask = removeLoadingMask || false;
 
-            t.height = t.content.outerHeight(true);
+    //         t.height = t.content.outerHeight(true);
 
-            t.cubeportfolio._layout();
+    //         t.cubeportfolio._layout();
 
-            // repositionate the blocks with the best transition available
-            t.cubeportfolio._processStyle(t.cubeportfolio.transition);
+    //         // repositionate the blocks with the best transition available
+    //         t.cubeportfolio._processStyle(t.cubeportfolio.transition);
 
-            if (removeLoadingMask) {
-                t.wrap.removeClass('cbp-popup-loading');
-            }
+    //         if (removeLoadingMask) {
+    //             t.wrap.removeClass('cbp-popup-loading');
+    //         }
 
-            t.cubeportfolio.$obj.addClass('cbp-popup-isOpening');
+    //         t.cubeportfolio.$obj.addClass('cbp-popup-isOpening');
 
-            t.wrap.css({
-                height: t.height
-            });
+    //         t.wrap.css({
+    //             height: t.height
+    //         });
 
-            t.wrap.css({
-                top: t.top
-            });
+    //         t.wrap.css({
+    //             top: t.top
+    //         });
 
-            customHeight = (t.lastColumn) ? t.height : 0;
+    //         customHeight = (t.lastColumn) ? t.height : 0;
 
-            // resize main container height
-            t.cubeportfolio._resizeMainContainer(t.cubeportfolio.transition, customHeight);
+    //         // resize main container height
+    //         t.cubeportfolio._resizeMainContainer(t.cubeportfolio.transition, customHeight);
 
-            if (t.options.singlePageInlineInFocus) {
-                // scroll
-                $('body, html').animate({
-                    scrollTop: t.wrap.offset().top - 150
-                });
-            }
+    //         if (t.options.singlePageInlineInFocus) {
+    //             // scroll
+    //             $('body, html').animate({
+    //                 scrollTop: t.wrap.offset().top - 150
+    //             });
+    //         }
 
-        },
+    //     },
 
 
-        updateSinglePage: function(html) {
+    //     updateSinglePage: function(html) {
 
-            var t = this,
-                selectorSlider;
+    //         var t = this,
+    //             selectorSlider;
 
-            t.content.html(html);
+    //         t.content.html(html);
 
-            t.wrap.addClass('cbp-popup-ready');
+    //         t.wrap.addClass('cbp-popup-ready');
 
-            t.wrap.removeClass('cbp-popup-loading');
+    //         t.wrap.removeClass('cbp-popup-loading');
 
-            // update counter navigation
-            if (t.options.singlePageShowCounter) {
-                t.counter.text((t.current + 1) + ' of ' + t.counterTotal);
-            }
+    //         // update counter navigation
+    //         if (t.options.singlePageShowCounter) {
+    //             t.counter.text((t.current + 1) + ' of ' + t.counterTotal);
+    //         }
 
-            // instantiate slider if exists
-            selectorSlider = t.content.find('.cbp-slider');
-            if (selectorSlider) {
-                t.slider = Object.create(slider);
-                t.slider._init(t, selectorSlider);
-            } else {
-                t.slider = null;
-            }
+    //         // instantiate slider if exists
+    //         selectorSlider = t.content.find('.cbp-slider');
+    //         if (selectorSlider) {
+    //             t.slider = Object.create(slider);
+    //             t.slider._init(t, selectorSlider);
+    //         } else {
+    //             t.slider = null;
+    //         }
 
-        },
+    //     },
 
 
-        updateSinglePageInline: function(html) {
+    //     updateSinglePageInline: function(html) {
 
-            var t = this,
-                selectorSlider;
+    //         var t = this,
+    //             selectorSlider;
 
-            t.content.html(html);
+    //         t.content.html(html);
 
-            t._loadSinglePageInline();
+    //         t._loadSinglePageInline();
 
-            // instantiate slider if exists
-            selectorSlider = t.content.find('.cbp-slider');
-            if (selectorSlider) {
-                t.slider = Object.create(slider);
-                t.slider._init(t, selectorSlider);
-            } else {
-                t.slider = null;
-            }
+    //         // instantiate slider if exists
+    //         selectorSlider = t.content.find('.cbp-slider');
+    //         if (selectorSlider) {
+    //             t.slider = Object.create(slider);
+    //             t.slider._init(t, selectorSlider);
+    //         } else {
+    //             t.slider = null;
+    //         }
 
-        },
+    //     },
 
 
-        /**
-         * Wait to load all images
-         */
-        _loadSinglePageInline: function() {
+    //     /**
+    //      * Wait to load all images
+    //      */
+    //     _loadSinglePageInline: function() {
 
-            var t = this,
-                imgs = [],
-                i, img, propertyValue, src,
-                matchUrl = /url\((['"]?)(.*?)\1\)/g;
+    //         var t = this,
+    //             imgs = [],
+    //             i, img, propertyValue, src,
+    //             matchUrl = /url\((['"]?)(.*?)\1\)/g;
 
-            // loading background image of plugin
-            propertyValue = t.wrap.children().css('backgroundImage');
-            if (propertyValue) {
-                var match;
-                while ((match = matchUrl.exec(propertyValue))) {
-                    imgs.push({
-                        src: match[2]
-                    });
-                }
-            }
+    //         // loading background image of plugin
+    //         propertyValue = t.wrap.children().css('backgroundImage');
+    //         if (propertyValue) {
+    //             var match;
+    //             while ((match = matchUrl.exec(propertyValue))) {
+    //                 imgs.push({
+    //                     src: match[2]
+    //                 });
+    //             }
+    //         }
 
-            // get all elements
-            t.wrap.find('*').each(function() {
+    //         // get all elements
+    //         t.wrap.find('*').each(function() {
 
-                var elem = $(this);
+    //             var elem = $(this);
 
-                if (elem.is('img:uncached')) {
-                    imgs.push({
-                        src: elem.attr('src'),
-                        element: elem[0]
-                    });
-                }
+    //             if (elem.is('img:uncached')) {
+    //                 imgs.push({
+    //                     src: elem.attr('src'),
+    //                     element: elem[0]
+    //                 });
+    //             }
 
-                // background image
-                propertyValue = elem.css('backgroundImage');
-                if (propertyValue) {
-                    var match;
-                    while ((match = matchUrl.exec(propertyValue))) {
-                        imgs.push({
-                            src: match[2],
-                            element: elem[0]
-                        });
-                    }
-                }
-            });
+    //             // background image
+    //             propertyValue = elem.css('backgroundImage');
+    //             if (propertyValue) {
+    //                 var match;
+    //                 while ((match = matchUrl.exec(propertyValue))) {
+    //                     imgs.push({
+    //                         src: match[2],
+    //                         element: elem[0]
+    //                     });
+    //                 }
+    //             }
+    //         });
 
-            var imgsLength = imgs.length,
-                imgsLoaded = 0;
+    //         var imgsLength = imgs.length,
+    //             imgsLoaded = 0;
 
-            if (imgsLength === 0) {
-                t._resizeSinglePageInline(true);
-            }
+    //         if (imgsLength === 0) {
+    //             t._resizeSinglePageInline(true);
+    //         }
 
-            var loadImage = function() {
-                imgsLoaded++;
+    //         var loadImage = function() {
+    //             imgsLoaded++;
 
-                if (imgsLoaded == imgsLength) {
-                    t._resizeSinglePageInline(true);
-                }
-            };
+    //             if (imgsLoaded == imgsLength) {
+    //                 t._resizeSinglePageInline(true);
+    //             }
+    //         };
 
-            // load  the image and call _beforeDisplay method
-            for (i = 0; i < imgsLength; i++) {
-                img = new Image();
-                $(img).on('load' + eventNamespace + ' error' + eventNamespace, loadImage);
-                img.src = imgs[i].src;
-            }
-        },
+    //         // load  the image and call _beforeDisplay method
+    //         for (i = 0; i < imgsLength; i++) {
+    //             img = new Image();
+    //             $(img).on('load' + eventNamespace + ' error' + eventNamespace, loadImage);
+    //             img.src = imgs[i].src;
+    //         }
+    //     },
 
 
-        isImage: function(el) {
+    //     isImage: function(el) {
 
-            var t = this,
-                img = new Image();
+    //         var t = this,
+    //             img = new Image();
 
-            t.tooggleLoading(true);
+    //         t.tooggleLoading(true);
 
-            if ($('<img src="' + el.src + '">').is('img:uncached')) {
+    //         if ($('<img src="' + el.src + '">').is('img:uncached')) {
 
-                $(img).on('load' + eventNamespace + ' error' + eventNamespace, function() {
+    //             $(img).on('load' + eventNamespace + ' error' + eventNamespace, function() {
 
-                    t.updateImagesMarkup(el.src, el.title, (t.current + 1) + ' of ' + t.counterTotal);
+    //                 t.updateImagesMarkup(el.src, el.title, (t.current + 1) + ' of ' + t.counterTotal);
 
-                    t.tooggleLoading(false);
+    //                 t.tooggleLoading(false);
 
-                });
-                img.src = el.src;
+    //             });
+    //             img.src = el.src;
 
-            } else {
+    //         } else {
 
-                t.updateImagesMarkup(el.src, el.title, (t.current + 1) + ' of ' + t.counterTotal);
+    //             t.updateImagesMarkup(el.src, el.title, (t.current + 1) + ' of ' + t.counterTotal);
 
-                t.tooggleLoading(false);
-            }
+    //             t.tooggleLoading(false);
+    //         }
 
 
-        },
+    //     },
 
-        isVimeo: function(el) {
+    //     isVimeo: function(el) {
 
-            var t = this;
+    //         var t = this;
 
-            t.updateVideoMarkup(el.src, el.title, (t.current + 1) + ' of ' + t.counterTotal);
+    //         t.updateVideoMarkup(el.src, el.title, (t.current + 1) + ' of ' + t.counterTotal);
 
-        },
+    //     },
 
-        isYoutube: function(el) {
+    //     isYoutube: function(el) {
 
-            var t = this;
+    //         var t = this;
 
-            t.updateVideoMarkup(el.src, el.title, (t.current + 1) + ' of ' + t.counterTotal);
+    //         t.updateVideoMarkup(el.src, el.title, (t.current + 1) + ' of ' + t.counterTotal);
 
-        },
+    //     },
 
-        isTed: function(el) {
+    //     isTed: function(el) {
 
-            var t = this;
+    //         var t = this;
 
-            t.updateVideoMarkup(el.src, el.title, (t.current + 1) + ' of ' + t.counterTotal);
+    //         t.updateVideoMarkup(el.src, el.title, (t.current + 1) + ' of ' + t.counterTotal);
 
-        },
+    //     },
 
-        isSelfHosted: function(el) {
+    //     isSelfHosted: function(el) {
 
-            var t = this;
+    //         var t = this;
 
-            t.updateSelfHostedVideo(el.src, el.title, (t.current + 1) + ' of ' + t.counterTotal);
+    //         t.updateSelfHostedVideo(el.src, el.title, (t.current + 1) + ' of ' + t.counterTotal);
 
-        },
+    //     },
 
-        updateSelfHostedVideo: function(src, title, counter) {
+    //     updateSelfHostedVideo: function(src, title, counter) {
 
-            var t = this, i;
-            t.wrap.addClass('cbp-popup-lightbox-isIframe');
+    //         var t = this, i;
+    //         t.wrap.addClass('cbp-popup-lightbox-isIframe');
 
-            var markup = '<div class="cbp-popup-lightbox-iframe">' +
-                '<video controls="controls" width="100%" height="auto">';
+    //         var markup = '<div class="cbp-popup-lightbox-iframe">' +
+    //             '<video controls="controls" width="100%" height="auto">';
 
-            for (i = 0; i < src.length; i++) {
-                if (/(\.mp4)/i.test(src[i])) {
-                    markup += '<source src="' + src[i] + '" type="video/mp4">';
-                } else if (/(\.ogg)|(\.ogv)/i.test(src[i])) {
-                    markup += '<source src="' + src[i] + '" type="video/ogg">';
-                } else if (/(\.webm)/i.test(src[i])) {
-                    markup += '<source src="' + src[i] + '" type="video/webm">';
-                }
-            }
+    //         for (i = 0; i < src.length; i++) {
+    //             if (/(\.mp4)/i.test(src[i])) {
+    //                 markup += '<source src="' + src[i] + '" type="video/mp4">';
+    //             } else if (/(\.ogg)|(\.ogv)/i.test(src[i])) {
+    //                 markup += '<source src="' + src[i] + '" type="video/ogg">';
+    //             } else if (/(\.webm)/i.test(src[i])) {
+    //                 markup += '<source src="' + src[i] + '" type="video/webm">';
+    //             }
+    //         }
 
-            markup += 'Your browser does not support the video tag.' +
-                '</video>' +
-                '<div class="cbp-popup-lightbox-bottom">' +
-                ((title) ? '<div class="cbp-popup-lightbox-title">' + title + '</div>' : '') +
-                ((t.options.lightboxShowCounter) ? '<div class="cbp-popup-lightbox-counter">' + counter + '</div>' : '') +
-                '</div>' +
-                '</div>';
+    //         markup += 'Your browser does not support the video tag.' +
+    //             '</video>' +
+    //             '<div class="cbp-popup-lightbox-bottom">' +
+    //             ((title) ? '<div class="cbp-popup-lightbox-title">' + title + '</div>' : '') +
+    //             ((t.options.lightboxShowCounter) ? '<div class="cbp-popup-lightbox-counter">' + counter + '</div>' : '') +
+    //             '</div>' +
+    //             '</div>';
 
-            t.content.html(markup);
+    //         t.content.html(markup);
 
-            t.wrap.addClass('cbp-popup-ready');
+    //         t.wrap.addClass('cbp-popup-ready');
 
-            t.preloadNearbyImages();
+    //         t.preloadNearbyImages();
 
-        },
+    //     },
 
-        updateVideoMarkup: function(src, title, counter) {
+    //     updateVideoMarkup: function(src, title, counter) {
 
-            var t = this;
-            t.wrap.addClass('cbp-popup-lightbox-isIframe');
+    //         var t = this;
+    //         t.wrap.addClass('cbp-popup-lightbox-isIframe');
 
-            var markup = '<div class="cbp-popup-lightbox-iframe">' +
-                '<iframe src="' + src + '" frameborder="0" allowfullscreen scrolling="no"></iframe>' +
-                '<div class="cbp-popup-lightbox-bottom">' +
-                ((title) ? '<div class="cbp-popup-lightbox-title">' + title + '</div>' : '') +
-                ((t.options.lightboxShowCounter) ? '<div class="cbp-popup-lightbox-counter">' + counter + '</div>' : '') +
-                '</div>' +
-                '</div>';
+    //         var markup = '<div class="cbp-popup-lightbox-iframe">' +
+    //             '<iframe src="' + src + '" frameborder="0" allowfullscreen scrolling="no"></iframe>' +
+    //             '<div class="cbp-popup-lightbox-bottom">' +
+    //             ((title) ? '<div class="cbp-popup-lightbox-title">' + title + '</div>' : '') +
+    //             ((t.options.lightboxShowCounter) ? '<div class="cbp-popup-lightbox-counter">' + counter + '</div>' : '') +
+    //             '</div>' +
+    //             '</div>';
 
-            t.content.html(markup);
+    //         t.content.html(markup);
 
-            t.wrap.addClass('cbp-popup-ready');
+    //         t.wrap.addClass('cbp-popup-ready');
 
-            t.preloadNearbyImages();
+    //         t.preloadNearbyImages();
 
-        },
+    //     },
 
-        updateImagesMarkup: function(src, title, counter) {
+    //     updateImagesMarkup: function(src, title, counter) {
 
-            var t = this;
+    //         var t = this;
 
-            t.wrap.removeClass('cbp-popup-lightbox-isIframe');
+    //         t.wrap.removeClass('cbp-popup-lightbox-isIframe');
 
-            var markup = '<div class="cbp-popup-lightbox-figure">' +
-                '<img src="' + src + '" class="cbp-popup-lightbox-img" ' + t.dataActionImg + ' />' +
-                '<div class="cbp-popup-lightbox-bottom">' +
-                ((title) ? '<div class="cbp-popup-lightbox-title">' + title + '</div>' : '') +
-                ((t.options.lightboxShowCounter) ? '<div class="cbp-popup-lightbox-counter">' + counter + '</div>' : '') +
-                '</div>' +
-                '</div>';
+    //         var markup = '<div class="cbp-popup-lightbox-figure">' +
+    //             '<img src="' + src + '" class="cbp-popup-lightbox-img" ' + t.dataActionImg + ' />' +
+    //             '<div class="cbp-popup-lightbox-bottom">' +
+    //             ((title) ? '<div class="cbp-popup-lightbox-title">' + title + '</div>' : '') +
+    //             ((t.options.lightboxShowCounter) ? '<div class="cbp-popup-lightbox-counter">' + counter + '</div>' : '') +
+    //             '</div>' +
+    //             '</div>';
 
-            t.content.html(markup);
+    //         t.content.html(markup);
 
-            t.wrap.addClass('cbp-popup-ready');
+    //         t.wrap.addClass('cbp-popup-ready');
 
-            t.resizeImage();
+    //         t.resizeImage();
 
-            t.preloadNearbyImages();
+    //         t.preloadNearbyImages();
 
-        },
+    //     },
 
-        next: function() {
+    //     next: function() {
 
-            var t = this;
+    //         var t = this;
 
-            t[t.type + 'JumpTo'](1);
+    //         t[t.type + 'JumpTo'](1);
 
-        },
+    //     },
 
-        prev: function() {
+    //     prev: function() {
 
-            var t = this;
+    //         var t = this;
 
-            t[t.type + 'JumpTo'](-1);
+    //         t[t.type + 'JumpTo'](-1);
 
-        },
+    //     },
 
-        lightboxJumpTo: function(index) {
+    //     lightboxJumpTo: function(index) {
 
-            var t = this,
-                el;
+    //         var t = this,
+    //             el;
 
-            t.current = t.getIndex(t.current + index);
+    //         t.current = t.getIndex(t.current + index);
 
-            // get the current element
-            el = t.dataArray[t.current];
+    //         // get the current element
+    //         el = t.dataArray[t.current];
 
-            // call function if current element is image or video (iframe)
-            t[el.type](el);
+    //         // call function if current element is image or video (iframe)
+    //         t[el.type](el);
 
-        },
+    //     },
 
 
-        singlePageJumpTo: function(index) {
+    //     // singlePageJumpTo: function(index) {
 
-            var t = this;
+    //     //     var t = this;
 
-            t.current = t.getIndex(t.current + index);
+    //     //     t.current = t.getIndex(t.current + index);
 
-            // register singlePageCallback function
-            if ($.isFunction(t.options.singlePageCallback)) {
-                t.resetWrap();
+    //     //     // register singlePageCallback function
+    //     //     if ($.isFunction(t.options.singlePageCallback)) {
+    //     //         t.resetWrap();
 
-                // go to top of the page (reset scroll)
-                t.wrap.scrollTop(0);
+    //     //         // go to top of the page (reset scroll)
+    //     //         t.wrap.scrollTop(0);
 
-                t.wrap.addClass('cbp-popup-loading');
-                t.options.singlePageCallback.call(t, t.dataArray[t.current].url, t.dataArray[t.current].element);
+    //     //         t.wrap.addClass('cbp-popup-loading');
+    //     //         t.options.singlePageCallback.call(t, t.dataArray[t.current].url, t.dataArray[t.current].element);
 
-                if (t.options.singlePageDeeplinking) {
-                    location.href = t.url + '#cbp=' + t.dataArray[t.current].url;
-                }
-            }
-        },
+    //     //         if (t.options.singlePageDeeplinking) {
+    //     //             location.href = t.url + '#cbp=' + t.dataArray[t.current].url;
+    //     //         }
+    //     //     }
+    //     // },
 
-        resetWrap: function() {
+    //     // resetWrap: function() {
 
-            var t = this;
+    //     //     var t = this;
 
-            if (t.type === 'singlePage' && t.options.singlePageDeeplinking) {
-                location.href = t.url + '#';
-            }
+    //     //     if (t.type === 'singlePage' && t.options.singlePageDeeplinking) {
+    //     //         location.href = t.url + '#';
+    //     //     }
 
-        },
+    //     // },
 
-        getIndex: function(index) {
+    //     // getIndex: function(index) {
 
-            var t = this;
+    //     //     var t = this;
 
-            // go to interval [0, (+ or -)this.counterTotal.length - 1]
-            index = index % t.counterTotal;
+    //     //     // go to interval [0, (+ or -)this.counterTotal.length - 1]
+    //     //     index = index % t.counterTotal;
 
-            // if index is less then 0 then go to interval (0, this.counterTotal - 1]
-            if (index < 0) {
-                index = t.counterTotal + index;
-            }
+    //     //     // if index is less then 0 then go to interval (0, this.counterTotal - 1]
+    //     //     if (index < 0) {
+    //     //         index = t.counterTotal + index;
+    //     //     }
 
-            return index;
+    //     //     return index;
 
-        },
+    //     // },
 
-        close: function(method, data) {
+    //     close: function(method, data) {
 
-            var t = this;
+    //         var t = this;
 
-            // now the popup is closed
-            t.isOpen = false;
+    //         // now the popup is closed
+    //         t.isOpen = false;
 
-            if (t.type === 'singlePageInline') {
+    //         if (t.type === 'singlePageInline') {
 
-                if (method === 'open') {
+    //             if (method === 'open') {
 
-                    t.wrap.addClass('cbp-popup-loading');
+    //                 t.wrap.addClass('cbp-popup-loading');
 
-                    $(t.dataArray[t.current].element).parents('.cbp-item').removeClass('cbp-singlePageInline-active');
+    //                 $(t.dataArray[t.current].element).parents('.cbp-item').removeClass('cbp-singlePageInline-active');
 
-                    t.openSinglePageInline(data.blocks, data.currentBlock, data.fromOpen);
+    //                 t.openSinglePageInline(data.blocks, data.currentBlock, data.fromOpen);
 
-                } else {
+    //             } else {
 
-                    t.matrice = [-1, -1];
+    //                 t.matrice = [-1, -1];
 
-                    t.cubeportfolio._layout();
+    //                 t.cubeportfolio._layout();
 
-                    // repositionate the blocks with the best transition available
-                    t.cubeportfolio._processStyle(t.cubeportfolio.transition);
+    //                 // repositionate the blocks with the best transition available
+    //                 t.cubeportfolio._processStyle(t.cubeportfolio.transition);
 
-                    // resize main container height
-                    t.cubeportfolio._resizeMainContainer(t.cubeportfolio.transition);
+    //                 // resize main container height
+    //                 t.cubeportfolio._resizeMainContainer(t.cubeportfolio.transition);
 
-                    t.wrap.css({
-                        height: 0
-                    });
+    //                 t.wrap.css({
+    //                     height: 0
+    //                 });
 
-                    $(t.dataArray[t.current].element).parents('.cbp-item').removeClass('cbp-singlePageInline-active');
+    //                 $(t.dataArray[t.current].element).parents('.cbp-item').removeClass('cbp-singlePageInline-active');
 
-                    if (t.cubeportfolio.browser === 'ie8' || t.cubeportfolio.browser === 'ie9') {
+    //                 if (t.cubeportfolio.browser === 'ie8' || t.cubeportfolio.browser === 'ie9') {
 
-                        // reset content
-                        t.content.html('');
+    //                     // reset content
+    //                     t.content.html('');
 
-                        // hide the wrap
-                        t.wrap.detach();
+    //                     // hide the wrap
+    //                     t.wrap.detach();
 
-                        t.cubeportfolio.$obj.removeClass('cbp-popup-isOpening');
+    //                     t.cubeportfolio.$obj.removeClass('cbp-popup-isOpening');
 
-                        if (method === 'promise') {
-                            if ($.isFunction(data.callback)) {
-                                data.callback.call(t.cubeportfolio);
-                            }
-                        }
+    //                     if (method === 'promise') {
+    //                         if ($.isFunction(data.callback)) {
+    //                             data.callback.call(t.cubeportfolio);
+    //                         }
+    //                     }
 
-                    } else {
+    //                 } else {
 
-                        t.wrap.one(t.cubeportfolio.transitionEnd, function() {
+    //                     t.wrap.one(t.cubeportfolio.transitionEnd, function() {
 
-                            // reset content
-                            t.content.html('');
+    //                         // reset content
+    //                         t.content.html('');
 
-                            // hide the wrap
-                            t.wrap.detach();
+    //                         // hide the wrap
+    //                         t.wrap.detach();
 
-                            t.cubeportfolio.$obj.removeClass('cbp-popup-isOpening');
+    //                         t.cubeportfolio.$obj.removeClass('cbp-popup-isOpening');
 
-                            if (method === 'promise') {
-                                if ($.isFunction(data.callback)) {
-                                    data.callback.call(t.cubeportfolio);
-                                }
-                            }
+    //                         if (method === 'promise') {
+    //                             if ($.isFunction(data.callback)) {
+    //                                 data.callback.call(t.cubeportfolio);
+    //                             }
+    //                         }
 
-                        });
+    //                     });
 
-                    }
+    //                 }
 
-                    if (t.options.singlePageInlineInFocus) {
-                        $('body, html').animate({
-                            scrollTop: t.scrollTop
-                        });
-                    }
-                }
+    //                 if (t.options.singlePageInlineInFocus) {
+    //                     $('body, html').animate({
+    //                         scrollTop: t.scrollTop
+    //                     });
+    //                 }
+    //             }
 
-            } else if (t.type === 'singlePage') {
+    //         } else if (t.type === 'singlePage') {
 
-                t.resetWrap();
+    //             t.resetWrap();
 
-                $(window).scrollTop(t.scrollTop);
+    //             $(window).scrollTop(t.scrollTop);
 
-                // weird bug on mozilla. fixed with setTimeout
-                setTimeout(function() {
-                    t.stopScroll = true;
+    //             // weird bug on mozilla. fixed with setTimeout
+    //             setTimeout(function() {
+    //                 t.stopScroll = true;
 
-                    t.navigationWrap.css({
-                        top: t.wrap.scrollTop()
-                    });
+    //                 t.navigationWrap.css({
+    //                     top: t.wrap.scrollTop()
+    //                 });
 
-                    t.wrap.removeClass('cbp-popup-singlePage-open cbp-popup-singlePage-sticky');
+    //                 t.wrap.removeClass('cbp-popup-singlePage-open cbp-popup-singlePage-sticky');
 
-                    if (t.cubeportfolio.browser === 'ie8' || t.cubeportfolio.browser === 'ie9') {
-                        // reset content
-                        t.content.html('');
+    //                 if (t.cubeportfolio.browser === 'ie8' || t.cubeportfolio.browser === 'ie9') {
+    //                     // reset content
+    //                     t.content.html('');
 
-                        // hide the wrap
-                        t.wrap.detach();
+    //                     // hide the wrap
+    //                     t.wrap.detach();
 
-                        $('html').css({
-                            overflow: '',
-                            paddingRight: ''
-                        });
+    //                     $('html').css({
+    //                         overflow: '',
+    //                         paddingRight: ''
+    //                     });
 
-                        t.navigationWrap.removeAttr('style');
-                    }
+    //                     t.navigationWrap.removeAttr('style');
+    //                 }
 
-                }, 0);
+    //             }, 0);
 
-                t.wrap.one(t.cubeportfolio.transitionEnd, function() {
+    //             t.wrap.one(t.cubeportfolio.transitionEnd, function() {
 
-                    // reset content
-                    t.content.html('');
+    //                 // reset content
+    //                 t.content.html('');
 
-                    // hide the wrap
-                    t.wrap.detach();
+    //                 // hide the wrap
+    //                 t.wrap.detach();
 
-                    $('html').css({
-                        overflow: '',
-                        paddingRight: ''
-                    });
+    //                 $('html').css({
+    //                     overflow: '',
+    //                     paddingRight: ''
+    //                 });
 
-                    t.navigationWrap.removeAttr('style');
+    //                 t.navigationWrap.removeAttr('style');
 
-                });
+    //             });
 
-            } else {
+    //         } else {
 
-                $('html').css({
-                    overflow: '',
-                    paddingRight: ''
-                });
+    //             $('html').css({
+    //                 overflow: '',
+    //                 paddingRight: ''
+    //             });
 
-                $(window).scrollTop(t.scrollTop);
+    //             $(window).scrollTop(t.scrollTop);
 
-                // reset content
-                t.content.html('');
+    //             // reset content
+    //             t.content.html('');
 
-                // hide the wrap
-                t.wrap.detach();
+    //             // hide the wrap
+    //             t.wrap.detach();
 
-            }
+    //         }
 
-        },
+    //     },
 
-        tooggleLoading: function(state) {
+    //     tooggleLoading: function(state) {
 
-            var t = this;
+    //         var t = this;
 
-            t.stopEvents = state;
-            t.wrap[(state) ? 'addClass' : 'removeClass']('cbp-popup-loading');
+    //         t.stopEvents = state;
+    //         t.wrap[(state) ? 'addClass' : 'removeClass']('cbp-popup-loading');
 
-        },
+    //     },
 
-        resizeImage: function() {
+    //     resizeImage: function() {
 
-            // if lightbox is not open go out
-            if (!this.isOpen) return;
+    //         // if lightbox is not open go out
+    //         if (!this.isOpen) return;
 
-            var height = $(window).height(),
-                img = $('.cbp-popup-content').find('img'),
-                padding = parseInt(img.css('margin-top'), 10) + parseInt(img.css('margin-bottom'), 10);
+    //         var height = $(window).height(),
+    //             img = $('.cbp-popup-content').find('img'),
+    //             padding = parseInt(img.css('margin-top'), 10) + parseInt(img.css('margin-bottom'), 10);
 
-            img.css('max-height', (height - padding) + 'px');
+    //         img.css('max-height', (height - padding) + 'px');
 
-        },
+    //     },
 
-        preloadNearbyImages: function() {
+    //     preloadNearbyImages: function() {
 
-            var arr = [],
-                img, t = this,
-                src;
+    //         var arr = [],
+    //             img, t = this,
+    //             src;
 
-            arr.push(t.getIndex(t.current + 1));
-            arr.push(t.getIndex(t.current + 2));
-            arr.push(t.getIndex(t.current + 3));
-            arr.push(t.getIndex(t.current - 1));
-            arr.push(t.getIndex(t.current - 2));
-            arr.push(t.getIndex(t.current - 3));
+    //         arr.push(t.getIndex(t.current + 1));
+    //         arr.push(t.getIndex(t.current + 2));
+    //         arr.push(t.getIndex(t.current + 3));
+    //         arr.push(t.getIndex(t.current - 1));
+    //         arr.push(t.getIndex(t.current - 2));
+    //         arr.push(t.getIndex(t.current - 3));
 
-            for (var i = arr.length - 1; i >= 0; i--) {
+    //         for (var i = arr.length - 1; i >= 0; i--) {
 
-                if (t.dataArray[arr[i]].type === 'isImage') {
+    //             if (t.dataArray[arr[i]].type === 'isImage') {
 
-                    src = t.dataArray[arr[i]].src;
+    //                 src = t.dataArray[arr[i]].src;
 
-                    img = new Image();
+    //                 img = new Image();
 
-                    if ($('<img src="' + src + '">').is('img:uncached')) {
+    //                 if ($('<img src="' + src + '">').is('img:uncached')) {
 
-                        //$(img).on('load.pm error.pm', {src: src }, function (e) {});
+    //                     //$(img).on('load.pm error.pm', {src: src }, function (e) {});
 
-                        img.src = src;
+    //                     img.src = src;
 
-                    }
+    //                 }
 
-                }
+    //             }
 
-            }
+    //         }
 
-        }
+    //     }
 
-    };
+    // };
 
     var slider = {
 

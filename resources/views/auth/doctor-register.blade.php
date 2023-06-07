@@ -93,6 +93,31 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <label for="license" class="col-md-4 col-form-label text-md-end">{{ __('License No.') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="license" type="text" class="form-control" name="license" required>
+                            </div>
+                        </div><div class="row mb-3">
+                            <label for="qualification" class="col-md-4 col-form-label text-md-end">{{ __('Qualification') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="qual" type="text" class="form-control" name="qualification" required>
+                            </div>
+                        </div><div class="row mb-3">
+                            <label for="experience" class="col-md-4 col-form-label text-md-end">{{ __('Exprience') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="exp" type="text" class="form-control" name="experience" required>
+                            </div>
+                        </div><div class="row mb-3">
+                            <label for="field_of_expertize" class="col-md-4 col-form-label text-md-end">{{ __('Department') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="foe" type="text" class="form-control" name="field_of_expertize" required>
+                            </div>
+                        </div>
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">

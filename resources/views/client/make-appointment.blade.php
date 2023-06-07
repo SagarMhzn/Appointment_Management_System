@@ -891,16 +891,16 @@
                         data-target=".navbar-main-collapse">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand" href="{{ url('/home') }}">
                         <img src="{{ asset('img/logo.png') }}" alt="" width="150" height="40" />
                     </a>
                 </div>
 
                 <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="{{route('client.home') }} ">Home</a></li>
-                        <li><a href="#doctor">Doctors</a></li>
-                        <li><a href="#appointment">Appointments</a></li>
+                        <li><a href="{{ route('client.home') }}">Home</a></li>
+                        <li><a href="{{ route('client.client-doctors-list') }}">Doctors</a></li>
+                        <li class="active"><a href="{{ route('client.appointments') }}">Appointments</a></li>
 
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ auth()->user()->name }}
@@ -949,44 +949,106 @@
         </nav>
 
 
-      
-
-        <!-- /Section: intro -->
-
-        <!-- Section: boxes -->
-        <section id="boxes" class="home-section paddingtop-80">
-
-           
-
-        </section>
-        <!-- /Section: boxes -->
 
 
-        <section id="callaction" class="home-section paddingtop-40">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="callaction bg-gray">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div>
-                                        <div class="cta-text">
-                                            <h3>In an emergency? Need help now?</h3>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit uisque interdum
-                                                ante eget faucibus. </p>
-                                        </div>
+        <section id="intro" class="intro">
+            <div class="intro-content">
+                <div class="container">
+
+
+                    <div class="col-lg-20">
+                        <div class="form-wrapper">
+                            <div>
+
+                                <div class="panel panel-skin">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><span class="fa fa-pencil-square-o"></span> Book an
+                                            Appointment </h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <form role="form" class="lead" method="POST" action="{{ route('client.book-appointment')}}">
+                                            @csrf
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 ">
+                                                    <div class="form-group" style="display:flex: ">
+                                                        <label>Choose who you want the appointment with</label>
+                                                        {{-- <input type="text" name="name" id="name" value="{{ old('name') }}"
+                                                            required autocomplete="name" autofocus class="form-control input-md"> --}}
+
+                                                        <select class="form-select form-select-sm"
+                                                            aria-label=".form-select-sm example" name="doc_select"
+                                                            id="doc_select" class="doc_select"
+                                                            style="border: solid;width:100%">
+                                                            <option selected disabled>Choose A doctor from the list:
+                                                            </option>
+                                                            @foreach ($docs as $doc_info)
+
+
+                                                            <option value="{{ $doc_info->id }}">{{ $doc_info->name }} - {{ $doc_info->doctors->field_of_expertize }}
+                                                            </option>
+                                                                {{-- @foreach ($doctor as $doctor_info)
+                                                                    @if ($doc_info->id == $doctor_info->doctor_id)
+                                                                        <option value="{{ $doc_info->id }}"
+                                                                            name="doc_id">{{ $doc_info->name }} -
+                                                                            {{ $doctor_info->field_of_expertize }}
+                                                                        </option>
+                                                                    @endif
+                                                                @endforeach --}}
+                                                            @endforeach
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                                    <div class="form-group">
+                                                        <label>Appointment Date:</label>
+                                                        <input id="apptdate" type="date" class="form-control"
+                                                            name="apptdate" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                                    <div class="form-group">
+                                                        <label>Appointment Time</label>
+                                                        <input id="starttime" type="time" class="form-control"
+                                                            name="starttime" required >
+                                                    </div>
+
+                                                    <div class="form-group">
+
+                                                        <input id="endtime" type="time" class="form-control"
+                                                            name="endtime" required >
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                                    <div class="form-group">
+                                                        <label>Describe what the Appointment is for:</label>
+                                                        <textarea type="text" name="description" id="description" class="form-control input-md" required>
+                                                            </textarea>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <input type="submit" value="Book Now!"
+                                                class="btn btn-skin btn-block btn-lg">
+
+                                        </form>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div>
-                                        <div class="cta-btn">
-                                            <a href="#appointment" class="btn btn-skin btn-lg">Book an appoinment</a>
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
@@ -994,116 +1056,6 @@
 
 
 
-
-        <!-- Section: team -->
-        <section id="doctor" class="home-section bg-gray paddingbot-60">
-            <div class="container marginbot-50">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div>
-                            <div class="section-heading text-center">
-                                <h2 class="h-bold">Doctors</h2>
-                                <p>Ea melius ceteros oportere quo, pri habeo viderer facilisi ei</p>
-                            </div>
-                        </div>
-                        <div class="divider-short"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-
-                        <div id="filters-container" class="cbp-l-filters-alignLeft">
-                            <div data-filter="*" class="cbp-filter-item-active cbp-filter-item">All (<div
-                                    class="cbp-filter-counter"></div>)</div>
-                            <div data-filter=".cardiologist" class="cbp-filter-item">Cardiologist (<div
-                                    class="cbp-filter-counter"></div>)</div>
-                            <div data-filter=".psychiatrist" class="cbp-filter-item">Psychiatrist (<div
-                                    class="cbp-filter-counter"></div>)</div>
-                            <div data-filter=".neurologist" class="cbp-filter-item">Neurologist (<div
-                                    class="cbp-filter-counter"></div>)</div>
-                        </div>
-
-                        <div id="grid-container" class="cbp-l-grid-team">
-                            <ul>
-                                <li class="cbp-item psychiatrist">
-                                    <a href="doctors/member1.html" class="cbp-caption cbp-singlePage">
-                                        <div class="cbp-caption-defaultWrap">
-                                            <img src="{{ asset('img/team/1.jpg') }}" alt="" width="100%">
-                                        </div>
-                                        <div class="cbp-caption-activeWrap">
-                                            <div class="cbp-l-caption-alignCenter">
-                                                <div class="cbp-l-caption-body">
-                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="doctors/member1.html" class="cbp-singlePage cbp-l-grid-team-name">Alice
-                                        Grue</a>
-                                    <div class="cbp-l-grid-team-position">Psychiatrist</div>
-                                </li>
-                                <li class="cbp-item cardiologist">
-                                    <a href="doctors/member2.html" class="cbp-caption cbp-singlePage">
-                                        <div class="cbp-caption-defaultWrap">
-                                            <img src="{{ asset('img/team/2.jpg') }}" alt="" width="100%">
-                                        </div>
-                                        <div class="cbp-caption-activeWrap">
-                                            <div class="cbp-l-caption-alignCenter">
-                                                <div class="cbp-l-caption-body">
-                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="doctors/member2.html" class="cbp-singlePage cbp-l-grid-team-name">Joseph
-                                        Murphy</a>
-                                    <div class="cbp-l-grid-team-position">Cardiologist</div>
-                                </li>
-                                <li class="cbp-item cardiologist">
-                                    <a href="doctors/member3.html" class="cbp-caption cbp-singlePage">
-                                        <div class="cbp-caption-defaultWrap">
-                                            <img src="{{ asset('img/team/3.jpg') }}" alt="" width="100%">
-                                        </div>
-                                        <div class="cbp-caption-activeWrap">
-                                            <div class="cbp-l-caption-alignCenter">
-                                                <div class="cbp-l-caption-body">
-                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="cbp-singlePage cbp-l-grid-team-name">Alison
-                                        Davis</a>
-                                    <div class="cbp-l-grid-team-position">Cardiologist</div>
-                                </li>
-                                <li class="cbp-item neurologist">
-                                    <a href="#" class="cbp-caption cbp-singlePage">
-                                        <div class="cbp-caption-defaultWrap">
-                                            <img src="{{ asset('img/team/4.jpg') }}" alt="" width="100%">
-                                        </div>
-                                        <div class="cbp-caption-activeWrap">
-                                            <div class="cbp-l-caption-alignCenter">
-                                                <div class="cbp-l-caption-body">
-                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="doctors/member4.html" class="cbp-singlePage cbp-l-grid-team-name">Adam
-                                        Taylor</a>
-                                    <div class="cbp-l-grid-team-position">Neurologist</div>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </section>
 
         <footer>
 

@@ -66,4 +66,24 @@ class DoctorController extends Controller
 
     //     return view('doctor.home',compact('doctor'));
     // }
+
+    public function viewDoctor(Doctor $id)
+    {
+        $doc_user = User::with('doctors')->where('id',$id->doctor_id)->first();
+
+        // dd($doc_user);
+
+        return view('client.view-doctor',compact('doc_user'));
+    }
+
+    public function toggleVerified($id)
+    {
+        $user = User::findOrFail($id);
+        $user->isverified = !$user->isverified;
+        $user->save();
+        // dd($user);
+
+        return redirect()->back();
+        // return view('superadmin.admin-doctors-list');
+    }
 }

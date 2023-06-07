@@ -191,6 +191,11 @@ class RegisterController extends Controller
 
         $doc->address = $data->address;
         $doc->dob = $data->dateAD;
+        $doc->license_no = $data->license;
+        $doc->qualifications = $data->qualification;
+        $doc->experience = $data->experience;
+        $doc->field_of_expertize = $data->field_of_expertize;
+
 
 
         // dd($doc);

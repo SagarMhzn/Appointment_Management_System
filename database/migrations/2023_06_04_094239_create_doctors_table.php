@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('license_no')->nullable();
             $table->string('qualifications')->nullable();
             $table->string('experience')->nullable();
-            $table->string('fieldofexpertize')->nullable();
+            $table->string('field_of_expertize')->nullable();
             $table->timestamps();
         });
     }

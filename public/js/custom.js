@@ -46,26 +46,26 @@
 
 
 	//jQuery for page scrolling feature - requires jQuery Easing plugin
-	$(function() {
-		$('.navbar-nav li a').bind('click', function(event) {
-			var $anchor = $(this);
-			var nav = $($anchor.attr('href'));
-			if (nav.length) {
-			$('html, body').stop().animate({				
-				scrollTop: $($anchor.attr('href')).offset().top				
-			}, 1500, 'easeInOutExpo');
+	// $(function() {
+	// 	$('.navbar-nav li a').bind('click', function(event) {
+	// 		var $anchor = $(this);
+	// 		var nav = $($anchor.attr('href'));
+	// 		if (nav.length) {
+	// 		$('html, body').stop().animate({				
+	// 			scrollTop: $($anchor.attr('href')).offset().top				
+	// 		}, 1500, 'easeInOutExpo');
 			
-			event.preventDefault();
-			}
-		});
-		$('.page-scroll a').bind('click', function(event) {
-			var $anchor = $(this);
-			$('html, body').stop().animate({
-				scrollTop: $($anchor.attr('href')).offset().top
-			}, 1500, 'easeInOutExpo');
-			event.preventDefault();
-		});
-	});
+	// 		event.preventDefault();
+	// 		}
+	// 	});
+	// 	$('.page-scroll a').bind('click', function(event) {
+	// 		var $anchor = $(this);
+	// 		$('html, body').stop().animate({
+	// 			scrollTop: $($anchor.attr('href')).offset().top
+	// 		}, 1500, 'easeInOutExpo');
+	// 		event.preventDefault();
+	// 	});
+	// });
 
 	//owl carousel
 	$('#owl-works').owlCarousel({
@@ -121,95 +121,95 @@
     var gridContainer = $('#grid-container'),
         filtersContainer = $('#filters-container');
 
-	// init cubeportfolio
+	// // init cubeportfolio
     gridContainer.cubeportfolio({
 
-        defaultFilter: '*',
+    //     defaultFilter: '*',
 
-        animationType: 'sequentially',
+    //     animationType: 'sequentially',
 
-        gapHorizontal: 50,
+    //     gapHorizontal: 50,
 
-        gapVertical: 40,
+    //     gapVertical: 40,
 
-        gridAdjustment: 'responsive',
+    //     gridAdjustment: 'responsive',
 
-        caption: 'fadeIn',
+    //     caption: 'fadeIn',
 
-        displayType: 'lazyLoading',
+    //     displayType: 'lazyLoading',
 
-        displayTypeSpeed: 100,
+    //     displayTypeSpeed: 100,
 
-        // lightbox
-        lightboxDelegate: '.cbp-lightbox',
-        lightboxGallery: true,
-        lightboxTitleSrc: 'data-title',
-        lightboxShowCounter: true,
+    //     // lightbox
+    //     lightboxDelegate: '.cbp-lightbox',
+    //     lightboxGallery: true,
+    //     lightboxTitleSrc: 'data-title',
+    //     lightboxShowCounter: true,
 
         // singlePage popup
-        singlePageDelegate: '.cbp-singlePage',
-        singlePageDeeplinking: true,
-        singlePageStickyNavigation: true,
-        singlePageShowCounter: true,
-        singlePageCallback: function (url, element) {
+        // singlePageDelegate: '.cbp-singlePage',
+        // singlePageDeeplinking: true,
+        // singlePageStickyNavigation: true,
+        // singlePageShowCounter: true,
+        // singlePageCallback: function (url, element) {
 
-            // to update singlePage content use the following method: this.updateSinglePage(yourContent)
-            var t = this;
+        //     // to update singlePage content use the following method: this.updateSinglePage(yourContent)
+        //     var t = this;
 
-            $.ajax({
-                url: url,
-                type: 'GET',
-                dataType: 'html',
-                timeout: 5000
-            })
-            .done(function(result) {
-                t.updateSinglePage(result);
-            })
-            .fail(function() {
-                t.updateSinglePage("Error! Please refresh the page!");
-            });
+        //     $.ajax({
+        //         url: url,
+        //         type: 'GET',
+        //         dataType: 'html',
+        //         timeout: 5000
+        //     })
+        //     .done(function(result) {
+        //         t.updateSinglePage(result);
+        //     })
+        //     .fail(function() {
+        //         t.updateSinglePage("Error! Please refresh the page!");
+        //     });
 
-        },
+        // },
 
         // singlePageInline
-        singlePageInlineDelegate: '.cbp-singlePageInline',
-        singlePageInlinePosition: 'above',
-        singlePageInlineShowCounter: true,
-        singlePageInlineInFocus: true,
-        singlePageInlineCallback: function(url, element) {
-            // to update singlePageInline content use the following method: this.updateSinglePageInline(yourContent)
-        }
+        // singlePageInlineDelegate: '.cbp-singlePageInline',
+        // singlePageInlinePosition: 'above',
+        // singlePageInlineShowCounter: true,
+        // singlePageInlineInFocus: true,
+        // singlePageInlineCallback: function(url, element) {
+        //     // to update singlePageInline content use the following method: this.updateSinglePageInline(yourContent)
+        // }
     });
 
-    // add listener for filters click
-    filtersContainer.on('click', '.cbp-filter-item', function (e) {
+    // // add listener for filters click
+    // filtersContainer.on('click', '.cbp-filter-item', function (e) {
 
-        var me = $(this), wrap;
+    //     var me = $(this), wrap;
 
-        // get cubeportfolio data and check if is still animating (reposition) the items.
-        if ( !$.data(gridContainer[0], 'cubeportfolio').isAnimating ) {
+    //     // get cubeportfolio data and check if is still animating (reposition) the items.
+    //     if ( !$.data(gridContainer[0], 'cubeportfolio').isAnimating ) {
 
-            if ( filtersContainer.hasClass('cbp-l-filters-dropdown') ) {
-                wrap = $('.cbp-l-filters-dropdownWrap');
+    //         if ( filtersContainer.hasClass('cbp-l-filters-dropdown') ) {
+    //             wrap = $('.cbp-l-filters-dropdownWrap');
 
-                wrap.find('.cbp-filter-item').removeClass('cbp-filter-item-active');
+    //             wrap.find('.cbp-filter-item').removeClass('cbp-filter-item-active');
 
-                wrap.find('.cbp-l-filters-dropdownHeader').text(me.text());
+    //             wrap.find('.cbp-l-filters-dropdownHeader').text(me.text());
 
-                me.addClass('cbp-filter-item-active');
-            } else {
-                me.addClass('cbp-filter-item-active').siblings().removeClass('cbp-filter-item-active');
-            }
+    //             me.addClass('cbp-filter-item-active');
+    //         } else {
+    //             me.addClass('cbp-filter-item-active').siblings().removeClass('cbp-filter-item-active');
+    //         }
 
-        }
+    //     }
 
-        // filter the items
-        gridContainer.cubeportfolio('filter', me.data('filter'), function () {});
+    //     // filter the items
+    //     gridContainer.cubeportfolio('filter', me.data('filter'), function () {});
 
-    });
+    // });
 
     // activate counter for filters
-    gridContainer.cubeportfolio('showCounter', filtersContainer.find('.cbp-filter-item'));
+    // gridContainer.cubeportfolio('showCounter', filtersContainer.find('.cbp-filter-item'));
 
 })(jQuery, window, document);
 		
