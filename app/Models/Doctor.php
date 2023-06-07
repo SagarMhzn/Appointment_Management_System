@@ -12,7 +12,7 @@ class Doctor extends Model
 
     protected $table = 'doctors';
 
-    protected $fillable = ['doctor_id','phone','image','address','dob'];
+    protected $fillable = ['doctor_id','phone','image','address','dob',''];
 
     public function user(): HasOne
     {

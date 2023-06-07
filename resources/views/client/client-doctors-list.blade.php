@@ -972,9 +972,9 @@
                                                 <li class="cbp-item">
 
                                                     <a href="{{ route('client.view-doctor',$doc_data->doctors->id )}}" class="cbp-caption cbp-singlePage">
-                                                        @if($doc_data->image)
+                                                        @if($doc_data->doctors->image)
                                                         <div class="cbp-caption-defaultWrap">
-                                                            <img src="{{ asset('public/Image/').$doc_data->image }}" alt="" width="100%">
+                                                            <img src="{{ asset('public/Image/'.$doc_data->doctors->image) }}" alt="" width="100%">
                                                         </div>
                                                         @else
                                                         <div class="cbp-caption-defaultWrap">

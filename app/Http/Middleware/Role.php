@@ -18,7 +18,7 @@ class Role
      */
     public function handle(Request $request, Closure $next)
     {
-        if(AUTH::user()->isverified = 1){
+        if(AUTH::user()->isverified == 1){
 
             // dd(AUTH::user()->isverified,AUTH::user()->role);
             if(Auth::user()->role == User::CLIENT){

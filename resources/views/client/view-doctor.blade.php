@@ -973,7 +973,7 @@
                                                     <div class="form-group" style="display:flex: ">
                                                         @if ($doc_user->doctors->image)
                                                             <div>
-                                                                <img src="{{ asset('public/Image/') . $doc_user->doctors->image }}"
+                                                                <img src="{{ asset('public/Image/' . $doc_user->doctors->image) }}"
                                                                     alt="" style="object-fit:cover;">
                                                             </div>
                                                         @else

@@ -186,7 +186,7 @@ class RegisterController extends Controller
             $file = $data->file('image');
             $filename = date('YmdHi') . $file->getClientOriginalName();
             $file->move(public_path('public/Image'), $filename);
-            $doc->image = $filename;
+            $doc->image = $file;
         }
 
         $doc->address = $data->address;

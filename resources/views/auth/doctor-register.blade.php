@@ -88,7 +88,7 @@
                             <div class="col-md-6">
                                 <div>
                                     <div id="img-preview" ></div>
-                                    <input type="file" class="form-control" id="choose-file" name="image"
+                                    <input type="file" class="form-control" id="image" name="image"
                                          accept="image/*"/>
                                 </div>
                             </div>
@@ -137,4 +137,26 @@
         </div>
     </div>
 </div>
+<script>
+    const chooseFile = document.getElementById("image");
+                            const imgPreview = document.getElementById("img-preview");
+
+                            chooseFile.addEventListener("change", function() {
+                                getImgData();
+                            });
+
+                            function getImgData() {
+                                const files = chooseFile.files[0];
+                                if (files) {
+                                    const fileReader = new FileReader();
+                                    fileReader.readAsDataURL(files);
+                                    fileReader.addEventListener("load", function() {
+                                        imgPreview.style.display = "block";
+                                        // imgPreview.style.width = "20%";
+                                        imgPreview.style.objectFit ='cover';
+                                        imgPreview.innerHTML = '<div><img src="' + this.result + '" style="object-fit: cover; width: 50%;margin-bottom: 1rem;"/>';
+                                    });
+                                }
+                            }
+</script>
 @endsection

@@ -46,14 +46,16 @@
                     @foreach ($doctor_details as $key => $data)
                         <tr>
                             <th scope="row">{{ $key + 1 }}</th>
-                            <td>{{ $data->name }}</td>
-                            <td>{{ $data->doctors->address }}</td>
-                            <td>{{ $data->doctors->phone }}</td>
-                            <td>{{ $data->email }}</td>
+                            <td>{{ $data->user->name }}</td>
+                            {{-- <td>{{ $data->doctors->id }}</td> --}}
+                            <td>{{ $data->address }}</td>
+                            <td>{{ $data->phone }}</td>
+
+                            <td>{{ $data->user->email }}</td>
                             <td>
                                 
-                                    <a href="{{ route('superadmin.toggleVerified', ['id' => $data->id]) }}" class="badge {{ $data->isverified == 0 ? 'text-danger' : 'text-success' }}">
-                                        {{ $data->isverified == 0 ? 'Not Verified!' : 'Verified!' }}
+                                    <a href="{{ route('superadmin.toggleVerified', ['id' => $data->user->id]) }}" class="badge {{ $data->user->isverified == 0 ? 'text-danger' : 'text-success' }}">
+                                        {{ $data->user->isverified == 0 ? 'Not Verified!' : 'Verified!' }}
                                     </a>
                                 
                             </td>

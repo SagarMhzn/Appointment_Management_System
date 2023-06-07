@@ -21,58 +21,21 @@ class DoctorController extends Controller
 
     public function show()
     { 
-
         $doctor_details = User::with('doctors')->where('role', 2)->where('isverified',1)->get();
-
         return view('doctor.list')->with('doctor_details', $doctor_details);
     }
 
     public function showDoctor()
     {
         $user = Auth::user();
-
         $doctor = Doctor::where('doctor_id', $user->id)->first();
-
         $logged_user = User::where('id', $user->id)->first();
-
         return view('doctor.home', compact('doctor', 'logged_user'));
     }
-
-    // public function showUnverified(){
-
-    //     $unverified = User::with('doctors')->where('role', 2)->where('isverified',0)->get();
-
-    //     return view('doctor.list')->with('unverified', $unverified);
-    // }
-
-
-    // public function showUser(){
-    //     $user = Auth::user();
-
-    //     $logged_user = User::where('id', $user->id)->first();
-
-    //     return view('doctor.home',compact('logged_user'));
-    // }
-
-    // public function showDoctor(){
-
-    //     $user= Auth::user();
-
-    //     $doctor = Doctor::where('doctor_id', $user->id)->first();
-
-    //     // dd($doctor);
-
-    //     // $doc = Doctor::get();
-
-    //     return view('doctor.home',compact('doctor'));
-    // }
 
     public function viewDoctor(Doctor $id)
     {
         $doc_user = User::with('doctors')->where('id',$id->doctor_id)->first();
-
-        // dd($doc_user);
-
         return view('client.view-doctor',compact('doc_user'));
     }
 
@@ -81,9 +44,6 @@ class DoctorController extends Controller
         $user = User::findOrFail($id);
         $user->isverified = !$user->isverified;
         $user->save();
-        // dd($user);
-
         return redirect()->back();
-        // return view('superadmin.admin-doctors-list');
     }
 }

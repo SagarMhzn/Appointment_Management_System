@@ -15,47 +15,22 @@ class ClientController extends Controller
     {
         return view('client.home');
     }
-    
-    // public function showDash()
-    // {
-    //     $countDoctors = Doctor::count();
-    //     $countVerAppointments = Appointment::where('verified',1)->count();
-    //     $countPenAppointments = Appointment::where('verified',0)->count();
-
-    //     return view('client.home',compact('countDoctors','countVerAppointments','countPenAppointments'));
-
-    
-
-
-    // }
 
     public function show()
     {
         $user = Auth::user();
-
         $client = Client::where('client_id', $user->id)->first();
-
         $logged_user = User::where('id', $user->id)->first();
-
         $countDoctors = Doctor::count();
         $countVerAppointments = Appointment::where('client_id',$logged_user->id)->count();
         $countPenAppointments = Appointment::where('client_id',$logged_user->id)->where('verified',0)->count();
-
         return view('client.home',compact('client', 'logged_user', 'countDoctors','countVerAppointments','countPenAppointments'));
-
-        // return view('client.home', compact('client', 'logged_user',));
     }
 
     public function showDoctors()
     { 
-
         $doctor_details = User::with('doctors')->where('role', 2)->where('isverified',1)->get();
-
+        // dd($doctor_details);
         return view('client.client-doctors-list',compact('doctor_details'));
-        //->with('doctor_details', $doctor_details);
     }
-
-    
-
-
 }
