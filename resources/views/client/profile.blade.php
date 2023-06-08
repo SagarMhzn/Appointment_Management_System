@@ -903,7 +903,7 @@
                         <li><a href="{{ route('client.appointments') }}">Appointments</a></li>
 
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ $logged_user->name }}
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ auth()->user()->name }}
                                 <b class="caret"></b></a>
                             <ul class="dropdown-menu">
 
@@ -929,9 +929,7 @@
                                                     </div>
                                                 </li>
 
-                                                <li><a href="
-                                                    {{ route('client.profile') }}
-                                                    ">Profile</a>
+                                                <li><a href="{{ route('client.profile') }}">Profile</a>
                                                 </li>
                                             @else
                                                 <li> <a href="{{ route('login') }}">Log
@@ -959,42 +957,100 @@
             <div class="intro-content">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <div>
-                                <h2 class="h-ultra">Welcome to Medicio, {{ $logged_user->name }}</h2>
-                            </div>
-                            <div>
-                                <h4 class="h-light">We are happy to have you here!
-                                    <br />
-
-                                    {{-- <span class="color">best quality healthcare</span> for
-                                    you</h4> --}}
-                            </div>
-
-
-                        </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-20">
                             <div class="form-wrapper">
                                 <div>
 
                                     <div class="panel panel-skin">
                                         <div class="panel-heading">
                                             <h3 class="panel-title"><span class="fa fa-pencil-square-o"></span>
-                                                Dashboard</h3>
+                                                Update Profile</h3>
                                         </div>
-                                        <a href="#doctor">
-                                            <div class="panel-body">
-                                                Total no. of verified Doctors : {{ $countDoctors }}
+                                        <form action="{{ route('client.profile-update','') }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+
+                                            @method('put')
+                                            <div style="display:flex; flex-direction:row; ">
+                                                <div>
+                                                <div style="padding: 2rem;max-width:30vw;object-fit:cover;" id="img-preview">
+                                                    @if ($client_info->clients->photo)
+                                                        <div>
+                                                            <img src="{{ asset('public/Image/' . $client_info->clients->photo) }}"
+                                                                alt="" style="height:30vh">
+                                                        </div>
+                                                    @else
+                                                        <div>
+                                                            <img src="{{ asset('defaults/no-image.jpg') }}"
+                                                                alt="">
+                                                        </div>
+                                                    @endif
+
+                                                </div>
+                                                
+                                                <div style="padding:2rem; " class="col-xs-12 col-sm-12 col-md-12 ">
+                                                    {{-- <div >
+                                                        New Image
+                                                    </div> --}}
+                                                    <input type="file" class="form-control" id="choose-file"
+                                                        name="image" accept="image/*"
+                                                        alt="New-Image" />
+                                                </div>
                                             </div>
-                                        </a>
-                                        
-                                            <div class="panel-body">
-                                                Total no. of Appointments : {{ $countVerAppointments }}
+
+
+                                          
+                                                <div style="margin-left:1rem">
+                        
+                                                    <div class="row">
+                                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label>Name:</label>
+                                                                {{-- {{ dd($client_info) }} --}}
+                                                                <input id="name" type="text" class="form-control"  value="{{ $client_info->name }}"
+                                                                    name="name" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label>Email:</label>
+                                                                <input id="email" type="email" class="form-control"  value="{{ $client_info->email }}"
+                                                                    name="email" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label>Phone:</label>
+                                                                <input id="phone" type="text" class="form-control"  value="{{ $client_info->clients->phone }}"
+                                                                    name="phone" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label>Address:</label>
+                                                                <input id="address" type="text" class="form-control"  value="{{ $client_info->clients->address }}"
+                                                                    name="address" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label>DoB:</label>
+                                                                <input id="dob" type="date" class="form-control"  value="{{ $client_info->clients->dob }}"
+                                                                    name="dob" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
                                             </div>
-                                        
-                                        <div class="panel-body">
-                                            Total no. of Pending Appointments : {{ $countPenAppointments }}
-                                        </div>
+                                            <input type="submit" value="Update Profile!"
+                                            class="btn btn-skin btn-block btn-lg">
+                                        </form>
                                     </div>
 
                                 </div>
@@ -1010,154 +1066,10 @@
         <!-- Section: boxes -->
         <section id="boxes" class="home-section paddingtop-80">
 
-           
+
 
         </section>
-        <!-- /Section: boxes -->
 
-
-        <section id="callaction" class="home-section paddingtop-40">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="callaction bg-gray">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div>
-                                        <div class="cta-text">
-                                            <h3>Book an Appointment now!</h3>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit uisque interdum
-                                                ante eget faucibus. </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div>
-                                        <div class="cta-btn">
-                                            <a href="{{ route('client.make-appointment') }}" class="btn btn-skin btn-lg">Book an appoinment</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-
-
-
-        <!-- Section: team -->
-        {{-- <section id="doctor" class="home-section bg-gray paddingbot-60">
-            <div class="container marginbot-50">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div>
-                            <div class="section-heading text-center">
-                                <h2 class="h-bold">Doctors</h2>
-                                <p>Ea melius ceteros oportere quo, pri habeo viderer facilisi ei</p>
-                            </div>
-                        </div>
-                        <div class="divider-short"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-
-                        <div id="filters-container" class="cbp-l-filters-alignLeft">
-                            <div data-filter="*" class="cbp-filter-item-active cbp-filter-item">All (<div
-                                    class="cbp-filter-counter"></div>)</div>
-                            <div data-filter=".cardiologist" class="cbp-filter-item">Cardiologist (<div
-                                    class="cbp-filter-counter"></div>)</div>
-                            <div data-filter=".psychiatrist" class="cbp-filter-item">Psychiatrist (<div
-                                    class="cbp-filter-counter"></div>)</div>
-                            <div data-filter=".neurologist" class="cbp-filter-item">Neurologist (<div
-                                    class="cbp-filter-counter"></div>)</div>
-                        </div>
-
-                        <div id="grid-container" class="cbp-l-grid-team">
-                            <ul>
-                                <li class="cbp-item psychiatrist">
-                                    <a href="doctors/member1.html" class="cbp-caption cbp-singlePage">
-                                        <div class="cbp-caption-defaultWrap">
-                                            <img src="{{ asset('img/team/1.jpg') }}" alt="" width="100%">
-                                        </div>
-                                        <div class="cbp-caption-activeWrap">
-                                            <div class="cbp-l-caption-alignCenter">
-                                                <div class="cbp-l-caption-body">
-                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="doctors/member1.html" class="cbp-singlePage cbp-l-grid-team-name">Alice
-                                        Grue</a>
-                                    <div class="cbp-l-grid-team-position">Psychiatrist</div>
-                                </li>
-                                <li class="cbp-item cardiologist">
-                                    <a href="doctors/member2.html" class="cbp-caption cbp-singlePage">
-                                        <div class="cbp-caption-defaultWrap">
-                                            <img src="{{ asset('img/team/2.jpg') }}" alt="" width="100%">
-                                        </div>
-                                        <div class="cbp-caption-activeWrap">
-                                            <div class="cbp-l-caption-alignCenter">
-                                                <div class="cbp-l-caption-body">
-                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="doctors/member2.html" class="cbp-singlePage cbp-l-grid-team-name">Joseph
-                                        Murphy</a>
-                                    <div class="cbp-l-grid-team-position">Cardiologist</div>
-                                </li>
-                                <li class="cbp-item cardiologist">
-                                    <a href="doctors/member3.html" class="cbp-caption cbp-singlePage">
-                                        <div class="cbp-caption-defaultWrap">
-                                            <img src="{{ asset('img/team/3.jpg') }}" alt="" width="100%">
-                                        </div>
-                                        <div class="cbp-caption-activeWrap">
-                                            <div class="cbp-l-caption-alignCenter">
-                                                <div class="cbp-l-caption-body">
-                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="cbp-singlePage cbp-l-grid-team-name">Alison
-                                        Davis</a>
-                                    <div class="cbp-l-grid-team-position">Cardiologist</div>
-                                </li>
-                                <li class="cbp-item neurologist">
-                                    <a href="#" class="cbp-caption cbp-singlePage">
-                                        <div class="cbp-caption-defaultWrap">
-                                            <img src="{{ asset('img/team/4.jpg') }} alt="" width="100%">
-                                        </div>
-                                        <div class="cbp-caption-activeWrap">
-                                            <div class="cbp-l-caption-alignCenter">
-                                                <div class="cbp-l-caption-body">
-                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="doctors/member4.html" class="cbp-singlePage cbp-l-grid-team-name">Adam
-                                        Taylor</a>
-                                    <div class="cbp-l-grid-team-position">Neurologist</div>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </section> --}}
 
         <footer>
 
@@ -1278,6 +1190,28 @@
     <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('js/nivo-lightbox.min.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
+
+    <script>
+        const chooseFile = document.getElementById("choose-file");
+        const imgPreview = document.getElementById("img-preview");
+
+        chooseFile.addEventListener("change", function() {
+            getImgData();
+        });
+
+        function getImgData() {
+            const files = chooseFile.files[0];
+            if (files) {
+                const fileReader = new FileReader();
+                fileReader.readAsDataURL(files);
+                fileReader.addEventListener("load", function() {
+                    imgPreview.style.display = "block";
+                    imgPreview.innerHTML = '<img src="' + this.result +
+                        '" /> <p align="center">New Image</p></div> ';
+                });
+            }
+        }
+    </script>
 
 
 

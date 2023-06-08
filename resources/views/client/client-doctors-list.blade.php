@@ -955,21 +955,24 @@
             <div class="intro-content">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-20">
+                        <div class="col-lg-15">
                             <div class="form-wrapper">
                                 <div>
 
                                     <div class="panel panel-skin">
                                         <div class="panel-heading">
                                             <h3 class="panel-title"><span class="fa fa-pencil-square-o"></span>
-                                                Our Doctors:</h3>
+                                                Our Doctors:
+
+                                                <a href="" style="float:right"><span> View All Doctors</span></a>
+                                            </h3>
                                         </div>
 
-                                        <div id="grid-container" class="cbp-l-grid-team">
+                                        <div id="grid-container" class="cbp-l-grid-team" >
                                             <ul>
-                                                @foreach ($doctor_details as $doc_data)
+                                                @foreach ($doctor_details->take(8) as $doc_data)
                                                     
-                                                <li class="cbp-item">
+                                                <li class="cbp-item" style="margin:2rem">
 
                                                     <a href="{{ route('client.view-doctor',$doc_data->doctors->id )}}" class="cbp-caption cbp-singlePage">
                                                         @if($doc_data->doctors->image)

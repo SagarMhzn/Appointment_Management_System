@@ -18,7 +18,7 @@ class DoctorRole
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()->role == User::DOCTOR)
+        if(Auth::user()->role == User::DOCTOR && Auth::user()->isverified == 1 )
         {
             return $next($request);
         }

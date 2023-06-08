@@ -60,6 +60,34 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    
+                                    @if(Auth::user()->role == 3)
+                                    <a class="dropdown-item" href="{{ route('superadmin.profile') }}">
+
+                                        {{ __('Profile') }}
+                                    </a>
+                                        
+                                    @elseif(Auth::user()->role == 2)
+                                    <a class="dropdown-item" href="{{ route('doctor.profile') }}">
+
+                                        {{ __('Profile') }}
+                                    </a>
+                                    @endif
+
+                                    @if(Auth::user()->role == 3)
+                                    <a class="dropdown-item" href="{{ route('superadmin.password') }}">
+
+                                        {{ __('Password') }}
+                                    </a>
+                                        
+                                    @elseif(Auth::user()->role == 2)
+                                    <a class="dropdown-item" href="{{ route('doctor.password') }}">
+
+                                        {{ __('Password') }}
+                                    </a>
+                                    @endif
+                                    
+                                    
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

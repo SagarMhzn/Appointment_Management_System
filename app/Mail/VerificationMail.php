@@ -12,13 +12,14 @@ use Illuminate\Queue\SerializesModels;
 class VerificationMail extends Mailable
 {
     use Queueable, SerializesModels;
+    public $password;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($password)
     {
-        //
+        $this->password = $password;
     }
 
     /**
@@ -27,7 +28,7 @@ class VerificationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Verification Mail',
+            subject: 'Registration Successfull!',
         );
     }
 
@@ -37,7 +38,7 @@ class VerificationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'mailer.mail',
         );
     }
 

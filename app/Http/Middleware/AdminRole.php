@@ -18,7 +18,7 @@ class AdminRole
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()->role == User::SUPERADMIN)
+        if(Auth::user()->role == User::SUPERADMIN && Auth::user()->isverified == 1 )
         {
             return $next($request);
         }

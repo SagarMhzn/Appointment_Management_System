@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\Doctor;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Mail\VerificationMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -160,12 +163,15 @@ class RegisterController extends Controller
         // dd($data);
 
 
+
+
         //save to user table
         $user = new User();
+        $randPass = Str::random(8);
 
         $user->name = $data['name'];
         $user->email = $data['email'];
-        $user->password = Hash::make($data['password']);
+        $user->password = Hash::make($randPass);
         $user->role = 2;
         $user->isverified = 0;
         $user->save();
@@ -174,6 +180,7 @@ class RegisterController extends Controller
 
 
         //save to doctor table
+
 
         $doc = new Doctor();
 
@@ -186,7 +193,7 @@ class RegisterController extends Controller
             $file = $data->file('image');
             $filename = date('YmdHi') . $file->getClientOriginalName();
             $file->move(public_path('public/Image'), $filename);
-            $doc->image = $file;
+            $doc->image = $filename;
         }
 
         $doc->address = $data->address;
@@ -202,11 +209,15 @@ class RegisterController extends Controller
 
         $doc->save();
 
+        // Mail::to($doc->user->email)->send(new VerificationMail($randPass));
+
+        return redirect()->back();
 
 
-        Auth::login($user);
 
-        return redirect()->route('home')->with('success', 'User registered successfully!');
+        // Auth::login($user);
+
+        // return redirect()->route('home')->with('success', 'User registered successfully!');
 
         // return redirect()->route('register')->with('success', 'User registered successfully!');
         // return view('auth.login');

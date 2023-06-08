@@ -15,7 +15,14 @@ class ClientController extends Controller
     {
         return view('client.home');
     }
-
+    
+    public function showProfile()
+    {
+        // $user = Auth::user()->id;
+        // dd($user);
+        $client_info = User::where('id',Auth::user()->id)->with('clients')->first();
+        return view('client.profile',compact('client_info'));
+    }
     public function show()
     {
         $user = Auth::user();
@@ -32,5 +39,37 @@ class ClientController extends Controller
         $doctor_details = User::with('doctors')->where('role', 2)->where('isverified',1)->get();
         // dd($doctor_details);
         return view('client.client-doctors-list',compact('doctor_details'));
+    }
+
+    public function update(Request $request){
+
+
+        $user = User::find(Auth::user()->id);
+        $client = Client::where('client_id',Auth::user()->id)->first();
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+        
+        $client->phone = $request->phone;
+        $client->address = $request->address;
+        $client->address = $request->address;
+        $client->dob = $request->dob;
+        if ($request->file('image')) {
+            $file = $request->file('image');
+            $filename = date('YmdHi') . $file->getClientOriginalName();
+            $file->move(public_path('public/Image'), $filename);
+            $client->photo = $filename;
+        }
+        $client->save();
+        
+        // dd($request);
+        return redirect()->back();
+
+
+
+
+
+
     }
 }
