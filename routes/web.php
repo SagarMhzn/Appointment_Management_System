@@ -25,9 +25,17 @@ use App\Http\Controllers\Auth\RegisterController;
 //     return view('welcome');
 // });
 
+// Route::get('/', function () {
+//     if (Auth::check()) {
+//         return view('home');
+//     } else {
+//         return view('welcome');
+//     }
+// });
+
 Route::get('/', function () {
     if (Auth::check()) {
-        return view('home');
+        return redirect('/checkrole');
     } else {
         return view('welcome');
     }
@@ -49,10 +57,8 @@ Route::middleware('auth')->group(function(){
         Route::get('/client/home', [ClientController::class,'show'])->name('home');
         Route::get('/client/profile', [ClientController::class,'showProfile'])->name('profile');
         Route::post('/client/profile', [ClientController::class,'update'])->name('profile-update');
-        // Route::get('/client/home', [ClientController::class,'showDash'])->name('home');
         Route::get('/client/doctors-list', [ClientController::class, 'showDoctors'])->name('client-doctors-list');
         Route::get('/client/make-appointment',[AppointmentController::class, 'makeAppointment'])->name('make-appointment');
-        // Route::get('/client/appointments',[AppointmentController::class, 'index'])->name('appointments');
         Route::post('/client/make-appointment',[AppointmentController::class, 'createAppointment'])->name('book-appointment');
         Route::get('/client/appointments',[AppointmentController::class, 'showAppointmentClient'])->name('appointments');
         Route::get('/client/view-doctor/{id}',[DoctorController::class, 'viewDoctor'])->name('view-doctor');

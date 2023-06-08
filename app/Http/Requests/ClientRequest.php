@@ -2,16 +2,17 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Client;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class ClientRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -19,10 +20,13 @@ class UserRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
-    public function rules(): array
+    public function rules(Client $client): array
     {
-        return [
-            
-        ];
+        if ($this->isMethod('POST')) {
+            return [
+                'name' => 'required | string | max:20 ',
+                
+            ];
+        }
     }
 }
