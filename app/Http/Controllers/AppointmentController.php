@@ -47,25 +47,36 @@ class AppointmentController extends Controller
 
     public function showAppointmentDoctor()
     {
-        $appointments = Appointment::with('userAppointmentsClient')->where('doctor_id', auth()->user()->id)->get();
+        $appointments = Appointment::with('userAppointmentsClient')->where('doctor_id', auth()->user()->id)->where('status',0)->get();
         return view('doctor.view-appointments', compact('appointments'));
     }
-
+    
+    public function showCompletedAppointmentDoctor()
+    {
+        $appointments = Appointment::with('userAppointmentsClient')->where('doctor_id', auth()->user()->id)->where('status',1)->get();
+        return view('doctor.completed-appointment-list', compact('appointments'));
+    }
     
 
     public function toggleVerified($id)
     {
         $appointment = Appointment::findOrFail($id);
-        $appointment->verified = !$appointment->verified;
-        $appointment->save();
+
+        if($appointment->status != 1){
+            $appointment->verified = !$appointment->verified;
+            $appointment->save();
+        }
         return redirect()->back();
     }
 
     public function toggleStatus($id)
     {
         $appointment = Appointment::findOrFail($id);
-        $appointment->status = !$appointment->status;
-        $appointment->save();
+        if($appointment->verified != 0){
+
+            $appointment->status = !$appointment->status;
+            $appointment->save();
+        }
         return redirect()->back();
     }
 }

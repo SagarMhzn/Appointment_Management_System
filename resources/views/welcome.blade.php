@@ -30,7 +30,7 @@
 
 
     <!-- Styles -->
-    <style>
+    {{-- <style>
         /* ! tailwindcss v3.2.4 | MIT License | https://tailwindcss.com */
         *,
         ::after,
@@ -845,7 +845,7 @@
                 padding: 2rem
             }
         }
-    </style>
+    </style> --}}
 </head>
 
 
@@ -1040,7 +1040,8 @@
 
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-3 col-md-3">
+                    
+                    <div class="col-sm-6 col-md-6 col-lg-6">
                         <div>
                             <div class="box text-center">
 
@@ -1054,7 +1055,7 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-3 col-md-3">
+                    <div class="col-sm-6 col-md-6 col-lg-6">
                         <div>
                             <div class="box text-center">
                                 <i class="fa fa-user-md fa-3x circled bg-skin"></i>

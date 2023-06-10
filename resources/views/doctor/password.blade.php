@@ -16,6 +16,7 @@
         {{ route('doctor.appointments-list') }}
         "
             class="w3-bar-item w3-button  w3-border-bottom">Appointments</a>
+            <a href="{{ route('doctor.completed-appointment-list') }}" class="w3-bar-item w3-button  w3-border-bottom" >Completed Appointments</a>
         {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Appointment Requests</a> --}}
         {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Patients</a> --}}
 

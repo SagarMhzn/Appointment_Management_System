@@ -72,7 +72,9 @@ Route::middleware('auth')->group(function(){
         // Route::put('/doctor/home', [DoctorController::class,'updateProfile'])->name('update-profile');
         Route::put('/doctor/profile',[DoctorController::class,'updateProfile'])->name('update-profile');
         Route::get('/doctor/list', [DoctorController::class, 'show'])->name('list');
-        Route::get('/appointment/list',[AppointmentController::class, 'showAppointmentDoctor'])->name('appointments-list');
+
+        Route::get('/appointment/list',[AppointmentController::class, 'showCompletedAppointmentDoctor'])->name('completed-appointment-list');
+        Route::get('/completed-appointment/list',[AppointmentController::class, 'showAppointmentDoctor'])->name('appointments-list');
         // Route::get('/doctor/home',[DoctorController::class,'showUser'])->name('logged_user');
         
         Route::get('/doctor/appointment/toggle-verified/{id}', [AppointmentController::class, 'toggleVerified'])->name('toggleVerified');
@@ -93,6 +95,8 @@ Route::middleware('auth')->group(function(){
 
 
         Route::get('/admin/doctors-list', [SuperAdminController::class, 'showDoctors'])->name('admin-doctors-list');
+        Route::get('/admin/unverified-list', [SuperAdminController::class, 'showUnverifiedDoctors'])->name('unverified-list');
+
         Route::get('/admin/clients-list', [SuperAdminController::class, 'showClients'])->name('admin-clients-list');
         Route::get('/admin/doctor/toggle-verified/{id}', [DoctorController::class, 'toggleVerified'])->name('toggleVerified');
         Route::resource('superadmin', SuperAdminController::class);

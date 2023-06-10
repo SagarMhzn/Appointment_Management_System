@@ -11,11 +11,10 @@
         <h1 class="dash-menu"> Menu</h1>
         <a href="{{ route('home') }}" class="w3-bar-item w3-button  w3-border-bottom">Dashboard</a>
         <a href="{{ route('superadmin.admin-doctors-list') }}" class="w3-bar-item w3-button  w3-border-bottom"
-            style="background-color:rgb(235, 242, 250); color:black; ">Verified  Doctors List</a>
+            >Verified Doctors List</a>
         <a href="{{ route('superadmin.admin-clients-list') }}" class="w3-bar-item w3-button  w3-border-bottom">Client
             List</a>
-        <a href="{{ route('superadmin.unverified-list') }}" class="w3-bar-item w3-button  w3-border-bottom">Unverified
-            Doctors</a>
+        <a href="{{ route('superadmin.unverified-list') }}" class="w3-bar-item w3-button  w3-border-bottom" style="background-color:rgb(235, 242, 250); color:black;">Unverified Doctors</a>
         {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Appointment List</a> --}}
         {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Review Feedback</a>
         <a href="#" class="w3-bar-item w3-button w3-border-bottom"> Verification Requests</a> --}}

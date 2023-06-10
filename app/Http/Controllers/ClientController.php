@@ -28,7 +28,7 @@ class ClientController extends Controller
         $user = Auth::user();
         $client = Client::where('client_id', $user->id)->first();
         $logged_user = User::where('id', $user->id)->first();
-        $countDoctors = Doctor::count();
+        $countDoctors = User::where('role' ,2)->where('isverified',1)->count();
         $countVerAppointments = Appointment::where('client_id',$logged_user->id)->count();
         $countPenAppointments = Appointment::where('client_id',$logged_user->id)->where('verified',0)->count();
         return view('client.home',compact('client', 'logged_user', 'countDoctors','countVerAppointments','countPenAppointments'));
@@ -36,7 +36,7 @@ class ClientController extends Controller
 
     public function showDoctors()
     { 
-        $doctor_details = User::with('doctors')->where('role', 2)->where('isverified',1)->get();
+        $doctor_details = User::with('doctors')->where('role', 2)->where('isverified',1)->paginate(8);
         // dd($doctor_details);
         return view('client.client-doctors-list',compact('doctor_details'));
     }

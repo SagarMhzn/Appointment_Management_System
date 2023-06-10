@@ -17,7 +17,7 @@ class DoctorController extends Controller
         if (auth()->user()->isverified) {
 
             $apptCount = Appointment::where('doctor_id',auth()->user()->id)->count();
-            $apptPendCount = Appointment::where('doctor_id',auth()->user()->id)->where('status',1)->count();
+            $apptPendCount = Appointment::where('doctor_id',auth()->user()->id)->where('status',0)->count();
             
             return view('doctor.home',compact('apptCount','apptPendCount'));
         } else {

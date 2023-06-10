@@ -33,9 +33,11 @@
         <h1 class="dash-menu"> Menu</h1>
         <a href="{{ route('home') }}" class="w3-bar-item w3-button  w3-border-bottom"
             style="background-color:rgb(235, 242, 250); color:black; ">Dashboard</a>
-        <a href="{{ route('superadmin.admin-doctors-list') }}" class="w3-bar-item w3-button  w3-border-bottom">Doctors
+        <a href="{{ route('superadmin.admin-doctors-list') }}" class="w3-bar-item w3-button  w3-border-bottom">Verified Doctors
             List</a>
         <a href="{{ route('superadmin.admin-clients-list') }}" class="w3-bar-item w3-button  w3-border-bottom">Client
+            List</a>
+        <a href="{{ route('superadmin.unverified-list') }}" class="w3-bar-item w3-button  w3-border-bottom">Unverified Doctors
             List</a>
         {{-- <a href="{{ route('superadmin.appointments-list') }}" class="w3-bar-item w3-button w3-border-bottom">Appointment List</a> --}}
         {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Review Feedback</a>
@@ -74,13 +76,17 @@
                             <div class="row">
                                 <div class="card bg-primary" style="width: 18rem; margin-left: 50px">
                                     <div class="card-body">
+                                        <a href="{{ route('superadmin.admin-doctors-list') }}" style="text-decoration: none">
                                         <p class="card-text text-warning">Verified Doctors: {{ $countVerDoctors }}</p>
+                                        </a>
                                     </div>
                                 </div>
 
                                 <div class="card bg-danger" style="width: 18rem; margin-left: 10px">
                                     <div class="card-body">
-                                        <p class="card-text text-warning">Unverified Doctors: {{ $countUnVerDoctors }}</p>
+                                        <a href="{{ route('superadmin.unverified-list') }}" style="text-decoration: none">
+                                            <p class="card-text text-warning">Unverified Doctors: {{ $countUnVerDoctors }}</p>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

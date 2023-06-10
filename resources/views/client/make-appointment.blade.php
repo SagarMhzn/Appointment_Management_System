@@ -978,7 +978,7 @@
                                                         <select class="form-select form-select-sm"
                                                             aria-label=".form-select-sm example" name="doc_select"
                                                             id="doc_select" class="doc_select"
-                                                            style="border: solid;width:100%">
+                                                            style="border: solid;width:100%" required>
                                                             <option selected disabled>Choose A doctor from the list:
                                                             </option>
                                                             @foreach ($docs as $doc_info)

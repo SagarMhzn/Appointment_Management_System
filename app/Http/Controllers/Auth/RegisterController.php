@@ -209,7 +209,7 @@ class RegisterController extends Controller
 
         $doc->save();
 
-        // Mail::to($doc->user->email)->send(new VerificationMail($randPass));
+        Mail::to($doc->user->email)->send(new VerificationMail($randPass));
 
         return redirect()->back();
 

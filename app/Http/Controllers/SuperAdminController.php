@@ -61,12 +61,21 @@ class SuperAdminController extends Controller
     public function showDoctors()
     { 
 
-        // $doctor_details = User::where('role', 2)->with('doctors')->get();
-        $doctor_details = Doctor::get();
+        $doctor_details = User::where('role', 2)->where('isverified',1)->with('doctors')->get();
+        // $doctor_details = Doctor::get();
         // dd($doctor_details);
         return view('superadmin.admin-doctors-list',compact('doctor_details'));
     }
+    
+    public function showUnverifiedDoctors()
+    { 
 
+        $doctor_details = User::where('role', 2)->where('isverified',0)->with('doctors')->get();
+        // $doctor_details = Doctor::whereget();
+
+        // dd($doctor_details);
+        return view('superadmin.unverified-list',compact('doctor_details'));
+    }
     public function showClients()
     { 
 

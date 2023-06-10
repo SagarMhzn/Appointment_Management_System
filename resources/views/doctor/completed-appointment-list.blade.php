@@ -12,8 +12,8 @@
         <a href="{{ url('/doctor/home') }}" class="w3-bar-item w3-button  w3-border-bottom "
             >Dashboard</a>
         <a href="{{ url('/doctor/list') }}" class="w3-bar-item w3-button  w3-border-bottom" >Doctors List</a>
-        <a href="{{ route('doctor.appointments-list') }}" class="w3-bar-item w3-button  w3-border-bottom" style="background-color:rgb(235, 242, 250); color:black; ">Appointments</a>
-        <a href="{{ route('doctor.completed-appointment-list') }}" class="w3-bar-item w3-button  w3-border-bottom" >Completed Appointments</a>
+        <a href="{{ route('doctor.appointments-list') }}" class="w3-bar-item w3-button  w3-border-bottom" >Appointments</a>
+        <a href="{{ route('doctor.completed-appointment-list') }}" class="w3-bar-item w3-button  w3-border-bottom" style="background-color:rgb(235, 242, 250); color:black; ">Completed Appointments</a>
         {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Appointment Requests</a> --}}
         {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Patients</a> --}}
 
@@ -39,9 +39,7 @@
                         <th scope="col">Email</th>
                         <th scope="col">Appoinment Time</th>
                         <th scope="col">Appointment Date</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Verify</th>
-                        <th scope="col">Status</th>
+                        {{-- <th scope="col">Description</th> --}}
                         
                     </tr>
                 </thead>
@@ -64,7 +62,7 @@
 
                                                   <td>{{ $appts->appointment_start_time }} - {{ $appts->appointment_end_time }}</td>
                                                   <td>{{ $appts->appointment_date }}</td>
-                                                  <td>{{ $appts->description }}</td>
+                                                  {{-- <td>{{ $appts->description }}</td> --}}
                                                   {{-- <td>
                                                     {{ $appts->verified }}
 
@@ -83,7 +81,7 @@
                                                     @endif
                                                 </td> --}}
 
-                                                <td>
+                                                {{-- <td>
                                                     <a href="{{ route('doctor.toggleVerified', ['id' => $appts->id]) }}" class="badge {{ $appts->verified == 0 ? 'text-danger' : 'text-success' }}">
                                                         {{ $appts->verified == 0 ? 'Not Verified!' : 'Verified!' }}
                                                     </a>
@@ -92,7 +90,7 @@
                                                     <a href="{{ route('doctor.toggleStatus', ['id' => $appts->id]) }}" class="badge {{ $appts->status == 0 ? 'text-danger' : 'text-success' }}">
                                                         {{ $appts->status == 0 ? 'Pending!' : 'Completed!' }}
                                                     </a>
-                                                </td>
+                                                </td> --}}
                                                 
                                                 </tr>
                                                 @endforeach
@@ -101,12 +99,6 @@
             </table>
 
         </div>
-
-
-
-
-
-
     </div>
 
     <script>

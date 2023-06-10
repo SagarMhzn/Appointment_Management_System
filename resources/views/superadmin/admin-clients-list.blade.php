@@ -6,11 +6,15 @@
 
 
     <div class="w3-sidebar w3-bar-block w3-card w3-animate-left"
-        style="display:block;margin-left:0%;width:10%; background-color:#000000;; text-align:center;color:white;" id="mySidebar">
+        style="display:block;margin-left:0%;width:10%; background-color:#000000;; text-align:center;color:white;"
+        id="mySidebar">
         <h1 class="dash-menu"> Menu</h1>
-        <a href="{{ route('home') }}" class="w3-bar-item w3-button  w3-border-bottom" >Dashboard</a>
-        <a href="{{ route('superadmin.admin-doctors-list') }}" class="w3-bar-item w3-button  w3-border-bottom" >Doctors List</a>
-        <a href="{{ route('superadmin.admin-clients-list') }}" class="w3-bar-item w3-button  w3-border-bottom" style="background-color:rgb(235, 242, 250); color:black; ">Client List</a>
+        <a href="{{ route('home') }}" class="w3-bar-item w3-button  w3-border-bottom">Dashboard</a>
+        <a href="{{ route('superadmin.admin-doctors-list') }}" class="w3-bar-item w3-button  w3-border-bottom">Verified Doctors
+            List</a>
+        <a href="{{ route('superadmin.admin-clients-list') }}" class="w3-bar-item w3-button  w3-border-bottom"
+            style="background-color:rgb(235, 242, 250); color:black; ">Client List</a>
+            <a href="{{ route('superadmin.unverified-list') }}" class="w3-bar-item w3-button  w3-border-bottom" >Unverified Doctors</a>
         {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Appointment List</a> --}}
         {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Review Feedback</a>
         <a href="#" class="w3-bar-item w3-button w3-border-bottom"> Verification Requests</a> --}}
@@ -38,13 +42,13 @@
                         <th scope="col">Phone</th>
                         <th scope="col">Email</th>
                         {{-- <th scope="col">Action</th> --}}
-                        
+
                     </tr>
                 </thead>
                 <tbody>
 
                     @foreach ($client_details as $key => $data)
-                    {{-- {{ dd($data); }} --}}
+                        {{-- {{ dd($data); }} --}}
                         <tr>
                             <th scope="row">{{ $key + 1 }}</th>
                             <td>{{ $data->name }}</td>
@@ -59,7 +63,7 @@
                             </div>
                             </td> --}}
                         </tr>
-                        @endforeach
+                    @endforeach
 
                 </tbody>
             </table>

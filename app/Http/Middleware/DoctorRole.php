@@ -18,12 +18,16 @@ class DoctorRole
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()->role == User::DOCTOR && Auth::user()->isverified == 1 )
-        {
-            return $next($request);
+        if (Auth::user()->role == User::DOCTOR) {
+            if (Auth::user()->isverified == 1) {
+                return $next($request);
+            } else {
+                Auth::logout();
+                return redirect('/');
+            }
         }
+        return redirect('/');
         // abort(401);
-        return redirect('home');
 
     }
 }
