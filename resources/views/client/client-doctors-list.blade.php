@@ -5,28 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name') }}</title>
-
-    <!-- Fonts -->
-    {{-- <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ url(mix('css/app.css')) }}">
-
-    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="plugins/cubeportfolio/css/cubeportfolio.min.css">
-    <link href="css/nivo-lightbox.css" rel="stylesheet" />
-    <link href="css/nivo-lightbox-theme/default/default.css" rel="stylesheet" type="text/css" />
-    <link href="css/owl.carousel.css" rel="stylesheet" media="screen" />
-    <link href="css/owl.theme.css" rel="stylesheet" media="screen" />
-    <link href="css/animate.css" rel="stylesheet" />
-    <link href="css/style.css" rel="stylesheet">
-
-    <!-- boxed bg -->
-    <link id="bodybg" href="bodybg/bg1.css" rel="stylesheet" type="text/css" />
-    <!-- template skin -->
-    <link id="t-colors" href="color/default.css" rel="stylesheet"> --}}
-
+    <title>{{ config('app.name') }}</title> 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
