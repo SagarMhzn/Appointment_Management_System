@@ -1031,9 +1031,7 @@
                                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                                     <div class="form-group">
                                                         <label>Describe what the Appointment is for:</label>
-                                                        <textarea type="text" name="description" id="description" class="form-control input-md" required>
-                                                            </textarea>
-
+                                                        <textarea type="text" name="description" id="description" class="form-control input-md" required></textarea>
                                                     </div>
                                                 </div>
                                             </div>

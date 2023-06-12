@@ -74,9 +74,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-
-        // $data['isverified'] = true;
-        // dd($data);
         $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -85,13 +82,6 @@ class RegisterController extends Controller
             'isverified' => "1",
         ]);
 
-        // if ($data['image']->file('image')) {
-        //     $file = $data['image']->file('image');
-        //     $filename = date('YmdHi') . $file->getClientOriginalName();
-        //     $file->move(public_path('public/Image'), $filename);
-        //     $imagePath = 'public/Image/' . $filename;
-        // }
-
         Client::create([
             'client_id' => $user->id,
             'phone' => $data['phone'],
@@ -99,58 +89,7 @@ class RegisterController extends Controller
             'address' => $data['address'],
         ]);
 
-        // if ($_FILES['image']) {
-        //     $file = $_FILES['image'];
-        //     $filename = date('YmdHi') . $file['name'];
-        //     $tempPath = $file['tmp_name'];
-        //     $destinationPath = public_path('public/Image/') . $filename;
-
-        //     // Check if the uploaded file is an image
-        //     $isImage = getimagesize($tempPath) !== false;
-
-        //     if ($isImage) {
-        //         // Move the uploaded file to the destination folder
-        //         move_uploaded_file($tempPath, $destinationPath);
-
-        //         // Save the image path in the database
-        //         $imagePath = 'public/Image/' . $filename;
-
-
-        //         Client::create([
-        //             'client_id' => $user->id,
-        //             'phone' => $data['phone'],
-        //             'dob' => $data['dateAD'],
-        //             'address' => $data['address'],
-        //             'image' => $imagePath,
-        //         ]);
-        //     }
-        // }
-
-
-
-        // $patient->save();
-
         return $user;
-
-
-        // $user = new User();
-
-        // $user->name = $data['name'];
-        // $user->email = $data['email'];
-        // $user->password = Hash::make($data['password']);
-        // $user->role = 1;
-        // $user->isverified = true;
-        // $user->save();
-
-
-        //  Auth::login($user);
-
-        // return redirect()->route('home')->with('success', 'User registered successfully!');
-
-        // dd($user);
-
-        // $data->isverified = true;
-        // $data->save();
     }
 
     public function index()
@@ -161,25 +100,18 @@ class RegisterController extends Controller
     protected function doctorRegister(Request $data)
     {
         // dd($data);
-
-
-
-
-        //save to user table
         $user = new User();
         $randPass = Str::random(8);
 
         $user->name = $data['name'];
         $user->email = $data['email'];
         $user->password = Hash::make($randPass);
+        // $user->password = Hash::make('doctor123');
         $user->role = 2;
         $user->isverified = 0;
         $user->save();
         
         $user_id = $user->id;
-
-
-        //save to doctor table
 
 
         $doc = new Doctor();
@@ -202,33 +134,10 @@ class RegisterController extends Controller
         $doc->qualifications = $data->qualification;
         $doc->experience = $data->experience;
         $doc->field_of_expertize = $data->field_of_expertize;
-
-
-
-        // dd($doc);
-
         $doc->save();
 
         Mail::to($doc->user->email)->send(new VerificationMail($randPass));
 
         return redirect()->back();
-
-
-
-        // Auth::login($user);
-
-        // return redirect()->route('home')->with('success', 'User registered successfully!');
-
-        // return redirect()->route('register')->with('success', 'User registered successfully!');
-        // return view('auth.login');
-        // return $user;
-
-        // return User::create([
-        //     'name' => $data['name'],
-        //     'email' => $data['email'],
-        //     'password' => Hash::make($data['password']),
-        //     'role'=> 2,
-        //     'isverified'=> 1,
-        // ]);
     }
 }

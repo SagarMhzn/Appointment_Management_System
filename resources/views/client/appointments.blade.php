@@ -982,16 +982,17 @@
                                                 			
 
                                                 @foreach ($appointments as $keys => $appts)
+                                                {{-- {{ dd($appts->userAppointmentsDoctor) }} --}}
                                                 <tr>
                                                   <th scope="row">{{ $keys + 1 }}</th>
                                                   <td>{{ $appts->userAppointmentsDoctor->name }}</td>
                                                   <td>
                                                     {{-- {{ $appts->userAppointmentsDoctor->field_of_expertize }} --}}
 
-                                                    @if($appts->userAppointmentsDoctor->field_of_expertize == '')
+                                                    @if($appts->doctorAppointments->field_of_expertize == '')
                                                         N/A
                                                     @else
-                                                    {{ $appts->userAppointmentsDoctor->field_of_expertize }}
+                                                    {{ $appts->doctorAppointments->field_of_expertize }}
                                                     @endif
                                                 </td>
 

@@ -21,11 +21,31 @@
     <link href="css/owl.theme.css" rel="stylesheet" media="screen" />
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet">
+    <link href="http://bootstrap-notify.remabledesigns.com/" rel="stylesheet">
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"> --}}
+    {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> --}}
+
+
+
 
     <!-- boxed bg -->
     <link id="bodybg" href="bodybg/bg1.css" rel="stylesheet" type="text/css" />
     <!-- template skin -->
     <link id="t-colors" href="color/default.css" rel="stylesheet">
+
+    <style>
+        .notification {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 
 
 
@@ -871,7 +891,7 @@
                         data-target=".navbar-main-collapse">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <a class="navbar-brand" href="{{Auth::check() ? url('/checkrole') : url('/')  }}">
+                    <a class="navbar-brand" href="{{ Auth::check() ? url('/checkrole') : url('/') }}">
                         <img src="img/logo.png" alt="" width="150" height="40" />
                     </a>
                 </div>
@@ -887,14 +907,12 @@
 
                                 <div>
                                     @if (Route::has('login'))
-                                        <div >
+                                        <div>
                                             @auth
-                                                <li><a href="{{ url('/home') }}"
-                                                        >Home</a>
+                                                <li><a href="{{ url('/home') }}">Home</a>
                                                 </li>
                                             @else
-                                                <li> <a href="{{ route('login') }}"
-                                                        >Log
+                                                <li> <a href="{{ route('login') }}">Log
                                                         in</a></li>
 
                                                 @if (Route::has('register'))
@@ -955,26 +973,32 @@
 
                                     <div class="panel panel-skin">
                                         <div class="panel-heading">
-                                            <h3 class="panel-title"><span class="fa fa-pencil-square-o"></span> Sign Up Now! <small>(It's free!)</small></h3>
+                                            <h3 class="panel-title"><span class="fa fa-pencil-square-o"></span> Sign
+                                                Up Now! <small>(It's free!)</small></h3>
                                         </div>
                                         <div class="panel-body">
-                                            <form role="form" class="lead" method="POST" action="{{ route('register') }}">
+                                            <form role="form" class="lead" method="POST"
+                                                action="{{ route('register') }}">
                                                 @csrf
                                                 <div class="row">
                                                     <div class="col-xs-6 col-sm-6 col-md-6">
                                                         <div class="form-group">
                                                             <label>Name</label>
-                                                            <input type="text" name="name" id="name" value="{{ old('name') }}"
-                                                            required autocomplete="name" autofocus class="form-control input-md">
+                                                            <input type="text" name="name" id="name"
+                                                                value="{{ old('name') }}" required
+                                                                autocomplete="name" autofocus
+                                                                class="form-control input-md">
                                                         </div>
                                                     </div>
                                                     <div class="col-xs-6 col-sm-6 col-md-6">
                                                         <div class="form-group">
                                                             <label>Email</label>
                                                             {{-- <input type="text" name="last_name" id="last_name" --}}
-                                                                {{-- class="form-control input-md"> --}}
-                                                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" 
-                                                                name="email" value="{{ old('email') }}" required autocomplete="email">
+                                                            {{-- class="form-control input-md"> --}}
+                                                            <input id="email" type="email"
+                                                                class="form-control @error('email') is-invalid @enderror"
+                                                                name="email" value="{{ old('email') }}" required
+                                                                autocomplete="email">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -983,15 +1007,17 @@
                                                     <div class="col-xs-6 col-sm-6 col-md-6">
                                                         <div class="form-group">
                                                             <label>Password</label>
-                                                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" 
-                                                            name="password" required autocomplete="new-password">
+                                                            <input id="password" type="password"
+                                                                class="form-control @error('password') is-invalid @enderror"
+                                                                name="password" required autocomplete="new-password">
                                                         </div>
                                                     </div>
                                                     <div class="col-xs-6 col-sm-6 col-md-6">
                                                         <div class="form-group">
                                                             <label> Confirm Password</label>
-                                                            <input id="password-confirm" type="password" class="form-control" 
-                                                            name="password_confirmation" required autocomplete="new-password">
+                                                            <input id="password-confirm" type="password"
+                                                                class="form-control" name="password_confirmation"
+                                                                required autocomplete="new-password">
                                                         </div>
                                                     </div>
                                                     <div class="col-xs-6 col-sm-6 col-md-6">
@@ -1011,7 +1037,8 @@
                                                     <div class="col-xs-6 col-sm-6 col-md-6">
                                                         <div class="form-group">
                                                             <label>Date of Birth</label>
-                                                            <input id="dob-ad" type="date" class="form-control" name="dateAD" required>
+                                                            <input id="dob-ad" type="date" class="form-control"
+                                                                name="dateAD" required>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1040,7 +1067,7 @@
 
             <div class="container">
                 <div class="row">
-                    
+
                     <div class="col-sm-6 col-md-6 col-lg-6">
                         <div>
                             <div class="box text-center">
@@ -1093,7 +1120,31 @@
                                 <div class="col-md-4">
                                     <div>
                                         <div class="cta-btn">
-                                            <a href="#" class="btn btn-skin btn-lg">Book an appoinment</a>
+                                            @if (Auth::check())
+                                                <a href="{{ route('client.make-appointment') }}"
+                                                    class="btn btn-skin btn-lg">Book an appoinment</a>
+                                            @else
+                                                {{-- <a id="notificationBtn" class="btn btn-skin btn-lg">Book an
+                                                    appoinment</a>
+
+                                                <div id="notificationContainer" class="notification">
+                                                    <span id="notificationMessage">You need to login to Book an
+                                                        appointment.</span>
+                                                    <button id="dismissBtn" class="btn-close"
+                                                        aria-label="Close"></button>
+                                                </div> --}}
+
+                                                <button id="notificationBtn" class="btn btn-skin btn-lg">Book an
+                                                    appoinment</button>
+
+                                                
+                                            @endif
+
+
+
+
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -1314,6 +1365,7 @@
     <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
 
     <!-- Core JavaScript Files -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.easing.min.js"></script>
@@ -1326,8 +1378,13 @@
     <script src="js/nivo-lightbox.min.js"></script>
     <script src="js/custom.js"></script>
 
+    <script>
+        document.getElementById('notificationBtn').addEventListener('click', function() {
+            alert('You need to login to Book an appointment.');
+        });
+    </script>
 
-
+   
 
 </body>
 

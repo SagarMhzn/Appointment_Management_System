@@ -49,19 +49,19 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::post('/register-doctor', [RegisterController::class, 'doctorRegister'])->name('DOC.register');
 Route::get('/register-doctor', [RegisterController::class, 'index'])->name('auth.doc.register');
 
+Route::get('/doctors-list', [ClientController::class, 'showDoctors'])->name('client.client-doctors-list');
+Route::get('/client/view-doctor/{id}',[DoctorController::class, 'viewDoctor'])->name('client.view-doctor');
 
 Route::middleware('auth')->group(function(){
-
+    
     Route::name('client.')->middleware('clientrole')->group(function () {
         Route::get('/client/home', [ClientController::class,'index'])->name('home');
         Route::get('/client/home', [ClientController::class,'show'])->name('home');
         Route::get('/client/profile', [ClientController::class,'showProfile'])->name('profile');
         Route::post('/client/profile', [ClientController::class,'update'])->name('profile-update');
-        Route::get('/client/doctors-list', [ClientController::class, 'showDoctors'])->name('client-doctors-list');
         Route::get('/client/make-appointment',[AppointmentController::class, 'makeAppointment'])->name('make-appointment');
         Route::post('/client/make-appointment',[AppointmentController::class, 'createAppointment'])->name('book-appointment');
         Route::get('/client/appointments',[AppointmentController::class, 'showAppointmentClient'])->name('appointments');
-        Route::get('/client/view-doctor/{id}',[DoctorController::class, 'viewDoctor'])->name('view-doctor');
         Route::resource('client', ClientController::class);
     });
 

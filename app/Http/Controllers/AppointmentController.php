@@ -41,7 +41,7 @@ class AppointmentController extends Controller
 
     public function showAppointmentClient()
     {
-        $appointments = Appointment::with('userAppointmentsDoctor')->where('client_id', auth()->user()->id)->get();
+        $appointments = Appointment::with('userAppointmentsDoctor')->with('doctorAppointments')->where('client_id', auth()->user()->id)->get();
         return view('client.appointments', compact('appointments'));
     }
 

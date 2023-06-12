@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name') }}</title> 
+    <title>{{ config('app.name') }}</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
@@ -63,13 +63,29 @@
 
                 <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="{{ route('client.home') }}">Home</a></li>
+                        @if (Auth::check())
+                            <li><a href="{{ route('client.home') }}">Home</a></li>
+                        @else
+                            <li><a href="{{ url('/') }}">Home</a></li>
+                        @endif
+
+
                         <li class="active"><a href="{{ route('client.client-doctors-list') }}">Doctors</a></li>
-                        <li><a href="{{ route('client.appointments') }}">Appointments</a></li>
+
+                        @auth
+
+                            <li><a href="{{ route('client.appointments') }}">Appointments</a></li>
+                        @endauth
 
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ auth()->user()->name }}
-                                <b class="caret"></b></a>
+
+                            @auth
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ auth()->user()->name }}
+                                    <b class="caret"></b></a>
+                            @else
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b
+                                        class="caret"></b></a>
+                            @endauth
                             <ul class="dropdown-menu">
 
                                 <div>
@@ -127,21 +143,24 @@
                                         <div class="panel-heading">
                                             <h3 class="panel-title">
                                                 <div>
-                                                    <span style="display:inline-flex"><i class="fa fa-pencil-square-o"></i>
-                                                    Our Doctors:
-                                                </span>
-                                                    <span style="display:inline-flex; margin-left:25%;">             
-                                                       {{ $doctor_details->links('pagination::tailwind') }}
+                                                    <span style="display:inline-flex"><i
+                                                            class="fa fa-pencil-square-o"></i>
+                                                        Our Doctors:
                                                     </span>
-                                                    <a class="panel-title" href="" style="display:inline-flex; float: right;">All Doctors</a>
+                                                    <span style="display:inline-flex; margin-left:25%;">
+                                                        {{ $doctor_details->links('pagination::tailwind') }}
+                                                    </span>
+                                                    <a class="panel-title" href=""
+                                                        style="display:inline-flex; float: right;">All Doctors</a>
                                                 </div>
-                                                
+
                                             </h3>
 
 
                                         </div>
 
-                                        <div id="grid-container" class="cbp-l-grid-team" style="margin-left: 7rem; margin-top:1rem;">
+                                        <div id="grid-container" class="cbp-l-grid-team"
+                                            style="margin-left: 7rem; margin-top:1rem;">
                                             <ul>
                                                 @foreach ($doctor_details as $doc_data)
                                                     <li class="cbp-item" style="">
