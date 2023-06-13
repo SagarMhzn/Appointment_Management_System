@@ -970,13 +970,13 @@
                                             @csrf
 
                                             @method('put')
-                                            <div style="display:flex; flex-direction:row; ">
+                                            <div style="display:flex; flex-direction:row; max-height:50vh">
                                                 <div>
-                                                <div style="padding: 2rem;max-width:30vw;object-fit:cover;" id="img-preview">
+                                                <div style="padding: 2rem;max-width:30vw;object-fit:cover; " id="img-preview">
                                                     @if ($client_info->clients->photo)
                                                         <div>
                                                             <img src="{{ asset('public/Image/' . $client_info->clients->photo) }}"
-                                                                alt="" style="height:30vh">
+                                                                 alt="" style="max-height:30vh;">
                                                         </div>
                                                     @else
                                                         <div>

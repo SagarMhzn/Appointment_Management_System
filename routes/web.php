@@ -70,7 +70,7 @@ Route::middleware('auth')->group(function(){
         Route::get('/doctor/home', [DoctorController::class,'index'])->name('home');
         Route::get('/doctor/profile', [DoctorController::class,'showDoctor'])->name('profile');
         // Route::put('/doctor/home', [DoctorController::class,'updateProfile'])->name('update-profile');
-        Route::put('/doctor/profile',[DoctorController::class,'updateProfile'])->name('update-profile');
+        Route::put('/doctor/profile',[DoctorController::class,'update'])->name('update-profile');
         Route::get('/doctor/list', [DoctorController::class, 'show'])->name('list');
 
         Route::get('/appointment/list',[AppointmentController::class, 'showCompletedAppointmentDoctor'])->name('completed-appointment-list');

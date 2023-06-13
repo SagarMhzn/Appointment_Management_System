@@ -125,7 +125,7 @@
                                         <div class="row" style="display:flex;flex-direction:row; ">
                                             <div class="col-xs-4 col-sm-4 col-md-4 " >
                                                 <div class="form-group" >
-                                                    @if ($doc_user->doctors->image)
+                                                    @if ($doc_user->doctors->image && file_exists(public_path('public/Image/' . $doc_user->doctors->image)))
                                                         <div>
                                                             <img src="{{ asset('public/Image/' . $doc_user->doctors->image) }}"
                                                                 alt="" style="border-radius: 50%">

@@ -977,6 +977,12 @@
                                                 Up Now! <small>(It's free!)</small></h3>
                                         </div>
                                         <div class="panel-body">
+                                            @if ($errors->any())
+                                                @foreach ($errors->all() as $errors)
+                                                    <h4 class="text-danger " style="color:red;">{{ $errors }}
+                                                    </h4>
+                                                @endforeach
+                                            @endif
                                             <form role="form" class="lead" method="POST"
                                                 action="{{ route('register') }}">
                                                 @csrf
@@ -996,7 +1002,7 @@
                                                             {{-- <input type="text" name="last_name" id="last_name" --}}
                                                             {{-- class="form-control input-md"> --}}
                                                             <input id="email" type="email"
-                                                                class="form-control @error('email') is-invalid @enderror"
+                                                                class="form-control "
                                                                 name="email" value="{{ old('email') }}" required
                                                                 autocomplete="email">
                                                         </div>
@@ -1008,7 +1014,7 @@
                                                         <div class="form-group">
                                                             <label>Password</label>
                                                             <input id="password" type="password"
-                                                                class="form-control @error('password') is-invalid @enderror"
+                                                                class="form-control "
                                                                 name="password" required autocomplete="new-password">
                                                         </div>
                                                     </div>
@@ -1060,9 +1066,6 @@
             </div>
         </section>
 
-        <!-- /Section: intro -->
-
-        <!-- Section: boxes -->
         <section id="boxes" class="home-section paddingtop-80">
 
             <div class="container">
@@ -1099,7 +1102,6 @@
             </div>
 
         </section>
-        <!-- /Section: boxes -->
 
 
         <section id="callaction" class="home-section paddingtop-40">
@@ -1124,20 +1126,8 @@
                                                 <a href="{{ route('client.make-appointment') }}"
                                                     class="btn btn-skin btn-lg">Book an appoinment</a>
                                             @else
-                                                {{-- <a id="notificationBtn" class="btn btn-skin btn-lg">Book an
-                                                    appoinment</a>
-
-                                                <div id="notificationContainer" class="notification">
-                                                    <span id="notificationMessage">You need to login to Book an
-                                                        appointment.</span>
-                                                    <button id="dismissBtn" class="btn-close"
-                                                        aria-label="Close"></button>
-                                                </div> --}}
-
                                                 <button id="notificationBtn" class="btn btn-skin btn-lg">Book an
                                                     appoinment</button>
-
-                                                
                                             @endif
 
 
@@ -1154,120 +1144,6 @@
                 </div>
             </div>
         </section>
-
-
-
-
-
-        {{-- <!-- Section: team -->
-        <section id="doctor" class="home-section bg-gray paddingbot-60">
-            <div class="container marginbot-50">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div>
-                            <div class="section-heading text-center">
-                                <h2 class="h-bold">Doctors</h2>
-                                <p>Ea melius ceteros oportere quo, pri habeo viderer facilisi ei</p>
-                            </div>
-                        </div>
-                        <div class="divider-short"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-
-                        <div id="filters-container" class="cbp-l-filters-alignLeft">
-                            <div data-filter="*" class="cbp-filter-item-active cbp-filter-item">All (<div
-                                    class="cbp-filter-counter"></div>)</div>
-                            <div data-filter=".cardiologist" class="cbp-filter-item">Cardiologist (<div
-                                    class="cbp-filter-counter"></div>)</div>
-                            <div data-filter=".psychiatrist" class="cbp-filter-item">Psychiatrist (<div
-                                    class="cbp-filter-counter"></div>)</div>
-                            <div data-filter=".neurologist" class="cbp-filter-item">Neurologist (<div
-                                    class="cbp-filter-counter"></div>)</div>
-                        </div>
-
-                        <div id="grid-container" class="cbp-l-grid-team">
-                            <ul>
-                                <li class="cbp-item psychiatrist">
-                                    <a href="doctors/member1.html" class="cbp-caption cbp-singlePage">
-                                        <div class="cbp-caption-defaultWrap">
-                                            <img src="img/team/1.jpg" alt="" width="100%">
-                                        </div>
-                                        <div class="cbp-caption-activeWrap">
-                                            <div class="cbp-l-caption-alignCenter">
-                                                <div class="cbp-l-caption-body">
-                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="doctors/member1.html" class="cbp-singlePage cbp-l-grid-team-name">Alice
-                                        Grue</a>
-                                    <div class="cbp-l-grid-team-position">Psychiatrist</div>
-                                </li>
-                                <li class="cbp-item cardiologist">
-                                    <a href="doctors/member2.html" class="cbp-caption cbp-singlePage">
-                                        <div class="cbp-caption-defaultWrap">
-                                            <img src="img/team/2.jpg" alt="" width="100%">
-                                        </div>
-                                        <div class="cbp-caption-activeWrap">
-                                            <div class="cbp-l-caption-alignCenter">
-                                                <div class="cbp-l-caption-body">
-                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="doctors/member2.html" class="cbp-singlePage cbp-l-grid-team-name">Joseph
-                                        Murphy</a>
-                                    <div class="cbp-l-grid-team-position">Cardiologist</div>
-                                </li>
-                                <li class="cbp-item cardiologist">
-                                    <a href="doctors/member3.html" class="cbp-caption cbp-singlePage">
-                                        <div class="cbp-caption-defaultWrap">
-                                            <img src="img/team/3.jpg" alt="" width="100%">
-                                        </div>
-                                        <div class="cbp-caption-activeWrap">
-                                            <div class="cbp-l-caption-alignCenter">
-                                                <div class="cbp-l-caption-body">
-                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="doctors/member3.html" class="cbp-singlePage cbp-l-grid-team-name">Alison
-                                        Davis</a>
-                                    <div class="cbp-l-grid-team-position">Cardiologist</div>
-                                </li>
-                                <li class="cbp-item neurologist">
-                                    <a href="doctors/member4.html" class="cbp-caption cbp-singlePage">
-                                        <div class="cbp-caption-defaultWrap">
-                                            <img src="img/team/4.jpg" alt="" width="100%">
-                                        </div>
-                                        <div class="cbp-caption-activeWrap">
-                                            <div class="cbp-l-caption-alignCenter">
-                                                <div class="cbp-l-caption-body">
-                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="doctors/member4.html" class="cbp-singlePage cbp-l-grid-team-name">Adam
-                                        Taylor</a>
-                                    <div class="cbp-l-grid-team-position">Neurologist</div>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </section> --}}
 
         <footer>
 
@@ -1384,7 +1260,7 @@
         });
     </script>
 
-   
+
 
 </body>
 

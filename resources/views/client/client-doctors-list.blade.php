@@ -129,7 +129,7 @@
             </div>
         </nav>
 
-
+        {{-- {{ dd($doc->doctors) }} --}}
         <!-- Section: intro -->
         <section id="intro" class="intro">
             <div class="intro-content" style="margin-top: ">
@@ -138,6 +138,9 @@
                         <div class="col-lg-12">
                             <div class="form-wrapper">
                                 <div>
+
+                                    
+
 
                                     <div class="panel panel-skin">
                                         <div class="panel-heading">
@@ -159,15 +162,17 @@
 
                                         </div>
 
+
                                         <div id="grid-container" class="cbp-l-grid-team"
                                             style="margin-left: 7rem; margin-top:1rem;">
                                             <ul>
+
                                                 @foreach ($doctor_details as $doc_data)
                                                     <li class="cbp-item" style="">
 
                                                         <a href="{{ route('client.view-doctor', $doc_data->doctors->id) }}"
                                                             class="cbp-caption cbp-singlePage">
-                                                            @if ($doc_data->doctors->image)
+                                                            @if ($doc_data->doctors->image && file_exists(public_path('public/Image/' . $doc_data->doctors->image)))
                                                                 <div class="cbp-caption-defaultWrap">
                                                                     <img src="{{ asset('public/Image/' . $doc_data->doctors->image) }}"
                                                                         alt="" width="100%"

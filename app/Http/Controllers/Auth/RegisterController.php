@@ -8,6 +8,7 @@ use App\Models\Doctor;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DoctorRequest;
 use App\Mail\VerificationMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -58,11 +59,18 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255'],
-            //  'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255','unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role' => ['numeric', 'nullable'],
-            'isverified' => ['boolean', 'nullable'],
+            'phone' => [
+                'required',
+                'regex:/^[0-9]{10}$/',
+                'numeric',
+                'unique:clients,phone',
+                'unique:doctors,phone',
+            ],
+            'address' => ['required'],
+            'dateAD' =>['required','date'],
+            
         ]);
     }
 
@@ -74,12 +82,30 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
+        // $user = new User;
+        // $user->name = $data['name'];
+        // $user->email = $data['email'];
+        // $user->password = Hash::make($data['password']);
+        // $user->role = 1;
+        // $user->isverified = 1;
+        // $user->save();
+
+        // $client = new Client;
+        // $client->client_id = $user->id;
+        // $client->phone = $data['phone'];
+        // $client->dob = $data['dataAd'];
+        // $client->address = $data['address'];
+        // $client->save();
+
+
+
         $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'role' => 1,
-            'isverified' => "1",
+            'isverified' => 1,
         ]);
 
         Client::create([
@@ -97,8 +123,10 @@ class RegisterController extends Controller
         return view('auth.doctor-register');
     }
 
-    protected function doctorRegister(Request $data)
+    protected function doctorRegister(DoctorRequest $data)
     {
+
+
         // dd($data);
         $user = new User();
         $randPass = Str::random(8);

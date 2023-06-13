@@ -9,14 +9,14 @@
         style="display:block;margin-left:0%;width:10%; background-color:#000000; text-align:center;color:white;"
         id="mySidebar">
         <h1> Menu</h1>
-        <a href="{{ url('/doctor/home') }}" class="w3-bar-item w3-button  w3-border-bottom "
-            >Dashboard</a>
+        <a href="{{ url('/doctor/home') }}" class="w3-bar-item w3-button  w3-border-bottom ">Dashboard</a>
         <a href="{{ url('/doctor/list') }}" class="w3-bar-item w3-button  w3-border-bottom">Doctors List</a>
         <a href="
         {{ route('doctor.appointments-list') }}
         "
             class="w3-bar-item w3-button  w3-border-bottom">Appointments</a>
-            <a href="{{ route('doctor.completed-appointment-list') }}" class="w3-bar-item w3-button  w3-border-bottom" >Completed Appointments</a>
+        <a href="{{ route('doctor.completed-appointment-list') }}" class="w3-bar-item w3-button  w3-border-bottom">Completed
+            Appointments</a>
         {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Appointment Requests</a> --}}
         {{-- <a href="#" class="w3-bar-item w3-button w3-border-bottom">Patients</a> --}}
 
@@ -30,12 +30,20 @@
                 <h1>Doctor DashBoard</h1>
             </div>
         </div>
-
-
-        <form method="POST" action="{{ route('doctor.update-profile') }}" enctype="multipart/form-data">
+        
+        
+        <div class="errors" style="text-align: center">
+            @if ($errors->any())
+            @foreach ($errors->all() as $errors)
+                <h4 class="text-danger " style="color:red;">{{ $errors }}
+                </h4>
+            @endforeach
+        @endif
+        </div>
+        <form method="POST" action="{{ route('doctor.update-profile','$id') }}" enctype="multipart/form-data">
             <div class="card-body " style="display:flex; flex-direction:row; margin-top:20px; margin-left:200px ">
                 @csrf
-
+                
                 @method('put')
                 <div class="doc-image" style="margin: 0rem 0.8rem;border-radius:50%;" id="img-preview">
                     @if ($doctor->image)
@@ -54,69 +62,43 @@
 
                         <div class="col-md-12" style="margin-left:1rem;">
                             <input id="name" type="text" class="form-control" name="name"
-                                value="{{ $logged_user->name }}" autofocus>
+                                value="{{ auth()->user()->name }}" >
 
-                            @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                           
                         </div>
                     </div>
                     <div class="" style="display:flex; flex-direction:row; justify-content:space-between;">
                         <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
 
                         <div class="col-md-12" style="margin-left:1rem;">
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                                name="email" value="{{ $logged_user->email }}">
+                            <input id="email" type="email" class="form-control "
+                                name="email" value="{{ auth()->user()->email }}">
 
-                            @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                           
                         </div>
                     </div>
                     <div class="" style="display:flex; flex-direction:row; justify-content:space-between;">
                         <label for="phone" class="col-md-4 col-form-label text-md-end">{{ __('Phone') }}</label>
 
                         <div class="col-md-12" style="margin-left:1rem;">
-                            <input id="phone" type="text" class="form-control @error('Phone') is-invalid @enderror"
+                            <input id="phone" type="text" class="form-control "
                                 name="phone" value="{{ $doctor->phone }}">
-
-                            @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
                         </div>
                     </div>
                     <div class="" style="display:flex; flex-direction:row; justify-content:space-between;">
                         <label for="address" class="col-md-4 col-form-label text-md-end">{{ __('Address') }}</label>
 
                         <div class="col-md-12" style="margin-left:1rem;">
-                            <input id="address" type="text" class="form-control @error('address') is-invalid @enderror"
+                            <input id="address" type="text" class="form-control "
                                 name="address" value="{{ $doctor->address }}">
-
-                            @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
                         </div>
                     </div>
                     <div class="" style="display:flex; flex-direction:row; justify-content:space-between;">
                         <label for="dob" class="col-md-4 col-form-label text-md-end">{{ __('DoB') }}</label>
 
                         <div class="col-md-12" style="margin-left:1rem;">
-                            <input id="dob" type="date" class="form-control @error('dob') is-invalid @enderror"
+                            <input id="dob" type="date" class="form-control "
                                 name="dob" value="{{ $doctor->dob }}">
-
-                            @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
                         </div>
                     </div>
                     <div class="" style="display:flex; flex-direction:row; justify-content:space-between;">
@@ -125,12 +107,6 @@
                         <div class="col-md-12" style="margin-left:1rem;">
                             <input type="file" class="form-control" id="choose-file" name="image" accept="image/*"
                                 alt="New-Image" />
-
-                            @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
                         </div>
 
                     </div>
@@ -139,14 +115,8 @@
 
                         <div class="col-md-12" style="margin-left:1rem;">
                             <input id="license" type="text"
-                                class="form-control @error('license') is-invalid @enderror" name="license"
+                                class="form-control" name="license"
                                 value="{{ $doctor->license_no }}">
-
-                            @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
                         </div>
                     </div>
                     <div class="" style="display:flex; flex-direction:row; justify-content:space-between;">
@@ -155,14 +125,8 @@
 
                         <div class="col-md-12" style="margin-left:1rem;">
                             <input id="qualifications" type="text"
-                                class="form-control @error('qualifications') is-invalid @enderror" name="qualifications"
+                                class="form-control " name="qualifications"
                                 value="{{ $doctor->qualifications }}">
-
-                            @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
                         </div>
                     </div>
                     <div class="" style="display:flex; flex-direction:row; justify-content:space-between;">
@@ -171,14 +135,8 @@
 
                         <div class="col-md-12" style="margin-left:1rem;">
                             <input id="experience" type="text"
-                                class="form-control @error('experience') is-invalid @enderror" name="experience"
+                                class="form-control " name="experience"
                                 value="{{ $doctor->experience }}">
-
-                            @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
                         </div>
                     </div>
                     <div class="" style="display:flex; flex-direction:row; justify-content:space-between;">
@@ -187,14 +145,8 @@
 
                         <div class="col-md-12" style="margin-left:1rem;">
                             <input id="field_of_expertize" type="text"
-                                class="form-control @error('field_of_expertize') is-invalid @enderror"
+                                class="form-control "
                                 name="field_of_expertize" value="{{ $doctor->field_of_expertize }}">
-
-                            @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
                         </div>
                     </div>
 
