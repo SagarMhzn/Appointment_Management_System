@@ -95,7 +95,7 @@ class DoctorRequest extends FormRequest
                 'regex:/^[0-9]{10}$/',
                 'numeric',
                 'unique:doctors,phone,'.$id,
-                // Rule::unique('clients')->ignore($doctor,'doctor_id'),
+                Rule::unique('clients'),
                 // Rule::unique('doctors')->ignore($doctor,'doctor_id'),
             ],
         ];

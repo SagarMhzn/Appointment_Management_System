@@ -170,11 +170,11 @@
                                                 @foreach ($doctor_details as $doc_data)
                                                     <li class="cbp-item" style="">
 
-                                                        <a href="{{ route('client.view-doctor', $doc_data->doctors->id) }}"
+                                                        <a href="{{ route('client.view-doctor', $doc_data->id) }}"
                                                             class="cbp-caption cbp-singlePage">
-                                                            @if ($doc_data->doctors->image && file_exists(public_path('public/Image/' . $doc_data->doctors->image)))
+                                                            @if ($doc_data->image && file_exists(public_path('public/Image/' . $doc_data->image)))
                                                                 <div class="cbp-caption-defaultWrap">
-                                                                    <img src="{{ asset('public/Image/' . $doc_data->doctors->image) }}"
+                                                                    <img src="{{ asset('public/Image/' . $doc_data->image) }}"
                                                                         alt="" width="100%"
                                                                         style="object-fit:fill">
                                                                 </div>
@@ -195,12 +195,12 @@
                                                             </div>
                                                         </a>
                                                         <a href="{{ route('client.view-doctor', $doc_data->id) }}"
-                                                            class=" cbp-l-grid-team-name">{{ $doc_data->name }}</a>
+                                                            class=" cbp-l-grid-team-name">{{ $doc_data->userDoctor->name }}</a>
                                                         <div class="cbp-l-grid-team-position">
-                                                            @if ($doc_data->doctors->field_of_expertize == '')
+                                                            @if ($doc_data->field_of_expertize == '')
                                                                 N/A
                                                             @else
-                                                                {{ $doc_data->doctors->field_of_expertize }}
+                                                                {{ $doc_data->field_of_expertize }}
                                                             @endif
 
                                                         </div>
