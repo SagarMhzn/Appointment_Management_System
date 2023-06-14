@@ -46,10 +46,10 @@
                 
                 @method('put')
                 <div class="doc-image" style="margin: 0rem 0.8rem;border-radius:50%;" id="img-preview">
-                    @if ($doctor->image)
+                    @if ($doctor->image && file_exists(public_path('public/Image/' . $doctor->image)))
                         <img src="{{ url('public/Image/' . $doctor->image) }}" height="200px"alt="Image" />
                     @else
-                        <img src="{{ url('defaults/no-image.jpg') }}" style="object-fit: cover;height:30vh;width:40vh"
+                        <img src="{{ url('defaults/no-image.jpg') }}" style="object-fit: cover;height:30vh;width:40vh; border-radius:50%"
                             alt="Image" />
                     @endif
 
@@ -98,7 +98,7 @@
 
                         <div class="col-md-12" style="margin-left:1rem;">
                             <input id="dob" type="date" class="form-control "
-                                name="dob" value="{{ $doctor->dob }}">
+                                name="dateAD" value="{{ $doctor->dob }}">
                         </div>
                     </div>
                     <div class="" style="display:flex; flex-direction:row; justify-content:space-between;">

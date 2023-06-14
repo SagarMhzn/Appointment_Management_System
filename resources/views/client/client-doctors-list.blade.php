@@ -56,8 +56,8 @@
                         data-target=".navbar-main-collapse">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <a class="navbar-brand" href="{{ url('/home') }}">
-                        <img src="{{ asset('img/logo.png') }}" alt="" width="150" height="40" />
+                    <a class="navbar-brand" href="{{ Auth::check() ? url('/checkrole') : url('/') }}">
+                        <img src="img/logo.png" alt="" width="150" height="40" />
                     </a>
                 </div>
 
@@ -109,6 +109,11 @@
                                                         </form>
                                                     </div>
                                                 </li>
+
+                                                <li><a href="
+                                                    {{ route('client.profile') }}
+                                                    ">Profile</a>
+                                                </li>
                                             @else
                                                 <li> <a href="{{ route('login') }}">Log
                                                         in</a></li>
@@ -153,7 +158,7 @@
                                                     <span style="display:inline-flex; margin-left:25%;">
                                                         {{ $doctor_details->links('pagination::tailwind') }}
                                                     </span>
-                                                    <a class="panel-title" href=""
+                                                    <a class="panel-title" href="{{ route('doctor-list') }}"
                                                         style="display:inline-flex; float: right;">All Doctors</a>
                                                 </div>
 
@@ -170,11 +175,11 @@
                                                 @foreach ($doctor_details as $doc_data)
                                                     <li class="cbp-item" style="">
 
-                                                        <a href="{{ route('client.view-doctor', $doc_data->doctors->id) }}"
+                                                        <a href="{{ route('client.view-doctor', $doc_data->id) }}"
                                                             class="cbp-caption cbp-singlePage">
-                                                            @if ($doc_data->doctors->image && file_exists(public_path('public/Image/' . $doc_data->doctors->image)))
+                                                            @if ($doc_data->image && file_exists(public_path('public/Image/' . $doc_data->image)))
                                                                 <div class="cbp-caption-defaultWrap">
-                                                                    <img src="{{ asset('public/Image/' . $doc_data->doctors->image) }}"
+                                                                    <img src="{{ asset('public/Image/' . $doc_data->image) }}"
                                                                         alt="" width="100%"
                                                                         style="object-fit:fill">
                                                                 </div>
@@ -195,12 +200,12 @@
                                                             </div>
                                                         </a>
                                                         <a href="{{ route('client.view-doctor', $doc_data->id) }}"
-                                                            class=" cbp-l-grid-team-name">{{ $doc_data->name }}</a>
+                                                            class=" cbp-l-grid-team-name">{{ $doc_data->userDoctor->name }}</a>
                                                         <div class="cbp-l-grid-team-position">
-                                                            @if ($doc_data->doctors->field_of_expertize == '')
+                                                            @if ($doc_data->field_of_expertize == '')
                                                                 N/A
                                                             @else
-                                                                {{ $doc_data->doctors->field_of_expertize }}
+                                                                {{ $doc_data->field_of_expertize }}
                                                             @endif
 
                                                         </div>

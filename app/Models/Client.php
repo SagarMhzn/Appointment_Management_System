@@ -14,7 +14,7 @@ class Client extends Model
 
     protected $fillable = ['client_id','phone','photo','address','dob'];
 
-    public function user(): HasOne
+    public function userClient(): HasOne
     {
         return $this->hasOne(User::class,'id', 'client_id');
     }

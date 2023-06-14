@@ -105,6 +105,10 @@
             </div>
         </nav>
 
+        <x-alerts-box>
+
+        </x-alerts-box>
+
         <main style="background-color:#EBF2FA">
             @yield('content')
         </main>

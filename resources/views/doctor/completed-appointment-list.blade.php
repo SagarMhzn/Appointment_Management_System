@@ -50,48 +50,15 @@
                                                   <th scope="row">{{ $keys + 1 }}</th>
                                                   <td>{{ $appts->userAppointmentsClient->name }}</td>
                                                   <td>
-                                                    {{-- {{ $appts->userAppointmentsClient->field_of_expertize }} --}}
+                                                  
 
                                                     {{ $appts->userAppointmentsClient->email }}
-                                                    {{-- @if($appts->userAppointmentsClient->field_of_expertize == '')
-                                                        N/A
-                                                    @else
-                                                    {{ $appts->userAppointmentsClient->field_of_expertize }}
-                                                    @endif --}}
+                                                    
                                                 </td>
 
                                                   <td>{{ $appts->appointment_start_time }} - {{ $appts->appointment_end_time }}</td>
-                                                  <td>{{ $appts->appointment_date }}</td>
-                                                  {{-- <td>{{ $appts->description }}</td> --}}
-                                                  {{-- <td>
-                                                    {{ $appts->verified }}
-
-                                                    @if($appts->verified ==0)
-                                                    <span class="badge " style="background-color: red">Not Verified!</span>
-                                                    @else
-                                                    <span class="badge " style="background-color: green">Verified!</span> 
-                                                    @endif
-                                                </td>
-                                                  <td>
-                                                    {{ $appts->status }}
-                                                    @if($appts->status == 0)
-                                                    <span class="badge " style="background-color: red">Pending!</span> 
-                                                    @else
-                                                    <span class="badge " style="background-color: green">Completed!</span> 
-                                                    @endif
-                                                </td> --}}
-
-                                                {{-- <td>
-                                                    <a href="{{ route('doctor.toggleVerified', ['id' => $appts->id]) }}" class="badge {{ $appts->verified == 0 ? 'text-danger' : 'text-success' }}">
-                                                        {{ $appts->verified == 0 ? 'Not Verified!' : 'Verified!' }}
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ route('doctor.toggleStatus', ['id' => $appts->id]) }}" class="badge {{ $appts->status == 0 ? 'text-danger' : 'text-success' }}">
-                                                        {{ $appts->status == 0 ? 'Pending!' : 'Completed!' }}
-                                                    </a>
-                                                </td> --}}
-                                                
+                                                  <td>{{ $appts->appointment_date_bs }}</td>
+                                                  
                                                 </tr>
                                                 @endforeach
 

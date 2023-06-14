@@ -45,12 +45,10 @@
     <link id="bodybg" href="{{ asset('bodybg/bg1.css') }}" rel="stylesheet" type="text/css" />
     <!-- template skin -->
     <link id="t-colors" href="{{ asset('color/default.css') }}" rel="stylesheet">
-
     <link href="http://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/css/nepali.datepicker.v4.0.1.min.css"
-        rel="stylesheet" type="text/css" />
-    <script src="http://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/js/nepali.datepicker.v4.0.1.min.js"
-        type="text/javascript"></script>
-
+    rel="stylesheet" type="text/css" />
+<script src="http://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/js/nepali.datepicker.v4.0.1.min.js"
+    type="text/javascript"></script>
 
 
 
@@ -945,6 +943,10 @@
                 </div>
             </div>
         </nav>
+
+
+
+
         <section id="intro" class="intro">
             <div class="intro-content">
                 <div class="container">
@@ -956,81 +958,70 @@
 
                                 <div class="panel panel-skin">
                                     <div class="panel-heading">
-                                        <h3 class="panel-title"><span class="fa fa-pencil-square-o"></span> Book an
+                                        <h3 class="panel-title"><span class="fa fa-pencil-square-o"></span> Edit your
                                             Appointment </h3>
                                     </div>
                                     <div class="panel-body">
                                         <form role="form" class="lead" method="POST"
-                                            action="{{ route('client.book-appointment') }}">
+                                            action="
+                                        {{ route('client.update-appointment', $appts->id)}}
+                                        ">
                                             @csrf
+
+                                            @method('put')
                                             <div class="row">
                                                 <div class="col-xs-12 col-sm-12 col-md-12 ">
                                                     <div class="form-group" style="display:flex: ">
-                                                        <label>Choose who you want the appointment with</label>
-
                                                         <select class="form-select form-select-sm"
                                                             aria-label=".form-select-sm example" name="doc_select"
                                                             id="doc_select" class="doc_select"
                                                             style="border: solid;width:100%" required>
-                                                            <option selected disabled>Choose A doctor from the list:
-                                                            </option>
-                                                            @foreach ($docs as $doc_info)
-                                                                <option value="{{ $doc_info->id }}">
-                                                                    {{ $doc_info->name }} -
-                                                                    {{ $doc_info->doctors->field_of_expertize }}
-                                                                </option>
-                                                            @endforeach
-
+                                                            <option value="{{ $doc->id }}">
+                                                                {{ $doc->userDoctor->name }} -
+                                                                {{ $doc->field_of_expertize }}
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <div class="row">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                                    <div class="form-group">
-                                                        <label>Appointment Date:</label>
-                                                        <br>
-                                                        <div style="display: inline-flex;margin:auto" class="col">
+                                            {{-- @dd($appts->appointment_date) --}}
+                                            <div style="display: inline-flex;margin:auto" class="col">
 
                                                            
-                                                                <div class="col">
-                                                                    <div class=" form-group">
-                                                                        <label for="">Date</label>
-                                                                        <input type="text" name="date_bs"
-                                                                            id="nepali-datepicker" ndpYearCount=2
-                                                                            readonly class="form-control"
-                                                                            placeholder="Date in BS" required>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col" style="padding-left: 20rem">
-                                                                    <div class="form-group">
-                                                                        <label for="">Date (AD)</label>
-                                                                        <input id="english_date" type="date"
-                                                                            name="date_ad" onclick="getDateBS()"
-                                                                            readonly class="form-control"
-                                                                            placeholder="Date in AD" required>
-                                                                    </div>
-                                                                </div>
-                                                            
-                                                        </div>
-
+                                                <div class="col">
+                                                    <div class=" form-group">
+                                                        <label for="">Date</label>
+                                                        <input type="text" name="date_bs"
+                                                            id="nepali-datepicker" ndpYearCount=2 value="{{ $appts->appointment_date_bs }}"
+                                                            readonly class="form-control"
+                                                            placeholder="Date in BS" required>
                                                     </div>
                                                 </div>
-                                            </div>
+                                                <div class="col" style="padding-left: 20rem">
+                                                    <div class="form-group">
+                                                        <label for="">Date (AD)</label>
+                                                        <input id="english_date" type="date"
+                                                            name="date_ad" onclick="getDateBS()" value="{{ $appts->appointment_date_ad }}"
+                                                            readonly class="form-control"
+                                                            placeholder="Date in AD" required>
+                                                    </div>
+                                                </div>
+                                            
+                                        </div>
 
                                             <div class="row">
                                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                                     <div class="form-group">
                                                         <label>Appointment Time</label>
                                                         <input id="starttime" type="time" class="form-control"
+                                                            value="{{ $appts->appointment_start_time }}"
                                                             name="starttime" required>
                                                     </div>
 
                                                     <div class="form-group">
 
                                                         <input id="endtime" type="time" class="form-control"
-                                                            name="endtime" required>
+                                                            value="{{ $appts->appointment_end_time }}" name="endtime"
+                                                            required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1039,7 +1030,7 @@
                                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                                     <div class="form-group">
                                                         <label>Describe what the Appointment is for:</label>
-                                                        <textarea type="text" name="description" id="description" class="form-control input-md" required></textarea>
+                                                        <textarea type="text" name="description" id="description" class="form-control input-md" required>{{ $appts->description }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1058,11 +1049,6 @@
                 </div>
             </div>
         </section>
-
-
-
-
-
         <footer>
 
             <div class="container">
@@ -1157,7 +1143,6 @@
 
     </div>
     <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
-
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/jquery.easing.min.js') }}"></script>
@@ -1201,9 +1186,6 @@
             english.value = converted;
         }
     </script>
-
-
-
 </body>
 
 </html>

@@ -4,6 +4,12 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            @if ($errors->any())
+            @foreach ($errors->all() as $errors)
+                <h4 class="text-danger " style="color:red;">{{ $errors }}
+                </h4>
+            @endforeach
+        @endif
             <div class="card">
                 <div class="card-header">{{ __('Doctor Registeration') }}</div>
 
@@ -15,13 +21,9 @@
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
                             <div class="col-md-6">
-                                <input  id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input  id="name" type="text" class="form-control " name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                
                             </div>
                         </div>
 
@@ -29,13 +31,9 @@
                             <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                <input id="email" type="email" class="form-control " name="email" value="{{ old('email') }}" required autocomplete="email">
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                               
                             </div>
                         </div>
 
@@ -80,10 +78,10 @@
                                 <input id="license" type="text" class="form-control" name="license" required>
                             </div>
                         </div><div class="row mb-3">
-                            <label for="qualification" class="col-md-4 col-form-label text-md-end">{{ __('Qualification') }}</label>
+                            <label for="qualifications" class="col-md-4 col-form-label text-md-end">{{ __('Qualification') }}</label>
 
                             <div class="col-md-6">
-                                <input id="qual" type="text" class="form-control" name="qualification" required>
+                                <input id="qual" type="text" class="form-control" name="qualifications" required>
                             </div>
                         </div><div class="row mb-3">
                             <label for="experience" class="col-md-4 col-form-label text-md-end">{{ __('Exprience') }}</label>

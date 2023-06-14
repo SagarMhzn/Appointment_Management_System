@@ -903,7 +903,7 @@
                         <li><a href="{{ route('client.appointments') }}">Appointments</a></li>
 
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ $logged_user->name }}
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ auth()->user()->name }}
                                 <b class="caret"></b></a>
                             <ul class="dropdown-menu">
 

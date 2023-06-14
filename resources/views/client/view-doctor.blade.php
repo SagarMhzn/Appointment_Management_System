@@ -52,34 +52,52 @@
                         data-target=".navbar-main-collapse">
                         <i class="fa fa-bars"></i>
                     </button>
-                    @if (Auth::check())
-                        <a class="navbar-brand" href="{{ url('/home') }}">
-                            <img src="{{ asset('img/logo.png') }}" alt="" width="150" height="40" />
-                        </a>
-                    @else
-                        <a class="navbar-brand" href="{{ url('/') }}">
-                            <img src="{{ asset('img/logo.png') }}" alt="" width="150" height="40" />
-                        </a>
-                    @endif
+                    <a class="navbar-brand" href="{{ Auth::check() ? url('/checkrole') : url('/') }}">
+                        <img src="{{ asset('img/logo.png') }}" alt="" width="150" height="40" />
+                    </a>
                 </div>
 
                 <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="{{ route('client.home') }}">Home</a></li>
+                        <li><a href="{{ Auth::check() ? route('client.home') : url('/') }}">Home</a></li>
                         <li class="active"><a href="{{ route('client.client-doctors-list') }}">Doctors</a></li>
                         @if (Auth::check())
                             <li><a href="{{ route('client.appointments') }}">Appointments</a></li>
                         @endif
                         <li class="dropdown">
+                            @auth
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ auth()->user()->name }}
+                                <b class="caret"></b></a>
+                        @else
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b
                                     class="caret"></b></a>
+                        @endauth
                             <ul class="dropdown-menu">
-
                                 <div>
                                     @if (Route::has('login'))
                                         <div>
                                             @auth
                                                 <li><a href="{{ url('/home') }}">Home</a>
+                                                </li>
+
+                                                <li>
+                                                    {{-- <a href="{{ url('/logout') }}">Log out</a> --}}
+
+                                                    <div><a href="{{ route('logout') }}"
+                                                            onclick="event.preventDefault();
+                                                                         document.getElementById('logout-form').submit();">
+                                                            Logout
+                                                        </a>
+                                                        <form id="logout-form" action="{{ route('logout') }}"
+                                                            method="POST" class="d-none">
+                                                            @csrf
+                                                        </form>
+                                                    </div>
+                                                </li>
+
+                                                <li><a href="
+                                                    {{ route('client.profile') }}
+                                                    ">Profile</a>
                                                 </li>
                                             @else
                                                 <li> <a href="{{ route('login') }}">Log
@@ -101,7 +119,7 @@
             </div>
         </nav>
 
-
+{{-- @dd($doc_user->doctors->id) --}}
 
 
         <section id="intro" class="intro">
@@ -128,12 +146,12 @@
                                                     @if ($doc_user->doctors->image && file_exists(public_path('public/Image/' . $doc_user->doctors->image)))
                                                         <div>
                                                             <img src="{{ asset('public/Image/' . $doc_user->doctors->image) }}"
-                                                                alt="" style="border-radius: 50%">
+                                                                alt="" style="border-radius: 50%;width:15vw;">
                                                         </div>
                                                     @else
                                                         <div>
                                                             <img src="{{ asset('defaults/no-image.jpg') }}"
-                                                                alt="" style="border-radius: 50%">
+                                                                alt="" style="border-radius: 50%;width:15vw;">
                                                         </div>
                                                     @endif
                                                 </div>
@@ -221,7 +239,7 @@
                                         </div>
 
                                         @if (Auth::check())
-                                            <a href="{{ route('client.make-appointment') }}">
+                                            <a href="{{ route('client.appointment-with-doctor',$doc_user->doctors->id) }}">
                                                 <input type="submit" value="Book an Appointment Now!"
                                                     class="btn btn-skin btn-block btn-lg">
                                             </a>
@@ -341,19 +359,6 @@
 
     </div>
     <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
-
-    <!-- Core JavaScript Files -->
-    {{-- <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.easing.min.js"></script>
-    <script src="js/wow.min.js"></script>
-    <script src="js/jquery.scrollTo.js"></script>
-    <script src="js/jquery.appear.js"></script>
-    <script src="js/stellar.js"></script>
-    <script src="plugins/cubeportfolio/js/jquery.cubeportfolio.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/nivo-lightbox.min.js"></script>
-    <script src="js/custom.js"></script> --}}
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>

@@ -63,7 +63,7 @@
                                                 </td>
 
                                                   <td>{{ $appts->appointment_start_time }} - {{ $appts->appointment_end_time }}</td>
-                                                  <td>{{ $appts->appointment_date }}</td>
+                                                  <td>{{ $appts->appointment_date_ad }}</td>
                                                   <td>{{ $appts->description }}</td>
                                                   {{-- <td>
                                                     {{ $appts->verified }}

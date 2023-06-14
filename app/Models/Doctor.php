@@ -14,7 +14,7 @@ class Doctor extends Model
 
     protected $fillable = ['doctor_id','phone','image','address','dob',''];
 
-    public function user(): HasOne
+    public function userDoctor(): HasOne
     {
         return $this->hasOne(User::class,'id', 'doctor_id');
     }

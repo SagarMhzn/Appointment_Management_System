@@ -36,7 +36,7 @@ class ClientController extends Controller
 
     public function showDoctors()
     {
-        $doctor_details = User::with('doctors')->where('role', 2)->where('isverified', 1)->paginate(8);
+        $doctor_details = Doctor::with('userDoctor')->paginate(8);
         $doc = User::with('doctors')->where('role', 2)->where('isverified', 1);
         // dd($doctor_details);
         return view('client.client-doctors-list', compact('doctor_details','doc'));
