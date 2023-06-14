@@ -7,28 +7,9 @@
 
     <title>{{ config('app.name') }}</title>
 
-    <!-- Fonts -->
-    {{-- <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ url(mix('css/app.css')) }}">
-
-    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="plugins/cubeportfolio/css/cubeportfolio.min.css">
-    <link href="css/nivo-lightbox.css" rel="stylesheet" />
-    <link href="css/nivo-lightbox-theme/default/default.css" rel="stylesheet" type="text/css" />
-    <link href="css/owl.carousel.css" rel="stylesheet" media="screen" />
-    <link href="css/owl.theme.css" rel="stylesheet" media="screen" />
-    <link href="css/animate.css" rel="stylesheet" />
-    <link href="css/style.css" rel="stylesheet">
-
-    <!-- boxed bg -->
-    <link id="bodybg" href="bodybg/bg1.css" rel="stylesheet" type="text/css" />
-    <!-- template skin -->
-    <link id="t-colors" href="color/default.css" rel="stylesheet"> --}}
-
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
@@ -45,11 +26,6 @@
     <link id="bodybg" href="{{ asset('bodybg/bg1.css') }}" rel="stylesheet" type="text/css" />
     <!-- template skin -->
     <link id="t-colors" href="{{ asset('color/default.css') }}" rel="stylesheet">
-
-    <link href="http://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/css/nepali.datepicker.v4.0.1.min.css"
-        rel="stylesheet" type="text/css" />
-    <script src="http://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/js/nepali.datepicker.v4.0.1.min.js"
-        type="text/javascript"></script>
 
 
 
@@ -896,7 +872,7 @@
                         data-target=".navbar-main-collapse">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <a class="navbar-brand" href="{{ url('/home') }}">
+                    <a class="navbar-brand" href="{{ Auth::check() ? url('/checkrole') : url('/') }}">
                         <img src="{{ asset('img/logo.png') }}" alt="" width="150" height="40" />
                     </a>
                 </div>
@@ -904,39 +880,60 @@
                 <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="{{ route('client.home') }}">Home</a></li>
-                        <li><a href="{{ route('client.client-doctors-list') }}">Doctors</a></li>
-                        <li class="active"><a href="{{ route('client.appointments') }}">Appointments</a></li>
+                        <li class="active"><a href="{{ route('client.client-doctors-list') }}">Doctors</a></li>
+                        @auth
+                            <li><a href="{{ route('client.appointments') }}">Appointments</a></li>
+                        @endauth
 
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ auth()->user()->name }}
-                                <b class="caret"></b></a>
+
+                            @auth
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ auth()->user()->name }}
+                                    <b class="caret"></b></a>
+                            @else
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b
+                                        class="caret"></b></a>
+                            @endauth
                             <ul class="dropdown-menu">
 
                                 <div>
-                                    <div>
-                                        <li><a href="{{ url('/home') }}">Home</a>
-                                        </li>
-                                        <li><a
-                                                href="
+                                    @if (Route::has('login'))
+                                        <div>
+                                            @auth
+                                                <li><a href="{{ url('/home') }}">Home</a>
+                                                </li>
+
+                                                <li>
+                                                    {{-- <a href="{{ url('/logout') }}">Log out</a> --}}
+
+                                                    <div><a href="{{ route('logout') }}"
+                                                            onclick="event.preventDefault();
+                                                                         document.getElementById('logout-form').submit();">
+                                                            Logout
+                                                        </a>
+                                                        <form id="logout-form" action="{{ route('logout') }}"
+                                                            method="POST" class="d-none">
+                                                            @csrf
+                                                        </form>
+                                                    </div>
+                                                </li>
+
+                                                <li><a
+                                                        href="
                                                     {{ route('client.profile') }}
                                                     ">Profile</a>
-                                        </li>
+                                                </li>
+                                            @else
+                                                <li> <a href="{{ route('login') }}">Log
+                                                        in</a></li>
 
-                                        <li>
-                                            {{-- <a href="{{ url('/logout') }}">Log out</a> --}}
-
-                                            <div><a href="{{ route('logout') }}"
-                                                    onclick="event.preventDefault();
-                                                                         document.getElementById('logout-form').submit();">
-                                                    Logout
-                                                </a>
-                                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                                    class="d-none">
-                                                    @csrf
-                                                </form>
-                                            </div>
-                                        </li>
-                                    </div>
+                                                @if (Route::has('register'))
+                                                    <li><a href="{{ route('auth.doc.register') }}">Register</a>
+                                                    </li>
+                                                @endif
+                                            @endauth
+                                        </div>
+                                    @endif
                                 </div>
 
                             </ul>
@@ -945,123 +942,113 @@
                 </div>
             </div>
         </nav>
+
+
+        <!-- Section: intro -->
         <section id="intro" class="intro">
             <div class="intro-content">
                 <div class="container">
+                    <div class="row">
+                        <div class="col-lg-20">
+                            <div class="form-wrapper">
+                                <div>
+                                    @if ($doctorCount != 0)
 
-
-                    <div class="col-lg-20">
-                        <div class="form-wrapper">
-                            <div>
-
-                                <div class="panel panel-skin">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title"><span class="fa fa-pencil-square-o"></span> Book an
-                                            Appointment </h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        <form role="form" class="lead" method="POST"
-                                            action="{{ route('client.book-appointment') }}">
-                                            @csrf
-                                            <div class="row">
-                                                <div class="col-xs-12 col-sm-12 col-md-12 ">
-                                                    <div class="form-group" style="display:flex: ">
-                                                        <label>Choose who you want the appointment with</label>
-
-                                                        <select class="form-select form-select-sm"
-                                                            aria-label=".form-select-sm example" name="doc_select"
-                                                            id="doc_select" class="doc_select"
-                                                            style="border: solid;width:100%" required>
-                                                            <option selected disabled>Choose A doctor from the list:
-                                                            </option>
-                                                            @foreach ($docs as $doc_info)
-                                                                <option value="{{ $doc_info->id }}">
-                                                                    {{ $doc_info->name }} -
-                                                                    {{ $doc_info->doctors->field_of_expertize }}
-                                                                </option>
-                                                            @endforeach
-
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                        <div class="panel panel-skin">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title"><span class="fa fa-pencil-square-o"></span>
+                                                    Doctors List:</h3>
                                             </div>
 
-                                            <div class="row">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                                    <div class="form-group">
-                                                        <label>Appointment Date:</label>
-                                                        <br>
-                                                        <div style="display: inline-flex;margin:auto" class="col">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Doctor's Name</th>
+                                                        <th scope="col">Doctor's Department</th>
+                                                        <th scope="col">Email</th>
+                                                        <th scope="col">Phone No.</th>
+                                                        <th scope="col">Licence No.</th>
+                                                        <th scope="col">Qualifications</th>
+                                                        <th scope="col">Experience</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
 
-                                                           
-                                                                <div class="col">
-                                                                    <div class=" form-group">
-                                                                        <label for="">Date</label>
-                                                                        <input type="text" name="date_bs"
-                                                                            id="nepali-datepicker" ndpYearCount=2
-                                                                            readonly class="form-control"
-                                                                            placeholder="Date in BS" required>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col" style="padding-left: 20rem">
-                                                                    <div class="form-group">
-                                                                        <label for="">Date (AD)</label>
-                                                                        <input id="english_date" type="date"
-                                                                            name="date_ad" onclick="getDateBS()"
-                                                                            readonly class="form-control"
-                                                                            placeholder="Date in AD" required>
-                                                                    </div>
-                                                                </div>
-                                                            
-                                                        </div>
 
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                    @foreach ($doctorAll as $keys => $docs_all)
+                                                        {{-- {{ dd($docs_all->userAppointmentsDoctor) }} --}}
+                                                        <tr>
+                                                            <th scope="row">{{ $keys + 1 }}</th>
+                                                            <td>{{ $docs_all->userDoctor->name }}</td>
+                                                            <td>
+                                                                {{-- {{ $docs_all->userAppointmentsDoctor->field_of_expertize }} --}}
 
-                                            <div class="row">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                                    <div class="form-group">
-                                                        <label>Appointment Time</label>
-                                                        <input id="starttime" type="time" class="form-control"
-                                                            name="starttime" required>
-                                                    </div>
+                                                                @if ($docs_all->field_of_expertize == '')
+                                                                    N/A
+                                                                @else
+                                                                    {{ $docs_all->field_of_expertize }}
+                                                                @endif
+                                                            </td>
 
-                                                    <div class="form-group">
+                                                            <td>{{ $docs_all->userDoctor->email }} </td>
+                                                            <td>{{ $docs_all->phone }}</td>
+                                                            <td>{{ $docs_all->license_no }}</td>
+                                                            <td>{{ $docs_all->qualifications }}</td>
+                                                            <td>{{ $docs_all->experience }}</td>
+                                                        </tr>
+                                                    @endforeach
 
-                                                        <input id="endtime" type="time" class="form-control"
-                                                            name="endtime" required>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @else
+                                        {{ __('You dont had any appointment yet! ') }}
+                                        {{ __('Book one now and track them from here.') }}
+                                    @endif
 
-                                            <div class="row">
-                                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                                    <div class="form-group">
-                                                        <label>Describe what the Appointment is for:</label>
-                                                        <textarea type="text" name="description" id="description" class="form-control input-md" required></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <input type="submit" value="Book Now!"
-                                                class="btn btn-skin btn-block btn-lg">
-
-                                        </form>
-                                    </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
 
+        <section id="boxes" class="home-section paddingtop-80">
 
 
 
+        </section>
+        <section id="callaction" class="home-section paddingtop-40">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="callaction bg-gray">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div>
+                                        <div class="cta-text">
+                                            <h3>Book another Appointment?</h3>
+                                            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit uisque interdum
+                                                ante eget faucibus. </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div>
+                                        <div class="cta-btn">
+                                            <a href="{{ route('client.make-appointment') }}"
+                                                class="btn btn-skin btn-lg">Book an appoinment</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <footer>
 
@@ -1157,7 +1144,6 @@
 
     </div>
     <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
-
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/jquery.easing.min.js') }}"></script>
@@ -1169,41 +1155,6 @@
     <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('js/nivo-lightbox.min.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
-
-    <script type="text/javascript">
-        window.onload = function() {
-            year = NepaliFunctions.GetCurrentBsYear();
-            month = NepaliFunctions.GetCurrentBsMonth();
-            day = NepaliFunctions.GetCurrentBsDay();
-
-            var currentdate = year + "-" + month + "-" + day
-            console.log(currentdate)
-            var mainInput = document.getElementById("nepali-datepicker");
-            mainInput.nepaliDatePicker({
-                disableBefore: currentdate,
-                disableDaysAfter: 15
-            });
-
-
-        };
-    </script>
-    <script>
-        setInterval(() => {
-            getDateBS()
-        }, 10);
-
-        function getDateBS() {
-            var nepali = document.getElementById("nepali-datepicker").value;
-            // console.log(nepali);
-            converted = NepaliFunctions.BS2AD(nepali)
-
-            var english = document.getElementById("english_date");
-            english.value = converted;
-        }
-    </script>
-
-
-
 </body>
 
 </html>

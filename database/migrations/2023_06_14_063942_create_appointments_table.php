@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('client_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('doctor_id')->constrained('users')->onDelete('cascade');
-            $table->string('appointment_date');
+            $table->string('appointment_date_bs');
+            $table->string('appointment_date_ad')->nullable();
             $table->time('appointment_start_time');
             $table->time('appointment_end_time');
             $table->longText('description')->nullable();

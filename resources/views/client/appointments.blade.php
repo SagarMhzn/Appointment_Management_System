@@ -29,7 +29,7 @@
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
-    
+
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
@@ -899,7 +899,7 @@
 
                 <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
                     <ul class="nav navbar-nav">
-                        <li ><a href="{{ route('client.home') }}">Home</a></li>
+                        <li><a href="{{ route('client.home') }}">Home</a></li>
                         <li><a href="{{ route('client.client-doctors-list') }}">Doctors</a></li>
                         <li class="active"><a href="{{ route('client.appointments') }}">Appointments</a></li>
 
@@ -909,38 +909,28 @@
                             <ul class="dropdown-menu">
 
                                 <div>
-                                    @if (Route::has('login'))
-                                        <div>
-                                            @auth
-                                                <li><a href="{{ url('/home') }}">Home</a>
-                                                </li>
+                                    <li><a href="{{ url('/home') }}">Home</a>
+                                    </li>
+                                    <li><a href="
+                                        {{ route('client.profile') }}
+                                        ">Profile</a>
+                                    </li>
 
-                                                <li>
-                                                    {{-- <a href="{{ url('/logout') }}">Log out</a> --}}
+                                    <li>
+                                        {{-- <a href="{{ url('/logout') }}">Log out</a> --}}
 
-                                                    <div><a href="{{ route('logout') }}"
-                                                            onclick="event.preventDefault();
-                                                                         document.getElementById('logout-form').submit();">
-                                                            Logout
-                                                        </a>
-                                                        <form id="logout-form" action="{{ route('logout') }}"
-                                                            method="POST" class="d-none">
-                                                            @csrf
-                                                        </form>
-                                                    </div>
-                                                </li>
-                                            @else
-                                                <li> <a href="{{ route('login') }}">Log
-                                                        in</a></li>
-
-                                                @if (Route::has('register'))
-                                                    <li><a href="{{ route('auth.doc.register') }}">Register</a>
-                                                    </li>
-                                                @endif
-                                            @endauth
+                                        <div><a href="{{ route('logout') }}"
+                                                onclick="event.preventDefault();
+                                                             document.getElementById('logout-form').submit();">
+                                                Logout
+                                            </a>
+                                            <form id="logout-form" action="{{ route('logout') }}"
+                                                method="POST" class="d-none">
+                                                @csrf
+                                            </form>
                                         </div>
-                                    @endif
-                                </div>
+                                    </li>
+                            </div>
 
                             </ul>
                         </li>
@@ -949,6 +939,10 @@
             </div>
         </nav>
 
+       
+        <x-alerts-box>
+
+        </x-alerts-box>
 
         <!-- Section: intro -->
         <section id="intro" class="intro">
@@ -958,88 +952,90 @@
                         <div class="col-lg-20">
                             <div class="form-wrapper">
                                 <div>
+                                    {{-- @if ($apptCount != 0) --}}
 
-                                    <div class="panel panel-skin">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title"><span class="fa fa-pencil-square-o"></span>
-                                                Your appointments:</h3>
+                                        <div class="panel panel-skin">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title"><span class="fa fa-pencil-square-o"></span>
+                                                    Your appointments:</h3>
+                                            </div>
+
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Doctor's Name</th>
+                                                        <th scope="col">Doctor's Department</th>
+                                                        <th scope="col">Appointment Time</th>
+                                                        <th scope="col">Appointment Date</th>
+                                                        <th scope="col">Description</th>
+                                                        <th scope="col">Verified</th>
+                                                        <th scope="col">Status</th>
+                                                        <th scope="col">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+
+                                                    @foreach ($appointments as $keys => $appts)
+                                                        {{-- {{ dd($appts->userAppointmentsDoctor) }} --}}
+                                                    </td>
+                                                    {{-- {{ dd($appts->id) }} --}}
+                                                        <tr>
+                                                            <th scope="row">{{ $keys + 1 }}</th>
+                                                            <td>{{ $appts->userAppointmentsDoctor->name }}</td>
+                                                            <td>
+                                                                {{-- {{ $appts->userAppointmentsDoctor->field_of_expertize }} --}}
+
+                                                                @if ($appts->doctorAppointments->field_of_expertize == '')
+                                                                    N/A
+                                                                @else
+                                                                    {{ $appts->doctorAppointments->field_of_expertize }}
+                                                                @endif
+                                                            </td>
+
+                                                            <td>{{ $appts->appointment_start_time }} -
+                                                                {{ $appts->appointment_end_time }}</td>
+                                                            <td>{{ $appts->appointment_date_bs }}</td>
+                                                            <td>{{ $appts->description }}</td>
+                                                            <td>
+                                                                {{-- {{ $appts->verified }} --}}
+
+                                                                @if ($appts->verified == 0)
+                                                                    <span class="badge "
+                                                                        style="background-color: red">Not
+                                                                        Verified!</span>
+                                                                @else
+                                                                    <span class="badge "
+                                                                        style="background-color: green">Verified!</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                {{-- {{ $appts->status }} --}}
+                                                                @if ($appts->status == 0)
+                                                                    <span class="badge "
+                                                                        style="background-color: red">Pending!</span>
+                                                                @else
+                                                                    <span class="badge "
+                                                                        style="background-color: green">Completed!</span>
+                                                                @endif
+                                                            @if($appts->verified == 0 || $appts->status == 0)
+                                                            <td><a href="{{ route('client.edit-appointment',$appts->id) }}"><span class="btn btn-warning"> Edit</span></a></td>
+                                                            <td><a href="{{ route('client.destroy-appointment',$appts->id) }}"><span class="btn btn-danger"> Delete</span></a></td>
+                                                            @else
+                                                            <td><a href="#"><span class="btn btn-primary"> Edit</span></a></td>
+                                                            <td><a href="#"><span class="btn btn-primary"> Delete</span></a></td>
+                                                            @endif
+                                                        </tr>
+                                                    @endforeach
+
+                                                </tbody>
+                                            </table>
                                         </div>
-
-                                        <table class="table">
-                                            <thead>
-                                              <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Doctor's Name</th>
-                                                <th scope="col">Doctor's Department</th>
-                                                <th scope="col">Appointment Time</th>
-                                                <th scope="col">Appointment Date</th>
-                                                <th scope="col">Description</th>
-                                                <th scope="col">Verified</th>
-                                                <th scope="col">Status</th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                                			
-
-                                                @foreach ($appointments as $keys => $appts)
-                                                {{-- {{ dd($appts->userAppointmentsDoctor) }} --}}
-                                                <tr>
-                                                  <th scope="row">{{ $keys + 1 }}</th>
-                                                  <td>{{ $appts->userAppointmentsDoctor->name }}</td>
-                                                  <td>
-                                                    {{-- {{ $appts->userAppointmentsDoctor->field_of_expertize }} --}}
-
-                                                    @if($appts->doctorAppointments->field_of_expertize == '')
-                                                        N/A
-                                                    @else
-                                                    {{ $appts->doctorAppointments->field_of_expertize }}
-                                                    @endif
-                                                </td>
-
-                                                  <td>{{ $appts->appointment_start_time }} - {{ $appts->appointment_end_time }}</td>
-                                                  <td>{{ $appts->appointment_date }}</td>
-                                                  <td>{{ $appts->description }}</td>
-                                                  <td>
-                                                    {{-- {{ $appts->verified }} --}}
-
-                                                    @if($appts->verified ==0)
-                                                    <span class="badge " style="background-color: red">Not Verified!</span>
-                                                    @else
-                                                    <span class="badge " style="background-color: green">Verified!</span> 
-                                                    @endif
-                                                </td>
-                                                  <td>
-                                                    {{-- {{ $appts->status }} --}}
-                                                    @if($appts->status == 0)
-                                                    <span class="badge " style="background-color: red">Pending!</span> 
-                                                    @else
-                                                    <span class="badge " style="background-color: green">Completed!</span> 
-                                                    @endif
-                                                </td>
-                                                </tr>
-                                                @endforeach
-                                              
-                                            </tbody>
-                                          </table>
-
-
-
-
-
-                                        <a href="#doctor">
-                                            <div class="panel-body">
-                                                {{-- Total no. of verified Doctors : {{ $countDoctors }} --}}
-                                            </div>
-                                        </a>
-                                        <a href="#appointment">
-                                            <div class="panel-body">
-                                                {{-- Total no. of Appointments : {{ $countVerAppointments }} --}}
-                                            </div>
-                                        </a>
-                                        {{-- <div class="panel-body">
-                                            Total no. of Pending Appointments : {{ $countAppointments }}
-                                        </div> --}}
-                                    </div>
+                                    {{-- @else
+                                        {{ __('You dont had any appointment yet! ') }}
+                                        {{ __('Book one now and track them from here.') }}
+                                    @endif --}}
 
                                 </div>
                             </div>
@@ -1054,7 +1050,7 @@
         <!-- Section: boxes -->
         <section id="boxes" class="home-section paddingtop-80">
 
-           
+
 
         </section>
         <!-- /Section: boxes -->
@@ -1078,7 +1074,8 @@
                                 <div class="col-md-4">
                                     <div>
                                         <div class="cta-btn">
-                                            <a href="{{ route('client.make-appointment') }}" class="btn btn-skin btn-lg">Book an appoinment</a>
+                                            <a href="{{ route('client.make-appointment') }}"
+                                                class="btn btn-skin btn-lg">Book an appoinment</a>
                                         </div>
                                     </div>
                                 </div>
@@ -1088,120 +1085,6 @@
                 </div>
             </div>
         </section>
-
-
-
-
-
-        <!-- Section: team -->
-        {{-- <section id="doctor" class="home-section bg-gray paddingbot-60">
-            <div class="container marginbot-50">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div>
-                            <div class="section-heading text-center">
-                                <h2 class="h-bold">Doctors</h2>
-                                <p>Ea melius ceteros oportere quo, pri habeo viderer facilisi ei</p>
-                            </div>
-                        </div>
-                        <div class="divider-short"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-
-                        <div id="filters-container" class="cbp-l-filters-alignLeft">
-                            <div data-filter="*" class="cbp-filter-item-active cbp-filter-item">All (<div
-                                    class="cbp-filter-counter"></div>)</div>
-                            <div data-filter=".cardiologist" class="cbp-filter-item">Cardiologist (<div
-                                    class="cbp-filter-counter"></div>)</div>
-                            <div data-filter=".psychiatrist" class="cbp-filter-item">Psychiatrist (<div
-                                    class="cbp-filter-counter"></div>)</div>
-                            <div data-filter=".neurologist" class="cbp-filter-item">Neurologist (<div
-                                    class="cbp-filter-counter"></div>)</div>
-                        </div>
-
-                        <div id="grid-container" class="cbp-l-grid-team">
-                            <ul>
-                                <li class="cbp-item psychiatrist">
-                                    <a href="doctors/member1.html" class="cbp-caption cbp-singlePage">
-                                        <div class="cbp-caption-defaultWrap">
-                                            <img src="{{ asset('img/team/1.jpg') }}" alt="" width="100%">
-                                        </div>
-                                        <div class="cbp-caption-activeWrap">
-                                            <div class="cbp-l-caption-alignCenter">
-                                                <div class="cbp-l-caption-body">
-                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="doctors/member1.html" class="cbp-singlePage cbp-l-grid-team-name">Alice
-                                        Grue</a>
-                                    <div class="cbp-l-grid-team-position">Psychiatrist</div>
-                                </li>
-                                <li class="cbp-item cardiologist">
-                                    <a href="doctors/member2.html" class="cbp-caption cbp-singlePage">
-                                        <div class="cbp-caption-defaultWrap">
-                                            <img src="{{ asset('img/team/2.jpg') }}" alt="" width="100%">
-                                        </div>
-                                        <div class="cbp-caption-activeWrap">
-                                            <div class="cbp-l-caption-alignCenter">
-                                                <div class="cbp-l-caption-body">
-                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="doctors/member2.html" class="cbp-singlePage cbp-l-grid-team-name">Joseph
-                                        Murphy</a>
-                                    <div class="cbp-l-grid-team-position">Cardiologist</div>
-                                </li>
-                                <li class="cbp-item cardiologist">
-                                    <a href="doctors/member3.html" class="cbp-caption cbp-singlePage">
-                                        <div class="cbp-caption-defaultWrap">
-                                            <img src="{{ asset('img/team/3.jpg') }}" alt="" width="100%">
-                                        </div>
-                                        <div class="cbp-caption-activeWrap">
-                                            <div class="cbp-l-caption-alignCenter">
-                                                <div class="cbp-l-caption-body">
-                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="cbp-singlePage cbp-l-grid-team-name">Alison
-                                        Davis</a>
-                                    <div class="cbp-l-grid-team-position">Cardiologist</div>
-                                </li>
-                                <li class="cbp-item neurologist">
-                                    <a href="#" class="cbp-caption cbp-singlePage">
-                                        <div class="cbp-caption-defaultWrap">
-                                            <img src="{{ asset('img/team/4.jpg') }} alt="" width="100%">
-                                        </div>
-                                        <div class="cbp-caption-activeWrap">
-                                            <div class="cbp-l-caption-alignCenter">
-                                                <div class="cbp-l-caption-body">
-                                                    <div class="cbp-l-caption-text">VIEW PROFILE</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="doctors/member4.html" class="cbp-singlePage cbp-l-grid-team-name">Adam
-                                        Taylor</a>
-                                    <div class="cbp-l-grid-team-position">Neurologist</div>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </section> --}}
 
         <footer>
 

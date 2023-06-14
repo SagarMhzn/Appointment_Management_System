@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Console\View\Components\Alert;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -162,10 +163,14 @@ class RegisterController extends Controller
         $doc->qualifications = $data->qualification;
         $doc->experience = $data->experience;
         $doc->field_of_expertize = $data->field_of_expertize;
+
+        // dd($doc);
         $doc->save();
 
-        Mail::to($doc->user->email)->send(new VerificationMail($randPass));
 
-        return redirect()->back();
+
+        Mail::to($doc->userDoctor->email)->send(new VerificationMail($randPass));
+
+        return redirect()->back()->with('create_success','Registration Successful');
     }
 }

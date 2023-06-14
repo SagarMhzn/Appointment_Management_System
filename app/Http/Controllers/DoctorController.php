@@ -52,15 +52,18 @@ class DoctorController extends Controller
     public function toggleVerified($id)
     {
         $user = User::findOrFail($id);
-        $user->isverified = !$user->isverified;
-        $user->save();
-        return redirect()->back();
+        if ($user->isverified == 0) {
+            $user->isverified = !$user->isverified;
+            $user->save();
+            return redirect()->back()->with('verification_success','Doctor verified!');
+        }elseif($user->isverified == 1){
+            $user->isverified = !$user->isverified;
+            $user->save();
+            return redirect()->back()->with('unverification_success','Doctor unverified!');
+        }
     }
 
-    public function update(
-        DoctorRequest $request,
-        Doctor $doctor
-    ) {
+    public function update(DoctorRequest $request,Doctor $doctor) {
         $user = User::find(Auth::user()->id);
 
         // dd($user);
@@ -74,7 +77,7 @@ class DoctorController extends Controller
         $doctor->phone = $request->phone;
         $doctor->address = $request->address;
         $doctor->address = $request->address;
-        $doctor->dob = $request->dob;
+        $doctor->dob = $request->dateAD;
         $doctor->license_no = $request->license;
         $doctor->qualifications = $request->qualifications;
         $doctor->experience = $request->experience;
@@ -107,7 +110,7 @@ class DoctorController extends Controller
         $doctor->save();
 
         // dd($request);
-        return redirect()->back();
+        return redirect()->back()->with('info_success','Profile updated Successfully!');
     }
 
     public function showPass()
@@ -117,15 +120,44 @@ class DoctorController extends Controller
 
     public function updatePass(Request $request)
     {
-        $user = User::find(auth()->user()->id);
+        // $user = User::find(auth()->user()->id);
+
+        // $request->validate([
+        //     'old_password'=>["required"],
+        //     'password'=>['required','min:8','confirmed'],
+        // ]);
+        // $user = auth()->user();
+        // $oldPassword = $request->old_password;
 
 
-        if (Hash::check($request->old_password, $user->password)) {
-            $user->password = Hash::make($request->password);
-            $user->save();
-            return redirect()->back()->with('password_change_success', 'Password Changed Successfully!');
+        // if (Hash::check($request->old_password, $user->password)) {
+        //     $user->password = Hash::make($request->password);
+        //     $user->save();
+        //     return redirect()->back()->with('password_change_success', 'Password Changed Successfully!');
+        // } else {
+        //     return redirect()->back()->withErrors('old password doesnt match');
+        // }
+
+
+        $request->validate([
+            'old_password'=>["required"],
+            'password'=>['required','min:8','confirmed'],
+        ]);
+        $user = auth()->user();
+        $oldPassword = $request->old_password;
+
+        if (Hash::check($oldPassword, $user->password)) {
+            $user = User::find(auth()->user()->id);
+            $user->update(['password'=>Hash::make($request->password)]);
+            return redirect()->back()->with("info_success", "Password updated successfully");    
         } else {
-            return redirect()->back()->withErrors('old password doesnt match');
+            return redirect()->back()->withErrors(["old_password" => "Old password is not correct !"]);
         }
+    }
+
+    public function doctorList(){
+        $doctorAll = Doctor::with('userDoctor')->get();
+        $doctorCount = Doctor::count();
+        return view('doctor-list',compact('doctorAll','doctorCount'));
     }
 }

@@ -64,13 +64,12 @@ class DoctorRequest extends FormRequest
         // return $rules ?? [];
 
         // dd($doctor);
-
-        $doctor = Doctor::where('doctor_id',auth()->user()->id)->first();
-        $id = $doctor->id;
+            
+        
         $rules1 =[
             'name' => 'required|max:20|string',
             'address' => 'required|string',
-            'dob' => 'required|date',
+            'dateAD' => 'required|date',
             'photo' => 'image|mimes:jpeg,png,gif|max:2048',
             'license' => 'string|required',
             'qualifications' => 'required|string',
@@ -84,6 +83,8 @@ class DoctorRequest extends FormRequest
         ];
     } elseif ($this->isMethod('PUT', 'PATCH')) {
         // dd($rules);
+        $doctor = Doctor::where('doctor_id',auth()->user()->id)->first();
+        $id = $doctor->id;
         $rules2 =  [
             'email' => [
                 'required',

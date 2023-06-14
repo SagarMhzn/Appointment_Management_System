@@ -33,17 +33,19 @@ class SuperAdminController extends Controller
     }
     public function updatePass(Request $request)
     {
-        $user = User::find(auth()->user()->id);
+        $request->validate([
+            'old_password'=>["required"],
+            'password'=>['required','min:8','confirmed'],
+        ]);
+        $user = auth()->user();
+        $oldPassword = $request->old_password;
 
-
-        if (Hash::check($request->old_password, $user->password)) {
-            $user->password = Hash::make($request->password);
-            $user->save();
-            return redirect()->back()->with('password_change_success','Password Changed Successfully!');
-
-        }else{
-            return redirect()->back()->withErrors('old password doesnt match');
-
+        if (Hash::check($oldPassword, $user->password)) {
+            $user = User::find(auth()->user()->id);
+            $user->update(['password'=>Hash::make($request->password)]);
+            return redirect()->back()->with("info_success", "Password updated successfully");    
+        } else {
+            return redirect()->back()->withErrors(["old_password" => "Old password is not correct !"]);
         }
     }
 
@@ -55,7 +57,7 @@ class SuperAdminController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->save();
-        return view('superadmin.profile',compact('user'));
+        return view('superadmin.profile',compact('user'))->with('info_sucess','Profile Updated Succesfully!');
     }
 
     public function showDoctors()

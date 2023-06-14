@@ -56,8 +56,8 @@
                         data-target=".navbar-main-collapse">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <a class="navbar-brand" href="{{ url('/home') }}">
-                        <img src="{{ asset('img/logo.png') }}" alt="" width="150" height="40" />
+                    <a class="navbar-brand" href="{{ Auth::check() ? url('/checkrole') : url('/') }}">
+                        <img src="img/logo.png" alt="" width="150" height="40" />
                     </a>
                 </div>
 
@@ -109,6 +109,11 @@
                                                         </form>
                                                     </div>
                                                 </li>
+
+                                                <li><a href="
+                                                    {{ route('client.profile') }}
+                                                    ">Profile</a>
+                                                </li>
                                             @else
                                                 <li> <a href="{{ route('login') }}">Log
                                                         in</a></li>
@@ -153,7 +158,7 @@
                                                     <span style="display:inline-flex; margin-left:25%;">
                                                         {{ $doctor_details->links('pagination::tailwind') }}
                                                     </span>
-                                                    <a class="panel-title" href=""
+                                                    <a class="panel-title" href="{{ route('doctor-list') }}"
                                                         style="display:inline-flex; float: right;">All Doctors</a>
                                                 </div>
 

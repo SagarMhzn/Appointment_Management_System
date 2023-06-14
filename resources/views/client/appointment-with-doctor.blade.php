@@ -7,26 +7,6 @@
 
     <title>{{ config('app.name') }}</title>
 
-    <!-- Fonts -->
-    {{-- <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ url(mix('css/app.css')) }}">
-
-    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="plugins/cubeportfolio/css/cubeportfolio.min.css">
-    <link href="css/nivo-lightbox.css" rel="stylesheet" />
-    <link href="css/nivo-lightbox-theme/default/default.css" rel="stylesheet" type="text/css" />
-    <link href="css/owl.carousel.css" rel="stylesheet" media="screen" />
-    <link href="css/owl.theme.css" rel="stylesheet" media="screen" />
-    <link href="css/animate.css" rel="stylesheet" />
-    <link href="css/style.css" rel="stylesheet">
-
-    <!-- boxed bg -->
-    <link id="bodybg" href="bodybg/bg1.css" rel="stylesheet" type="text/css" />
-    <!-- template skin -->
-    <link id="t-colors" href="color/default.css" rel="stylesheet"> --}}
-
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
@@ -47,11 +27,9 @@
     <link id="t-colors" href="{{ asset('color/default.css') }}" rel="stylesheet">
 
     <link href="http://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/css/nepali.datepicker.v4.0.1.min.css"
-        rel="stylesheet" type="text/css" />
-    <script src="http://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/js/nepali.datepicker.v4.0.1.min.js"
-        type="text/javascript"></script>
-
-
+    rel="stylesheet" type="text/css" />
+<script src="http://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/js/nepali.datepicker.v4.0.1.min.js"
+    type="text/javascript"></script>
 
 
     <!-- Styles -->
@@ -913,30 +891,29 @@
                             <ul class="dropdown-menu">
 
                                 <div>
-                                    <div>
-                                        <li><a href="{{ url('/home') }}">Home</a>
-                                        </li>
-                                        <li><a
-                                                href="
+                                        <div>
+                                                <li><a href="{{ url('/home') }}">Home</a>
+                                                </li>
+                                                <li><a href="
                                                     {{ route('client.profile') }}
                                                     ">Profile</a>
-                                        </li>
+                                                </li>
 
-                                        <li>
-                                            {{-- <a href="{{ url('/logout') }}">Log out</a> --}}
+                                                <li>
+                                                    {{-- <a href="{{ url('/logout') }}">Log out</a> --}}
 
-                                            <div><a href="{{ route('logout') }}"
-                                                    onclick="event.preventDefault();
+                                                    <div><a href="{{ route('logout') }}"
+                                                            onclick="event.preventDefault();
                                                                          document.getElementById('logout-form').submit();">
-                                                    Logout
-                                                </a>
-                                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                                    class="d-none">
-                                                    @csrf
-                                                </form>
-                                            </div>
-                                        </li>
-                                    </div>
+                                                            Logout
+                                                        </a>
+                                                        <form id="logout-form" action="{{ route('logout') }}"
+                                                            method="POST" class="d-none">
+                                                            @csrf
+                                                        </form>
+                                                    </div>
+                                                </li>
+                                        </div>
                                 </div>
 
                             </ul>
@@ -945,6 +922,10 @@
                 </div>
             </div>
         </nav>
+
+
+
+
         <section id="intro" class="intro">
             <div class="intro-content">
                 <div class="container">
@@ -960,26 +941,21 @@
                                             Appointment </h3>
                                     </div>
                                     <div class="panel-body">
-                                        <form role="form" class="lead" method="POST"
-                                            action="{{ route('client.book-appointment') }}">
+                                        {{-- @dd($doc) --}}
+                                        <form role="form" class="lead" method="POST" action="{{ route('client.book-appointment')}}">
                                             @csrf
                                             <div class="row">
                                                 <div class="col-xs-12 col-sm-12 col-md-12 ">
                                                     <div class="form-group" style="display:flex: ">
-                                                        <label>Choose who you want the appointment with</label>
+                                                        <label>Appointment with:</label>
+
 
                                                         <select class="form-select form-select-sm"
                                                             aria-label=".form-select-sm example" name="doc_select"
                                                             id="doc_select" class="doc_select"
                                                             style="border: solid;width:100%" required>
-                                                            <option selected disabled>Choose A doctor from the list:
+                                                            <option selected value="{{ $doctor->id }}">{{ $doctor->userDoctor->name }} - {{ $doctor->field_of_expertize }}
                                                             </option>
-                                                            @foreach ($docs as $doc_info)
-                                                                <option value="{{ $doc_info->id }}">
-                                                                    {{ $doc_info->name }} -
-                                                                    {{ $doc_info->doctors->field_of_expertize }}
-                                                                </option>
-                                                            @endforeach
 
                                                         </select>
                                                     </div>
@@ -1017,20 +993,19 @@
 
                                                     </div>
                                                 </div>
-                                            </div>
 
                                             <div class="row">
                                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                                     <div class="form-group">
                                                         <label>Appointment Time</label>
                                                         <input id="starttime" type="time" class="form-control"
-                                                            name="starttime" required>
+                                                            name="starttime" required >
                                                     </div>
 
                                                     <div class="form-group">
 
                                                         <input id="endtime" type="time" class="form-control"
-                                                            name="endtime" required>
+                                                            name="endtime" required >
                                                     </div>
                                                 </div>
                                             </div>
@@ -1169,6 +1144,8 @@
     <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('js/nivo-lightbox.min.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
+
+    
 
     <script type="text/javascript">
         window.onload = function() {

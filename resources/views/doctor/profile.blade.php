@@ -98,7 +98,7 @@
 
                         <div class="col-md-12" style="margin-left:1rem;">
                             <input id="dob" type="date" class="form-control "
-                                name="dob" value="{{ $doctor->dob }}">
+                                name="dateAD" value="{{ $doctor->dob }}">
                         </div>
                     </div>
                     <div class="" style="display:flex; flex-direction:row; justify-content:space-between;">
