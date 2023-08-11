@@ -1001,6 +1001,7 @@
 
                                                 </tbody>
                                             </table>
+                                            
                                         </div>
                                     @else
                                         {{ __('You dont had any appointment yet! ') }}
